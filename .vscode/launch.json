@@ -7,7 +7,11 @@
         {
             "name": "projeto_app_agendamento",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "dev"                
+            ]
         },
         {
             "name": "projeto_app_agendamento (profile mode)",
@@ -19,7 +23,11 @@
             "name": "projeto_app_agendamento (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "prod"                
+            ]
         }
     ]
 }
