@@ -2,6 +2,8 @@ const Professional = Parse.Object.extend('Professional');
 const Schedule = Parse.Object.extend('Schedule');
 const Service = Parse.Object.extend('Service');
 
+const notification = require("./notification.js");
+
 Parse.Cloud.define('v1-get-scheduling-slots', async (req) => {
 	const duration = req.params.duration;
 	const professionalId = req.params.professionalId;
@@ -9,7 +11,6 @@ Parse.Cloud.define('v1-get-scheduling-slots', async (req) => {
 	const endDate = new Date(req.params.endDate);
 
 	return getAvailableSlots(duration, professionalId, startDate, endDate);
-
 }, {
 	fields: {
 		duration: {
@@ -51,7 +52,7 @@ Parse.Cloud.define('v1-schedule-services', async (req) => {
     schedule.set('services', services);
     await schedule.save(null, {useMasterKey: true});
 
-    return schedule;
+    return formatSchedule(schedule.toJSON());
 }, {
     requireUser: true,
 });
@@ -66,14 +67,95 @@ Parse.Cloud.define('v1-get-user-schedules', async (req) => {
     requireUser: true,
 });
 
+Parse.Cloud.define('v1-cancel-schedule', async (req) => {
+	const schedule = new Schedule();
+	schedule.id = req.params.scheduleId;
+	await schedule.fetch({useMasterKey: true});
+
+	if(req.user.id != schedule.get('user').id) throw 'INVALID_USER';
+
+	schedule.set('status', 'canceled');
+	await schedule.save(null, {useMasterKey: true});
+}, {
+	requireUser: true,
+	fields: {
+		scheduleId: {
+			required: true
+		}
+	}
+});
+
+Parse.Cloud.define('v1-professional-cancel-schedule', async (req) => {
+	const querySchedule = new Parse.Query(Schedule);
+	querySchedule.include('professional');
+	const schedule = await querySchedule.get(req.params.scheduleId, {useMasterKey: true});
+	
+	if(req.user.id != schedule.get('professional').get('owner').id && !schedule.get('professional').get('users').some((u) => u.id == req.user.id)) throw 'INVALID_USER';
+
+	schedule.set('status', 'canceled');
+	await schedule.save(null, {useMasterKey: true});
+
+	notification.sendPushNotification(
+		schedule.get('user').id, 
+		'cancel_schedule_by_professional', 
+		{
+			professional_name: schedule.get('professional').get('name'),
+			schedule_id: schedule.id,
+		}
+	);
+}, {
+	requireUser: true,
+	fields: {
+		scheduleId: {
+			required: true
+		}
+	}
+});
+
+Parse.Cloud.define('v1-get-professional-agenda', async (req) => {
+	const queryProfessional = new Parse.Query(Professional);
+    queryProfessional.equalTo('owner', req.user);
+    const professional = await queryProfessional.first({useMasterKey: true});
+
+    if(!professional) throw 'INVALID_PROFESSIONAL';
+
+	const querySchedules = new Parse.Query(Schedule);
+	querySchedules.equalTo('professional', professional);
+	querySchedules.greaterThanOrEqualTo('startDate', new Date(req.params.startDate));
+	querySchedules.lessThanOrEqualTo('startDate', new Date(req.params.endDate));
+	querySchedules.equalTo('status', 'active');
+	querySchedules.ascending('startDate');
+	querySchedules.include('user', 'services');
+	querySchedules.exclude('professional');
+	
+	const schedules = await querySchedules.find({useMasterKey: true});
+
+	return schedules.map((s) => formatSchedule(s.toJSON()));
+}, {
+	requireUser: true,
+	fields: {
+		startDate: {
+			required: true,
+		},
+		endDate: {
+			required: true,
+		},
+	}
+});
+
 function formatSchedule(s) {
     return {
         id: s.objectId,
         startDate: s.startDate.iso,
         endDate: s.endDate.iso,
         status: s.status,
-        professional: formatProfessional(s.professional),
-        services: s.services.map(formatService)
+        professional: s.professional != null ? formatProfessional(s.professional) : undefined,
+        services: s.services.map(formatService),
+		user: s.user != null ? {
+			id: s.user.objectId,
+			fullname: s.user.fullname,
+			phone: s.user.phone
+		} : null,
     }
 }
 
@@ -98,7 +180,7 @@ function formatProfessional(p) {
 	return {
 		id: p.objectId,
 		name: p.name,
-		specialties: p.specialties.map((s) => formatSpecialty(s)),
+		specialties: p.specialties != null ? p.specialties.map((s) => formatSpecialty(s)) : undefined,
 		crm: p.crm,
 	};
 }
@@ -113,6 +195,7 @@ async function getAvailableSlots(duration, professionalId, startDate, endDate) {
 	schedulingsQuery.greaterThanOrEqualTo('startDate', new Date(startDate.getTime() - 24*60*60*1000));
 	schedulingsQuery.lessThanOrEqualTo('endDate', new Date(endDate.getTime() + 24*60*60*1000));
 	schedulingsQuery.ascending('startDate');
+	schedulingsQuery.equalTo('status', 'active');
 	const schedulings = await schedulingsQuery.find({useMasterKey: true});
 
 	let days = 0;

@@ -1,6 +1,7 @@
 const Professional = Parse.Object.extend('Professional');
 const Service = Parse.Object.extend('Service');
 const Specialty = Parse.Object.extend('Specialty');
+const Insurance = Parse.Object.extend('Insurance');
 
 Parse.Cloud.define('v1-save-schedule-rule', async (req) => {
     const queryProfessional = new Parse.Query(Professional);
@@ -130,6 +131,116 @@ Parse.Cloud.define('v1-get-professionals', async (req) => {
 	}
 });
 
+Parse.Cloud.define('v1-get-professional', async (req) => {
+	return await getProfessional(req.params.professionalId);
+}, {
+	fields: {
+		professionalId: {
+            required: true,
+        }
+	}
+});
+
+Parse.Cloud.define('v1-edit-professional', async (req) => {
+    const queryProfessional = new Parse.Query(Professional);
+    queryProfessional.equalTo('owner', req.user);
+    const professional = await queryProfessional.first({useMasterKey: true});
+
+    if(!professional) throw 'INVALID_PROFESSIONAL';
+
+    professional.set('address', req.params.address);
+    professional.set('phone', req.params.phone);
+    professional.set('name', req.params.name);
+    professional.set('location', new Parse.GeoPoint(req.params.location));
+    professional.set('crm', req.params.crm);
+    professional.set('insurances', req.params.insuranceIds.map((i) => {
+        const insurance = new Insurance();
+        insurance.id = i;
+        return insurance;
+    }));
+    professional.set('specialties', req.params.specialtyIds.map((i) => {
+        const specialty = new Specialty();
+        specialty.id = i;
+        return specialty;
+    }));
+    await professional.save(null, {useMasterKey: true});
+
+    return await getProfessional(professional.id);
+}, {
+    requireUser: true,
+    fields: {
+        address: {
+            required: true,
+        },
+        phone: {
+            required: true,
+        },
+        name: {
+            required: true,
+        },
+        location: {
+            required: true,
+        },
+        crm: {
+            required: true,
+        },
+        specialtyIds: {
+            required: true,
+        },
+        insuranceIds: {
+            required: true,
+        },
+    }
+});
+
+Parse.Cloud.define('v1-set-professional-picture', async (req) => {
+    const queryProfessional = new Parse.Query(Professional);
+    queryProfessional.equalTo('owner', req.user);
+    const professional = await queryProfessional.first({useMasterKey: true});
+
+    if(!professional) throw 'INVALID_PROFESSIONAL';
+
+    const file = new Parse.File(professional.id + '_picture.' + req.params.extension, { base64: req.params.base64Image });
+    professional.set('profilePicture', file);
+    await professional.save(null, {useMasterKey: true});
+
+    return await getProfessional(professional.id);
+}, {
+    requireUser: true,
+    fields: {
+        base64Image: {
+            required: true
+        },
+        extension: {
+            required: true
+        }
+    }
+});
+
+Parse.Cloud.define('v1-remove-professional-picture', async (req) => {
+    const queryProfessional = new Parse.Query(Professional);
+    queryProfessional.equalTo('owner', req.user);
+    const professional = await queryProfessional.first({useMasterKey: true});
+
+    if(!professional) throw 'INVALID_PROFESSIONAL';
+
+    await professional.get('profilePicture').destroy({useMasterKey: true});
+    professional.unset('profilePicture');
+    await professional.save(null, {useMasterKey: true});
+    
+    return await getProfessional(professional.id);
+}, {
+    requireUser: true,
+});
+
+async function getProfessional(professionalId) {
+    const query = new Parse.Query(Professional);
+	query.include('specialties', 'insurances', 'services');
+
+	const result = await query.get(professionalId, {useMasterKey: true});
+	return formatProfessional(result.toJSON());
+}
+
 function formatService(s) {
     return {
         id: s.objectId,
@@ -147,6 +258,13 @@ function formatSpecialty(s) {
 	}
 }
 
+function formatInsurance(i) {
+    return {
+        id: i.objectId,
+        name: i.name
+    }
+}
+
 function formatProfessional(p) {
 	return {
 		id: p.objectId,
@@ -154,5 +272,11 @@ function formatProfessional(p) {
 		specialties: p.specialties.map((s) => formatSpecialty(s)),
 		crm: p.crm,
 		services: p.services.filter((s) => s.available).map((s) => formatService(s)),
+        rating: p.rating,
+        ratingCount: p.ratingCount,
+        address: p.address,
+        phone: p.phone,
+        insurances: p.insurances.map((i) => formatInsurance(i)),
+        picture: p.profilePicture != null ? p.profilePicture?.url : null
 	};
 }

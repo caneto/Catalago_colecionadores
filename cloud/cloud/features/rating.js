@@ -40,6 +40,40 @@ Parse.Cloud.define('v1-rate-professional', async (req) => {
     }
 });
 
+Parse.Cloud.define('v1-get-professional-ratings', async (req) => {
+    const professional = new Professional();
+    professional.id = req.params.professionalId;
+
+    const queryRatings = new Parse.Query(Rating);
+    queryRatings.equalTo('professional', professional);
+    queryRatings.include('user');
+    queryRatings.descending('createdAt');
+    queryRatings.limit(20);
+    queryRatings.skip(20 * req.params.page);
+    const ratings = await queryRatings.find({useMasterKey: true});
+
+    return ratings.map((r) => formatRating(r.toJSON()));
+}, {
+    fields: {
+        professionalId: {
+            required: true
+        },
+        page: {
+            required: true
+        }
+    }
+});
+
+function formatRating(r) {
+    return {
+        id: r.objectId,
+        comments: r.comments,
+        stars: r.stars,
+        userName: r.user.fullname,
+        createdAt: r.createdAt,
+    }
+}
+
 Parse.Cloud.afterSave(Rating, async (request) => {
     const rating = request.object;
     const professional = rating.get('professional');
@@ -53,7 +87,7 @@ Parse.Cloud.afterSave(Rating, async (request) => {
     professional.set('rating', newRating);
     professional.increment('ratingCount', 1);
     await professional.save(null, {useMasterKey: true});
-  });
+});
 
 Parse.Cloud.afterDelete(Rating, async (request) => {
     const rating = request.object;
