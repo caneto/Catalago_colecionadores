@@ -24,8 +24,6 @@ Parse.Cloud.define('v1-register-device', async (req) => {
 	device.set('user', req.user);
 	device.set('locale', req.params.locale);
 	await device.save(null, {useMasterKey: true});
-}, {
-	requireUser: true,
 });
 
 Parse.Cloud.define('v1-send-push-notification', async (req) => {
@@ -58,6 +56,11 @@ Parse.Cloud.define('v1-get-notifications', async (req) => {
 	queryNotifications.exclude('user');
 	queryNotifications.limit(20);
 	queryNotifications.skip(20 * req.params.page);
+
+	if(req.params.read != null) {
+		queryNotifications.equalTo('isRead', req.params.read);
+	}
+
 	const notifications = await queryNotifications.find({useMasterKey: true});
 
 	return notifications.map((n) => formatNotification(n.toJSON()));
@@ -99,7 +102,7 @@ async function sendPushNotification(userId, dynamicNotificationKey, variables) {
 	notification.set('isRead', false);
 	notification.set('notification', dynamicNotification);
 	notification.set('variables', variables);
-	await notification.save(null, {useMasterKey: true});
+	const savedNotification = await notification.save(null, {useMasterKey: true});
 
 	const queryDevices = new Parse.Query(Device);
 	queryDevices.equalTo('user', user);
@@ -110,7 +113,7 @@ async function sendPushNotification(userId, dynamicNotificationKey, variables) {
     const registrationTokens = devices.map((d) => d.get('fcmToken'));
 
     const message = {
-        data: {page: page, id: notification.id},
+        data: {notification: JSON.stringify(formatNotification(savedNotification.toJSON()))},
         notification:{
             title: title,
             body: subtitle
@@ -129,7 +132,8 @@ function formatNotification(n) {
 		isRead: n.isRead,
 		title: replaceVariables(n.notification.title, n.variables),
 		subtitle: replaceVariables(n.notification.subtitle, n.variables),
-		page: replaceVariables(n.notification.page, n.variables)
+		page: replaceVariables(n.notification.page, n.variables),
+		createdAt: n.createdAt,
 	}
 }
 

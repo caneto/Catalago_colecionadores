@@ -48,8 +48,8 @@ Parse.Cloud.define('v1-get-professional-ratings', async (req) => {
     queryRatings.equalTo('professional', professional);
     queryRatings.include('user');
     queryRatings.descending('createdAt');
-    queryRatings.limit(20);
-    queryRatings.skip(20 * req.params.page);
+    queryRatings.limit(req.params.limit);
+    queryRatings.skip(req.params.limit * req.params.page);
     const ratings = await queryRatings.find({useMasterKey: true});
 
     return ratings.map((r) => formatRating(r.toJSON()));

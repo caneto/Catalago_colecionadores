@@ -113,9 +113,10 @@ Parse.Cloud.define('v1-get-professionals', async (req) => {
 		query.equalTo('specialties', specialty);
 	}
 
-	if(req.params.lat && req.params.long) {
-		const point = new Parse.GeoPoint({latitude: req.params.lat, longitude: req.params.long});
-		query.withinKilometers('location', point, req.params.maxDistance || 50);
+	if(req.params.slat && req.params.slong && req.params.nlat && req.params.nlong) {
+		const southwest = new Parse.GeoPoint({latitude: req.params.slat, longitude: req.params.slong});
+        const northeast = new Parse.GeoPoint({latitude: req.params.nlat, longitude: req.params.nlong});
+		query.withinGeoBox('location', southwest, northeast);
 	}
 
 	if(req.params.limit && req.params.skip) {
@@ -277,6 +278,7 @@ function formatProfessional(p) {
         address: p.address,
         phone: p.phone,
         insurances: p.insurances.map((i) => formatInsurance(i)),
-        picture: p.profilePicture != null ? p.profilePicture?.url : null
+        picture: p.profilePicture != null ? p.profilePicture?.url : null,
+        location: p.location,
 	};
 }
