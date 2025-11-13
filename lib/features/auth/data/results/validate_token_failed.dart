@@ -1,4 +1,0 @@
-enum ValidateTokenFailed {
-  invalidToken,
-  unknownError
-}

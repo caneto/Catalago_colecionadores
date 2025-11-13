@@ -5,29 +5,25 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "projeto_app_agendamento",
+            "name": "catalago_colecionadores",
             "request": "launch",
-            "type": "dart",
-            "args": [
-                "--flavor",
-                "dev"                
-            ]
+            "type": "dart", 
+            //"args": [
+            //    "--dart-define-from-file",
+            //    ".config/env.json"
+            //]
         },
         {
-            "name": "projeto_app_agendamento (profile mode)",
+            "name": "catalago_colecionadores (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "projeto_app_agendamento (release mode)",
+            "name": "catalago_colecionadores (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release",
-            "args": [
-                "--flavor",
-                "prod"                
-            ]
+            "flutterMode": "release"
         }
     ]
 }
