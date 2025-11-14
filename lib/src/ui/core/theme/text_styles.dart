@@ -9,7 +9,7 @@ abstract final class AppTextStyles {
 
   static const subtitleSmall = TextStyle(
     fontSize: 14,
-    color: CatalagoColecionadorTheme.lightGreyColor,
+    color: CatalagoColecionadorTheme.whiteColor,
   );
 
   static const regularSmall = TextStyle(
@@ -39,7 +39,7 @@ abstract final class AppTextStyles {
 
   static const lightGreyRegular = TextStyle(
     fontSize: 14,
-    color: CatalagoColecionadorTheme.lightGreyColor,
+    color: CatalagoColecionadorTheme.whiteColor,
   );
 
   static const lightGreySmall = TextStyle(

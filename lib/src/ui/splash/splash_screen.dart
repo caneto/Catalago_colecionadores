@@ -17,12 +17,10 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // delay aleatório entre 5 e 10 segundos (inclusive)
-    final seconds = 5 + Random().nextInt(6);
+    final seconds = 3 + Random().nextInt(6);
     _timer = Timer(Duration(seconds: seconds), () {
       if (!mounted) return;
-      // substitua '/home' pela rota de destino do seu app
-      Navigator.of(context).pushReplacementNamed('/home');
+      Navigator.of(context).pushReplacementNamed('/start');
     });
   }
 

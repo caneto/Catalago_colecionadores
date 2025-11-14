@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 final class CatalagoColecionadorTheme  {
   static const orangeColor = Color(0xFFFFAE45);
   static const lightOrangeColor = Color(0xFFFFEFE9);
-  static const blueColor = Color(0xFF01BDD6);
-  static const lightGreyColor = Color(0xFFFFEFE9);
+  static const blueColor = Color(0xFF0D40A6);
+  static const whiteColor = Color(0xFFFFFFFF);
+  static const blackColor = Color(0xFF121721);
+  static const blackClaroColor = Color(0xFF242E47);
 
   static final _defaultInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(16),
