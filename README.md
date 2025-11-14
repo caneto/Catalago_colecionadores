@@ -7,5 +7,5 @@ Projeto de Criação de um App - A principio para Android, para cadastrar e cont
 <h2>📝 Licença</h2>
 
 <p>
-   Esse repositório está sobre a Licença GNU General Public License v3.0, e você pode vê-la no arquivo <a href="https://github.com/caneto/darkweek9_vakinha_burger/blob/main/LICENSE">LICENSE</a> para mais detalhes. 😉
+   Esse repositório está sobre a Licença GNU General Public License v3.0, e você pode vê-la no arquivo <a href="https://github.com/caneto/Catalago_colecionadores/blob/main/LICENSE">LICENSE</a> para mais detalhes. 😉
 </p>
