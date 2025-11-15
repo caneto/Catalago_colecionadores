@@ -1,5 +1,6 @@
 import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/ui/core/theme/resource.dart';
+import 'package:catalago_colecionadores/src/ui/core/widgets/app_default_especial_button.dart';
 import 'package:flutter/material.dart';
 
 class StartScreen extends StatelessWidget {
@@ -61,38 +62,37 @@ class StartScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 22),
-
               Column(
                 children: [
-                  SizedBox(
+                  AppDefaultEspecialButton(
+                    onPressed: () async {
+                      Navigator.of(context).pushReplacementNamed('/pos_start');
+                    },
+                    label: "Entrar",
                     width: sizeOf.width * .84,
                     height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(
-                          color: CatalagoColecionadorTheme.blueColor,
-                        ), // contorno branco
-                      ),
-                      child: const Text('Começar'),
+                    widget: const Text('Começar'),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      side: const BorderSide(
+                        color: CatalagoColecionadorTheme.blueColor,
+                      ), // contorno branco
                     ),
                   ),
                   const SizedBox(height: 12),
-                  SizedBox(
+                  AppDefaultEspecialButton(
+                    onPressed: () {},
+                    label: "Entrar",
                     width: sizeOf.width * .84,
                     height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor:
-                            CatalagoColecionadorTheme.blackClaroColor,
-                        side: const BorderSide(
-                          color: CatalagoColecionadorTheme.blackClaroColor,
-                        ), // contorno branco
-                      ),
-                      child: const Text('Enter'),
+                    widget: const Text('Entrar'),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor:
+                          CatalagoColecionadorTheme.blackClaroColor,
+                      side: const BorderSide(
+                        color: CatalagoColecionadorTheme.blackClaroColor,
+                      ), // contorno branco
                     ),
                   ),
                 ],

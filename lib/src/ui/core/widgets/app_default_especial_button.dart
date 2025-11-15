@@ -7,6 +7,7 @@ class AppDefaultEspecialButton extends StatelessWidget {
   final String label;
   final bool tipoBotao;
   final bool sizeBoxOn;
+  final Widget? widget;
   final ButtonStyle? style;
 
   const AppDefaultEspecialButton({
@@ -16,6 +17,7 @@ class AppDefaultEspecialButton extends StatelessWidget {
     this.sizeBoxOn = true,
     this.width = 0,
     this.height = 66,
+    this.widget,
     this.style,
     super.key,
   });
@@ -28,20 +30,18 @@ class AppDefaultEspecialButton extends StatelessWidget {
   }
 
   Widget opcaoBotao(bool tipoBotao) {
+    final Widget childWidget = widget ?? Text(label);
+    
     return tipoBotao
         ? ElevatedButton(
             style: style,
             onPressed: onPressed,
-            child: Text(
-              label,
-            ),
+            child: childWidget,
           )
         : OutlinedButton(
             style: style,
             onPressed: onPressed,
-            child: Text(
-              label,
-            ),
+            child: childWidget,
           );
   }
 }

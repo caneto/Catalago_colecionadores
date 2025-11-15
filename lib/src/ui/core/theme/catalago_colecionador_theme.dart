@@ -7,6 +7,7 @@ final class CatalagoColecionadorTheme  {
   static const whiteColor = Color(0xFFFFFFFF);
   static const blackColor = Color(0xFF121721);
   static const blackClaroColor = Color(0xFF242E47);
+  static const blueFaceBook = Color(0xFF3b5998);
 
   static final _defaultInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(16),

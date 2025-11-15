@@ -1,4 +1,5 @@
 import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
+import 'package:catalago_colecionadores/src/ui/pos_start/pos_start_screen.dart';
 import 'package:catalago_colecionadores/src/ui/splash/splash_screen.dart';
 import 'package:catalago_colecionadores/src/ui/start/start_screen.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class ColecaoMainApp extends StatelessWidget {
         '/login': (_) => const SizedBox.shrink(),
         '/home': (_) => const SizedBox.shrink(),
         '/start': (_) => StartScreen(),
+        '/pos_start': (_) => PosStartScreen(),
       },
     );
   }

@@ -22,6 +22,10 @@ class R {
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\document.png)
   static const String ASSETS_IMAGES_DOCUMENT_PNG = 'assets/images/document.png';
 
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\facebook_logo.png)
+  static const String ASSETS_IMAGES_FACEBOOK_LOGO_PNG =
+      'assets/images/facebook_logo.png';
+
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\folder.png)
   static const String ASSETS_IMAGES_FOLDER_PNG = 'assets/images/folder.png';
 
@@ -32,6 +36,10 @@ class R {
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\google_logo.png)
   static const String ASSETS_IMAGES_GOOGLE_LOGO_PNG =
       'assets/images/google_logo.png';
+
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\google_logo2.png)
+  static const String ASSETS_IMAGES_GOOGLE_LOGO2_PNG =
+      'assets/images/google_logo2.png';
 
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\icon_bar.png)
   static const String ASSETS_IMAGES_ICON_BAR_PNG = 'assets/images/icon_bar.png';
