@@ -1,0 +1,250 @@
+import 'package:catalago_colecionadores/src/ui/core/helpers/messages.dart';
+import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
+import 'package:catalago_colecionadores/src/ui/core/theme/resource.dart';
+import 'package:catalago_colecionadores/src/ui/core/widgets/app_default_especial_button.dart';
+import 'package:catalago_colecionadores/src/ui/core/widgets/app_default_textformfield.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:signals_flutter/signals_flutter.dart';
+import 'package:validatorless/validatorless.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> with MessageViewMixin {
+  final _formKey = GlobalKey<FormState>();
+  final _emailEC = TextEditingController();
+  final _passwordEC = TextEditingController();
+  //final controller = Injector.get<LoginController>();
+  late final EffectCleanup effectCleanup;
+
+  @override
+  void initState() {
+    //  messageListener(controller);
+    //  effectCleanup = effect(() {
+    //    if (controller.logged) {
+    //      Navigator.of(context).pushReplacementNamed('/home');
+    //    }
+    //  });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailEC.dispose();
+    _passwordEC.dispose();
+    effectCleanup();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final sizeOf = MediaQuery.sizeOf(context);
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          constraints: BoxConstraints(minHeight: sizeOf.height),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.all(25),
+              constraints: BoxConstraints(maxWidth: sizeOf.width * .84),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const Text(
+                      'Login',
+                      style: CatalagoColecionadorTheme.titleStyle,
+                    ),
+                    const SizedBox(height: 32),
+                    AppDefaultTextformfield(
+                      title: "Email",
+                      hintText: 'Digite um E-mail valido',
+                      controller: _emailEC,
+                      onFieldSubmitted: (_) => _enterButton(),
+                      validator: Validatorless.multiple([
+                        Validatorless.required('Email Obrigatório'),
+                        Validatorless.email('Email inválido'),
+                      ]),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 20),
+                    Watch((_) {
+                      return AppDefaultTextformfield(
+                        title: 'Password',
+                        obscureControll:
+                            true, // habilita o obscure e seus funcões
+                        //obscureText: controller.obscurePassword,
+                        controller: _passwordEC,
+                        validator: Validatorless.required('Senha obrigatória'),
+                        hintText: 'Digite uma senha valida',
+                        passwordToggle: () {
+                          //controller.passwordToggle();
+                        },
+                      );
+                    }),
+                    const SizedBox(height: 30),
+                    AppDefaultEspecialButton(
+                      tipoBotao: true,
+                      onPressed: _enterButton,
+                      label: 'Login',
+                      width: sizeOf.width * .78,
+                      height: 48,
+                    ),
+                    const SizedBox(height: 12),
+                    AppDefaultEspecialButton(
+                      onPressed: () {},
+                      label: "",
+                      width: sizeOf.width * .84,
+                      height: 48,
+                      widget: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            R.ASSETS_IMAGES_GOOGLE_LOGO2_PNG,
+                            width: 38.0,
+                            height: 38.0,
+                          ),
+                          const SizedBox(width: 12),
+                          const Text('Entrar com Google'),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor:
+                            CatalagoColecionadorTheme.blackClaroColor,
+                        side: const BorderSide(
+                          color: CatalagoColecionadorTheme.blackClaroColor,
+                        ), // contorno branco
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    AppDefaultEspecialButton(
+                      onPressed: () async {
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      },
+                      label: "",
+                      width: sizeOf.width * .84,
+                      height: 48,
+                      widget: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset(
+                            R.ASSETS_IMAGES_FACEBOOK_LOGO_PNG,
+                            width: 38.0,
+                            height: 38.0,
+                          ),
+                          const SizedBox(width: 16),
+                          const Text('Entrar com Facebook'),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor:
+                            CatalagoColecionadorTheme.blackClaroColor,
+                        side: const BorderSide(
+                          color: CatalagoColecionadorTheme.blackClaroColor,
+                        ), // contorno branco
+                      ),
+                    ),
+                    SizedBox(
+                      width: sizeOf.width * .84,
+                      height: 44,
+                      child: Center(
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              color: CatalagoColecionadorTheme.blackColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: [
+                              const TextSpan(text: 'Esqueceu sua senha? '),
+                              TextSpan(
+                                text: 'Click aqui.',
+                                style: const TextStyle(
+                                  color: CatalagoColecionadorTheme.orangeColor,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    // launchUrl(
+                                    //   Uri.parse('https://www.openai.com'),
+                                    //   mode: LaunchMode.externalApplication,
+                                    // );
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: sizeOf.width * .84,
+                      height: 22,
+                      child: Center(
+                        child: RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              color: CatalagoColecionadorTheme.blackColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: [
+                              const TextSpan(text: 'Criar sua Conta - '),
+                              TextSpan(
+                                text: 'Click aqui.',
+                                style: const TextStyle(
+                                  color: CatalagoColecionadorTheme.orangeColor,
+                                  decoration: TextDecoration.underline,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    // launchUrl(
+                                    //   Uri.parse('https://www.openai.com'),
+                                    //   mode: LaunchMode.externalApplication,
+                                    // );
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _enterButton() {
+    final formValid = _formKey.currentState?.validate() ?? false;
+
+    if (formValid) {
+      FocusScope.of(context).unfocus();
+      //controller.login(_emailEC.text, _passwordEC.text);
+    }
+  }
+}

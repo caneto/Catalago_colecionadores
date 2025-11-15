@@ -347,6 +347,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.2"
+  preact_signals:
+    dependency: transitive
+    description:
+      name: preact_signals
+      sha256: "8bf3cec7fe784d224f1a1132ae7b2f9f3852609046ccb71c4f450a13dd811abf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.9.3"
   pub_semver:
     dependency: transitive
     description:
@@ -379,6 +387,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  signals_core:
+    dependency: transitive
+    description:
+      name: signals_core
+      sha256: "10e527cda3c400703e4156da16aeaea274644ecb7db11abeec7dc7cc9bec9abd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.0"
+  signals_flutter:
+    dependency: "direct main"
+    description:
+      name: signals_flutter
+      sha256: d04c973e3feeaddd7d8428f3a8af911297febb3c083091217e1a1fc0c4d6504f
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -440,6 +464,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.6"
+  top_snackbar_flutter:
+    dependency: "direct main"
+    description:
+      name: top_snackbar_flutter
+      sha256: ad3f93062450e8c7db97b271d405c180536408cc2be4380a59da7022eb1d750c
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.0"
   typed_data:
     dependency: transitive
     description:
@@ -448,6 +480,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  validatorless:
+    dependency: "direct main"
+    description:
+      name: validatorless
+      sha256: c1c4c15c84b81edfbe90e497a4517ce4c2d45a4b40544ec3ebbd91448f0f9a03
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.5"
   vector_math:
     dependency: transitive
     description:

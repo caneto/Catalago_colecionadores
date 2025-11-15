@@ -67,7 +67,9 @@ class PosStartScreen extends StatelessWidget {
               Column(
                 children: [
                   AppDefaultEspecialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    },
                     label: "Entrar",
                     width: sizeOf.width * .84,
                     height: 48,
@@ -75,7 +77,7 @@ class PosStartScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   AppDefaultEspecialButton(
                     onPressed: () {},
-                    label: "Entrar",
+                    label: "",
                     width: sizeOf.width * .84,
                     height: 48,
                     widget: Row(
@@ -102,8 +104,10 @@ class PosStartScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   AppDefaultEspecialButton(
-                    onPressed: () {},
-                    label: "Entrar",
+                    onPressed: () async {
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    },
+                    label: "",
                     width: sizeOf.width * .84,
                     height: 48,
                     widget: Row(
@@ -150,7 +154,6 @@ class PosStartScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
                   const SizedBox(height: 12),
                   SizedBox(
                     width: sizeOf.width * .84,
