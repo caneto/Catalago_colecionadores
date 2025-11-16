@@ -18,7 +18,6 @@ class PosStartScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // --- CAPA SUPERIOR ---
               Container(
                 width: double.infinity,
                 height: 250,
@@ -29,10 +28,7 @@ class PosStartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              // --- TÍTULO ---
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: const Text(
@@ -46,10 +42,7 @@ class PosStartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
-
-              // --- DESCRIÇÃO ---
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: const Text(
@@ -61,9 +54,7 @@ class PosStartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 22),
-
               Column(
                 children: [
                   AppDefaultEspecialButton(
@@ -137,13 +128,13 @@ class PosStartScreen extends StatelessWidget {
                     width: sizeOf.width * .84,
                     height: 48,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        Navigator.of(context).pushReplacementNamed('/registro');
+                      },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.blueGrey,
-                        side: const BorderSide(
-                          color: Colors.blueGrey,
-                        ), // contorno branco
+                        side: const BorderSide(color: Colors.blueGrey),
                       ),
                       child: const Text(
                         'Criar conta',

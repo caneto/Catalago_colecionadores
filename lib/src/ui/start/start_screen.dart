@@ -28,10 +28,7 @@ class StartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              // --- TÍTULO ---
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: const Text(
@@ -45,10 +42,7 @@ class StartScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 8),
-
-              // --- DESCRIÇÃO ---
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: const Text(
@@ -76,12 +70,14 @@ class StartScreen extends StatelessWidget {
                       foregroundColor: Colors.white,
                       side: const BorderSide(
                         color: CatalagoColecionadorTheme.blueColor,
-                      ), // contorno branco
+                      ), 
                     ),
                   ),
                   const SizedBox(height: 12),
                   AppDefaultEspecialButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      Navigator.of(context).pushReplacementNamed('/login');
+                    },
                     label: "Entrar",
                     width: sizeOf.width * .84,
                     height: 48,
@@ -92,7 +88,7 @@ class StartScreen extends StatelessWidget {
                           CatalagoColecionadorTheme.blackClaroColor,
                       side: const BorderSide(
                         color: CatalagoColecionadorTheme.blackClaroColor,
-                      ), // contorno branco
+                      ),
                     ),
                   ),
                 ],
