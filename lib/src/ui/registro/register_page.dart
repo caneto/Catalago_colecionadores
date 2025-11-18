@@ -37,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
 
     return Scaffold(
       backgroundColor: Colors.blueGrey,
-      //appBar: DeliveryAppbar(),
+      //appBar: ColecionadorAppbar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(

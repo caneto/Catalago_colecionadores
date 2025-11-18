@@ -47,6 +47,9 @@ class R {
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\id_card.png)
   static const String ASSETS_IMAGES_ID_CARD_PNG = 'assets/images/id_card.png';
 
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\logo.png)
+  static const String ASSETS_IMAGES_LOGO_PNG = 'assets/images/logo.png';
+
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\logo_carros_colecioandor.png)
   static const String ASSETS_IMAGES_LOGO_CARROS_COLECIOANDOR_PNG =
       'assets/images/logo_carros_colecioandor.png';
