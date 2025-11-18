@@ -92,7 +92,9 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                               true, // habilita o obscure e seus funcões
                           //obscureText: controller.obscurePassword,
                           controller: _passwordEC,
-                          validator: Validatorless.required('Senha obrigatória'),
+                          validator: Validatorless.required(
+                            'Senha obrigatória',
+                          ),
                           hintText: 'Digite uma senha valida',
                           passwordToggle: () {
                             //controller.passwordToggle();
@@ -109,7 +111,9 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                       ),
                       const SizedBox(height: 12),
                       AppDefaultEspecialButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed('/home');
+                        },
                         label: "",
                         width: sizeOf.width * .84,
                         height: 48,
@@ -181,7 +185,8 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                                 TextSpan(
                                   text: 'Click aqui.',
                                   style: const TextStyle(
-                                    color: CatalagoColecionadorTheme.orangeColor,
+                                    color:
+                                        CatalagoColecionadorTheme.orangeColor,
                                     decoration: TextDecoration.underline,
                                   ),
                                   recognizer: TapGestureRecognizer()
@@ -213,7 +218,8 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                                 TextSpan(
                                   text: 'Click aqui.',
                                   style: const TextStyle(
-                                    color: CatalagoColecionadorTheme.orangeColor,
+                                    color:
+                                        CatalagoColecionadorTheme.orangeColor,
                                     decoration: TextDecoration.underline,
                                   ),
                                   recognizer: TapGestureRecognizer()

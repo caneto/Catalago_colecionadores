@@ -1,4 +1,5 @@
 import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
+import 'package:catalago_colecionadores/src/ui/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/ui/login/login_page.dart';
 import 'package:catalago_colecionadores/src/ui/pos_start/pos_start_screen.dart';
 import 'package:catalago_colecionadores/src/ui/registro/register_page.dart';
@@ -23,7 +24,7 @@ class ColecaoMainApp extends StatelessWidget {
         '/': (_) => SplashPage(),
         '/login': (_) => LoginPage(),
         '/registro': (_) => RegisterPage(),
-        '/home': (_) => const SizedBox.shrink(),
+        '/home': (_) => MiniaturasHome(),
         '/start': (_) => StartScreen(),
         '/pos_start': (_) => PosStartScreen(),
       },
