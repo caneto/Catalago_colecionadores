@@ -16,7 +16,7 @@ class Car {
 
 // -- Main Widget --
 class SpeedMachines extends StatefulWidget {
-  const SpeedMachines({Key? key}) : super(key: key);
+  const SpeedMachines({super.key});
 
   @override
   State<SpeedMachines> createState() => _SpeedMachinesState();
@@ -24,7 +24,7 @@ class SpeedMachines extends StatefulWidget {
 
 class _SpeedMachinesState extends State<SpeedMachines> {
   // Static car list (could be made dynamic/fetched in future)
-  final List<Car> cars = const [
+  final List<Car> cars = [
     Car(
       name: 'Ferrari LaFerrari',
       year: '2013',
@@ -181,11 +181,11 @@ class _Header extends StatelessWidget {
   final double topPadding;
   final double bottomPadding;
   const _Header({
-    Key? key,
+    super.key,
     required this.leftPadding,
     required this.topPadding,
     required this.bottomPadding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -237,11 +237,11 @@ class _SearchBar extends StatelessWidget {
   final double hPaddingLeft;
   final double hPaddingRight;
   const _SearchBar({
-    Key? key,
+    super.key,
     required this.vPadding,
     required this.hPaddingLeft,
     required this.hPaddingRight,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -292,10 +292,10 @@ class _CarCard extends StatelessWidget {
   final double width;
 
   const _CarCard({
-    Key? key,
+    super.key,
     required this.car,
     required this.width,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

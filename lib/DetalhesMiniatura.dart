@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Main entry widget for the DetalhesMiniatura screen.
 class DetalhesMiniatura extends StatefulWidget {
-  const DetalhesMiniatura({Key? key}) : super(key: key);
+  const DetalhesMiniatura({super.key});
 
   @override
   State<DetalhesMiniatura> createState() => _DetalhesMiniaturaState();
@@ -107,54 +107,6 @@ class _DetalhesMiniaturaState extends State<DetalhesMiniatura> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.light,
-      theme: ThemeData(
-        brightness: Brightness.light,
-        fontFamily: 'Plus Jakarta Sans',
-        scaffoldBackgroundColor: backgroundColor,
-        primaryColor: const Color(0xFF331A1C),
-        colorScheme: ColorScheme.light(
-          primary: const Color(0xFF331A1C),
-          secondary: const Color(0xFFFF7385),
-          background: backgroundColor,
-        ),
-        textTheme: const TextTheme(
-          headline6: TextStyle(
-            fontFamily: 'Plus Jakarta Sans',
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 18,
-            letterSpacing: 0.005,
-          ),
-          // adjusted for the details
-          headline5: TextStyle(
-            fontFamily: 'Plus Jakarta Sans',
-            color: Colors.white,
-            fontWeight: FontWeight.w700,
-            fontSize: 22,
-            letterSpacing: 0.01,
-          ),
-          subtitle2: TextStyle(
-            fontFamily: 'Plus Jakarta Sans',
-            color: Color(0xFFC99194),
-            fontSize: 15,
-            height: 22 / 15,
-          ),
-          button: TextStyle(
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: FontWeight.w700,
-            fontSize: 15,
-            letterSpacing: 0.02,
-            color: Colors.white,
-          ),
-          caption: TextStyle(
-            fontFamily: 'Plus Jakarta Sans',
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: Color(0xFFC99194),
-            letterSpacing: 0.005,
-          ),
-        ),
-      ),
       home: Builder(
         builder: (context) {
           // For responsiveness
@@ -196,7 +148,7 @@ class _DetalhesMiniaturaState extends State<DetalhesMiniatura> {
                     children: [
                       _MiniaturaHeader(
                         height: headerHeight,
-                        titleStyle: theme.textTheme.headline6?.copyWith(
+                        titleStyle: theme.textTheme.titleLarge?.copyWith(
                           fontSize: isMobile ? 16 : 18,
                         ),
                         onBack: () {
@@ -230,7 +182,7 @@ class _DetalhesMiniaturaState extends State<DetalhesMiniatura> {
                                   modelName: "Ford Mustang",
                                   modelNameFontSize: modelNameFontSize,
                                   details: _details,
-                                  detailStyle: theme.textTheme.subtitle2!,
+                                  detailStyle: theme.textTheme.titleSmall!,
                                 ),
                                 SizedBox(height: actionButtonMarginTop),
                                 _isRemoved
@@ -283,12 +235,12 @@ class _MiniaturaHeader extends StatelessWidget {
   final VoidCallback? onOptions;
 
   const _MiniaturaHeader({
-    Key? key,
+    super.key,
     required this.height,
     this.titleStyle,
     this.onBack,
     this.onOptions,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -375,13 +327,13 @@ class _Gallery extends StatelessWidget {
   final ValueChanged<int>? onTap;
 
   const _Gallery({
-    Key? key,
+    super.key,
     required this.images,
     required this.selectedIndex,
     required this.width,
     required this.height,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -415,20 +367,19 @@ class _Gallery extends StatelessWidget {
                     height: height,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                      outline: (i == selectedIndex)
-                          ? const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12)),
-                              borderSide: BorderSide(
-                                color: Color(0xFFFF7385),
-                                width: 2,
-                              ),
-                            )
-                          : null,
+                      // border: (i == selectedIndex)
+                      //     ? const OutlineInputBorder(
+                      //         borderRadius: BorderRadius.all(Radius.circular(12)),
+                      //         borderSide: BorderSide(
+                      //           color: Color(0xFFFF7385),
+                      //           width: 2,
+                      //         ),
+                      //       )
+                      //     : null,
                     ),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        outline: null,
                         // Use outline outside only for highlight (Flutter workaround below)
                         boxShadow: i == selectedIndex
                             ? [
@@ -471,12 +422,12 @@ class _Details extends StatelessWidget {
   final TextStyle detailStyle;
 
   const _Details({
-    Key? key,
+    super.key,
     required this.modelName,
     required this.modelNameFontSize,
     required this.details,
     required this.detailStyle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -510,7 +461,7 @@ class _Details extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -526,13 +477,13 @@ class _ActionButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const _ActionButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.pressed,
     required this.fontSize,
     required this.padding,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -635,11 +586,11 @@ class _FooterNavItem extends StatelessWidget {
   final VoidCallback onTap;
 
   const _FooterNavItem({
-    Key? key,
+    super.key,
     required this.iconUrl,
     required this.label,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

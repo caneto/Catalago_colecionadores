@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 // Main entry point for the Miniature Details page
 class MiniatureDetails extends StatefulWidget {
-  const MiniatureDetails({Key? key}) : super(key: key);
+  const MiniatureDetails({super.key});
 
   @override
   State<MiniatureDetails> createState() => _MiniatureDetailsState();
@@ -16,8 +16,18 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
 
   // For like/dislike simulation per review
   List<ReviewInteraction> reviewInteractions = [
-    ReviewInteraction(likes: 15, dislikes: 2, userLiked: false, userDisliked: false),
-    ReviewInteraction(likes: 8, dislikes: 1, userLiked: false, userDisliked: false),
+    ReviewInteraction(
+      likes: 15,
+      dislikes: 2,
+      userLiked: false,
+      userDisliked: false,
+    ),
+    ReviewInteraction(
+      likes: 8,
+      dislikes: 1,
+      userLiked: false,
+      userDisliked: false,
+    ),
   ];
 
   // Footer navigation (simulate selection, if desired)
@@ -36,7 +46,8 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
   // Reviews Data (English only, as per instruction; originals are in PT)
   final List<_UserReviewData> userReviews = [
     _UserReviewData(
-      avatar: "https://app.codigma.io/api/uploads/assets/bc1f4b66-2192-404a-a0e3-65f7e4e5124b.svg",
+      avatar:
+          "https://app.codigma.io/api/uploads/assets/bc1f4b66-2192-404a-a0e3-65f7e4e5124b.svg",
       author: "Lucas Silva",
       date: "2 weeks ago",
       stars: [
@@ -50,7 +61,8 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
           "This miniature is amazing! The quality of the details is impressive and the painting is perfect. An essential item for any collector.",
     ),
     _UserReviewData(
-      avatar: "https://app.codigma.io/api/uploads/assets/0bfbede0-f1d8-44d0-a41d-63ce5e85cee3.svg",
+      avatar:
+          "https://app.codigma.io/api/uploads/assets/0bfbede0-f1d8-44d0-a41d-63ce5e85cee3.svg",
       author: "Mariana Costa",
       date: "1 month ago",
       stars: [
@@ -93,26 +105,30 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
           elevation: 0,
         ),
         textTheme: const TextTheme(
-          headline6: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.bold,
-              fontSize: 20),
-          headline5: TextStyle(
-              color: Colors.white,
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w800,
-              fontSize: 24),
-          subtitle1: TextStyle(
-              color: Color(0xFFBAC8EB),
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w400,
-              fontSize: 15),
-          bodyText2: TextStyle(
-              color: Color(0xFFBAC8EB),
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w400,
-              fontSize: 15),
+          titleLarge: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+          headlineSmall: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w800,
+            fontSize: 24,
+          ),
+          titleMedium: TextStyle(
+            color: Color(0xFFBAC8EB),
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w400,
+            fontSize: 15,
+          ),
+          bodyMedium: TextStyle(
+            color: Color(0xFFBAC8EB),
+            fontFamily: 'Plus Jakarta Sans',
+            fontWeight: FontWeight.w400,
+            fontSize: 15,
+          ),
         ),
       ),
       home: Scaffold(
@@ -134,7 +150,8 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                           _MiniatureGallery(
                             images: galleryImages,
                             selectedIndex: selectedGalleryIndex,
-                            onTap: (i) => setState(() => selectedGalleryIndex = i),
+                            onTap: (i) =>
+                                setState(() => selectedGalleryIndex = i),
                             isSmall: isSmall,
                             isMedium: isMedium,
                           ),
@@ -211,7 +228,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
 // Header Widget
 class _MiniatureHeader extends StatelessWidget {
   final bool isMedium;
-  const _MiniatureHeader({Key? key, required this.isMedium}) : super(key: key);
+  const _MiniatureHeader({required this.isMedium});
 
   @override
   Widget build(BuildContext context) {
@@ -243,10 +260,10 @@ class _MiniatureHeader extends StatelessWidget {
               child: Center(
                 child: Text(
                   "Miniature Details",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline6
-                      ?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.02),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.02,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -279,13 +296,13 @@ class _MiniatureGallery extends StatelessWidget {
   final bool isMedium;
 
   const _MiniatureGallery({
-    Key? key,
+    super.key,
     required this.images,
     required this.selectedIndex,
     required this.onTap,
     required this.isSmall,
     required this.isMedium,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -296,7 +313,12 @@ class _MiniatureGallery extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(horizontalPadding, 24, horizontalPadding, 12),
+      padding: EdgeInsets.fromLTRB(
+        horizontalPadding,
+        24,
+        horizontalPadding,
+        12,
+      ),
       decoration: const BoxDecoration(
         color: Color(0xFF161C2C),
         border: Border(bottom: BorderSide(color: Color(0xFF252D44))),
@@ -319,7 +341,7 @@ class _MiniatureGallery extends StatelessWidget {
                       color: Colors.black.withOpacity(0.09),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
-                    )
+                    ),
                   ],
                   border: Border.all(
                     color: isSelected ? Color(0xFF0D40A6) : Color(0xFF28396B),
@@ -347,14 +369,19 @@ class _MiniatureGallery extends StatelessWidget {
 class _MiniatureInfoSection extends StatelessWidget {
   final bool isMedium;
 
-  const _MiniatureInfoSection({Key? key, required this.isMedium}) : super(key: key);
+  const _MiniatureInfoSection({super.key, required this.isMedium});
 
   @override
   Widget build(BuildContext context) {
     final horizontalPadding = isMedium ? 13.0 : 24.0;
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(horizontalPadding, 20, horizontalPadding, 18),
+      padding: EdgeInsets.fromLTRB(
+        horizontalPadding,
+        20,
+        horizontalPadding,
+        18,
+      ),
       decoration: const BoxDecoration(
         color: Color(0xFF121721),
         border: Border(bottom: BorderSide(color: Color(0xFF252D44))),
@@ -364,23 +391,32 @@ class _MiniatureInfoSection extends StatelessWidget {
         children: [
           Text(
             "Ford Mustang",
-            style: Theme.of(context).textTheme.headline5?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.5,
-                ),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+              letterSpacing: -0.5,
+            ),
           ),
           const SizedBox(height: 12),
           Semantics(
             label: "Brand: Hot Wheels",
-            child: Text("Brand: Hot Wheels", style: Theme.of(context).textTheme.bodyText2),
+            child: Text(
+              "Brand: Hot Wheels",
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
-          Text("Model: Ford Mustang", style: Theme.of(context).textTheme.bodyText2),
-          Text("Year: 1967", style: Theme.of(context).textTheme.bodyText2),
-          Text("Scale: 1:64", style: Theme.of(context).textTheme.bodyText2),
-          Text("Condition: Excellent", style: Theme.of(context).textTheme.bodyText2),
+          Text(
+            "Model: Ford Mustang",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          Text("Year: 1967", style: Theme.of(context).textTheme.bodyMedium),
+          Text("Scale: 1:64", style: Theme.of(context).textTheme.bodyMedium),
+          Text(
+            "Condition: Excellent",
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
           Text(
             "Notes: Limited edition, original paint",
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),
@@ -390,11 +426,13 @@ class _MiniatureInfoSection extends StatelessWidget {
 
 // Reviews Section
 class _MiniatureReviewsSection extends StatelessWidget {
-  const _MiniatureReviewsSection({Key? key}) : super(key: key);
+  const _MiniatureReviewsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final horizontalPadding = MediaQuery.of(context).size.width <= 630 ? 13.0 : 24.0;
+    final horizontalPadding = MediaQuery.of(context).size.width <= 630
+        ? 13.0
+        : 24.0;
 
     // Dummy star images (mimic .svg in PNG if needed for real app)
     final stars = [
@@ -415,18 +453,18 @@ class _MiniatureReviewsSection extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.fromLTRB(horizontalPadding, 22, horizontalPadding, 0),
-      decoration: const BoxDecoration(
-        color: Color(0xFF121721),
-      ),
+      decoration: const BoxDecoration(color: Color(0xFF121721)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Reviews and Comments",
-              style: Theme.of(context).textTheme.headline6?.copyWith(
-                    fontSize: 19,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.5,
-                  )),
+          Text(
+            "Reviews and Comments",
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontSize: 19,
+              fontWeight: FontWeight.w700,
+              letterSpacing: -0.5,
+            ),
+          ),
           const SizedBox(height: 18),
           Row(
             children: [
@@ -444,30 +482,39 @@ class _MiniatureReviewsSection extends StatelessWidget {
               const SizedBox(width: 13),
               Row(
                 children: stars
-                    .map((star) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 1.5),
-                          child: Image.network(star, width: 18, height: 18, semanticLabel: "Star"),
-                        ))
+                    .map(
+                      (star) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 1.5),
+                        child: Image.network(
+                          star,
+                          width: 18,
+                          height: 18,
+                          semanticLabel: "Star",
+                        ),
+                      ),
+                    )
                     .toList(),
               ),
               const SizedBox(width: 14),
               Text(
                 "123 reviews",
-                style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      color: Color(0xFF91A3C9),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Color(0xFF91A3C9),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 12),
           Column(
             children: detailedRatings
-                .map((r) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: _RatingBar(rating: r.rating, percent: r.percent),
-                    ))
+                .map(
+                  (r) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: _RatingBar(rating: r.rating, percent: r.percent),
+                  ),
+                )
                 .toList(),
           ),
           const SizedBox(height: 4),
@@ -481,7 +528,7 @@ class _MiniatureReviewsSection extends StatelessWidget {
 class _RatingBar extends StatelessWidget {
   final int rating;
   final int percent; // percent (ex: 40 means 40%)
-  const _RatingBar({Key? key, required this.rating, required this.percent}) : super(key: key);
+  const _RatingBar({required this.rating, required this.percent});
 
   @override
   Widget build(BuildContext context) {
@@ -497,18 +544,21 @@ class _RatingBar extends StatelessWidget {
           child: Text(
             rating.toString(),
             textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 15,
-                ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: 15,
+            ),
           ),
         ),
         const SizedBox(width: 8),
         Flexible(
           child: Container(
             height: 7,
-            constraints: BoxConstraints(minWidth: minBarWidth, maxWidth: maxBarWidth),
+            constraints: BoxConstraints(
+              minWidth: minBarWidth,
+              maxWidth: maxBarWidth,
+            ),
             decoration: BoxDecoration(
               color: const Color(0xFF233459),
               borderRadius: BorderRadius.circular(3.5),
@@ -542,12 +592,12 @@ class _RatingBar extends StatelessWidget {
           child: Text(
             "$percent%",
             textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                  color: const Color(0xFF91A3C9),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  fontFeatures: [FontFeature.tabularFigures()],
-                ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: const Color(0xFF91A3C9),
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+              fontFeatures: [FontFeature.tabularFigures()],
+            ),
           ),
         ),
       ],
@@ -562,16 +612,17 @@ class _UserReviewsSection extends StatelessWidget {
   final ValueChanged<int> onLike;
   final ValueChanged<int> onDislike;
   const _UserReviewsSection({
-    Key? key,
     required this.reviews,
     required this.interactions,
     required this.onLike,
     required this.onDislike,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final horizontalPadding = MediaQuery.of(context).size.width <= 630 ? 13.0 : 24.0;
+    final horizontalPadding = MediaQuery.of(context).size.width <= 630
+        ? 13.0
+        : 24.0;
 
     return Container(
       padding: EdgeInsets.fromLTRB(horizontalPadding, 24, horizontalPadding, 8),
@@ -595,7 +646,10 @@ class _UserReviewsSection extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: const Color(0xFF232B3E),
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(width: 1.25, color: const Color(0xFF232B3E)),
+                      border: Border.all(
+                        width: 1.25,
+                        color: const Color(0xFF232B3E),
+                      ),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(24),
@@ -614,35 +668,49 @@ class _UserReviewsSection extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(r.author,
-                          style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                              fontSize: 15.5,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700)),
-                      Text(r.date,
-                          style: Theme.of(context).textTheme.caption?.copyWith(
-                              color: const Color(0xFF8DA0D6),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 0.02)),
+                      Text(
+                        r.author,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 15.5,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        r.date,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: const Color(0xFF8DA0D6),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.02,
+                        ),
+                      ),
                       const SizedBox(height: 2),
                       Row(
                         children: r.stars
-                            .map((star) => Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
-                                  child: Image.network(star, width: 16, height: 16),
-                                ))
+                            .map(
+                              (star) => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 1.0,
+                                ),
+                                child: Image.network(
+                                  star,
+                                  width: 16,
+                                  height: 16,
+                                ),
+                              ),
+                            )
                             .toList(),
                       ),
                       const SizedBox(height: 7),
                       Text(
                         r.text,
-                        style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                              fontSize: 15,
-                              color: const Color(0xFFBAC8EB),
-                              fontWeight: FontWeight.w400,
-                              height: 1.6,
-                            ),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 15,
+                          color: const Color(0xFFBAC8EB),
+                          fontWeight: FontWeight.w400,
+                          height: 1.6,
+                        ),
                       ),
                       // Interactions
                       Row(
@@ -733,11 +801,10 @@ class _MiniatureFooterNavBar extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
 
   const _MiniatureFooterNavBar({
-    Key? key,
     required this.onRemove,
     required this.index,
     required this.onItemSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -748,13 +815,11 @@ class _MiniatureFooterNavBar extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(horizontalPadding, 10, horizontalPadding, 6),
       decoration: BoxDecoration(
         color: const Color(0xFF181F33),
-        border: Border(
-          top: BorderSide(color: const Color(0xFF252D44)),
-        ),
+        border: Border(top: BorderSide(color: const Color(0xFF252D44))),
         boxShadow: [
           BoxShadow(
             blurRadius: 3,
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             offset: const Offset(0, -2),
           ),
         ],
@@ -771,14 +836,23 @@ class _MiniatureFooterNavBar extends StatelessWidget {
                   surfaceTintColor: Color(0xFF1a2952),
                   shadowColor: Color(0xFF0B1936).withOpacity(0.03),
                   elevation: 0,
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 8,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                   textStyle: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w800, fontSize: 15),
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 15,
+                  ),
                 ),
-                child: const Text("Remove from Collection", semanticsLabel: "Remove from Collection"),
+                child: const Text(
+                  "Remove from Collection",
+                  semanticsLabel: "Remove from Collection",
+                ),
               ),
             ),
             const SizedBox(width: 13),
@@ -790,13 +864,17 @@ class _MiniatureFooterNavBar extends StatelessWidget {
                   final nav = _footerNavItems[i];
                   final isSelected = index == i;
                   return Padding(
-                    padding: EdgeInsets.only(right: i != _footerNavItems.length - 1 ? 6.5 : 0),
+                    padding: EdgeInsets.only(
+                      right: i != _footerNavItems.length - 1 ? 6.5 : 0,
+                    ),
                     child: GestureDetector(
                       onTap: () => onItemSelected(i),
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(2.5, 2.5, 2.5, 0),
                         decoration: BoxDecoration(
-                          color: isSelected ? Color(0xFF28396B) : Colors.transparent,
+                          color: isSelected
+                              ? Color(0xFF28396B)
+                              : Colors.transparent,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Column(
@@ -844,19 +922,23 @@ class _FooterNavItem {
 }
 
 // Nav Bar Items Data
-const List<_FooterNavItem> _footerNavItems = [
+List<_FooterNavItem> _footerNavItems = [
   _FooterNavItem(
-      "https://app.codigma.io/api/uploads/assets/7cd20b17-d5b5-4b42-bbbe-27d8bfc14095.svg",
-      "Home"),
+    "https://app.codigma.io/api/uploads/assets/7cd20b17-d5b5-4b42-bbbe-27d8bfc14095.svg",
+    "Home",
+  ),
   _FooterNavItem(
-      "https://app.codigma.io/api/uploads/assets/7917cd42-cf80-49d8-b6cb-405fcb993e07.svg",
-      "My Collection"),
+    "https://app.codigma.io/api/uploads/assets/7917cd42-cf80-49d8-b6cb-405fcb993e07.svg",
+    "My Collection",
+  ),
   _FooterNavItem(
-      "https://app.codigma.io/api/uploads/assets/c57cbe32-f868-463d-ae04-584f57d5542c.svg",
-      "Add"),
+    "https://app.codigma.io/api/uploads/assets/c57cbe32-f868-463d-ae04-584f57d5542c.svg",
+    "Add",
+  ),
   _FooterNavItem(
-      "https://app.codigma.io/api/uploads/assets/a7732d04-d65d-4acf-8f9f-65e0a68bdce2.svg",
-      "Settings"),
+    "https://app.codigma.io/api/uploads/assets/a7732d04-d65d-4acf-8f9f-65e0a68bdce2.svg",
+    "Settings",
+  ),
 ];
 
 // --- Supporting Data Structures ---
@@ -883,11 +965,12 @@ class ReviewInteraction {
   bool userLiked;
   bool userDisliked;
 
-  ReviewInteraction(
-      {required this.likes,
-      required this.dislikes,
-      this.userLiked = false,
-      this.userDisliked = false});
+  ReviewInteraction({
+    required this.likes,
+    required this.dislikes,
+    this.userLiked = false,
+    this.userDisliked = false,
+  });
 }
 
 class _DetailedRating {

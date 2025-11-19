@@ -1,8 +1,7 @@
-// File: MiniaturasHome.dart
-
+import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
+import 'package:catalago_colecionadores/src/ui/core/theme/resource.dart';
+import 'package:catalago_colecionadores/src/ui/core/widgets/nav_bar_item.dart';
 import 'package:flutter/material.dart';
-
-// You may want to use cached_network_image or similar asset caching for prod apps.
 
 class MiniaturasHome extends StatefulWidget {
   const MiniaturasHome({super.key});
@@ -71,17 +70,17 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
     {
       'icon':
           'https://app.codigma.io/api/uploads/assets/1e2c2c10-1b94-477d-9605-6b5427beaefc.svg',
-      'label': 'My Collection',
+      'label': 'Minha Coleção',
     },
     {
       'icon':
           'https://app.codigma.io/api/uploads/assets/14dd6f8d-917a-44df-b357-abbf6386a4be.svg',
-      'label': 'Add',
+      'label': 'Adicionar',
     },
     {
       'icon':
           'https://app.codigma.io/api/uploads/assets/0cff0b13-88d2-445a-a7c9-473fa0c49550.svg',
-      'label': 'Settings',
+      'label': 'Configuração',
     },
   ];
 
@@ -171,9 +170,10 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
 
   @override
   Widget build(BuildContext context) {
-    // This widget assumes Dark theme mode provided by MaterialApp.
+     final sizeOf = MediaQuery.sizeOf(context);
+
     return Scaffold(
-      backgroundColor: const Color(0xFF211212),
+      //backgroundColor: const Color(0xFF211212),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (ctx, constraints) {
@@ -189,273 +189,284 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
             final searchBarMaxWidth = _searchBarMaxWidth(constraints);
             final searchBarMinWidth = _searchBarMinWidth(constraints);
 
-            return Stack(
-              children: [
-                SingleChildScrollView(
-                  padding: EdgeInsets.only(
-                    bottom: constraints.maxWidth < 600 ? 80 : 80,
-                  ),
-                  // For nav bar space
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Header
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: constraints.maxWidth < 600 ? 0 : 8,
-                          left: constraints.maxWidth < 400
-                              ? 0
-                              : constraints.maxWidth < 600
-                              ? 0
-                              : 24,
-                          right: constraints.maxWidth < 400
-                              ? 0
-                              : constraints.maxWidth < 600
-                              ? 0
-                              : 0,
-                          bottom: constraints.maxWidth < 600 ? 8 : 16,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Title
-                            Expanded(
-                              child: Container(
-                                margin: EdgeInsets.only(
-                                  left: constraints.maxWidth < 600 ? 12 : 24,
-                                  top: constraints.maxWidth < 600 ? 10 : 12,
-                                ),
-                                child: Text(
-                                  'Miniaturas',
-                                  style: TextStyle(
-                                    fontFamily: 'Plus Jakarta Sans',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: headerTitleFontSize,
-                                    color: Colors.white,
-                                    letterSpacing: -0.5,
+            return Container(
+              constraints: BoxConstraints(minHeight: sizeOf.height),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    padding: EdgeInsets.only(
+                      bottom: constraints.maxWidth < 600 ? 80 : 80,
+                    ),
+                    // For nav bar space
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Header
+                        Padding(
+                          padding: EdgeInsets.only(
+                            top: constraints.maxWidth < 600 ? 0 : 8,
+                            left: constraints.maxWidth < 400
+                                ? 0
+                                : constraints.maxWidth < 600
+                                ? 0
+                                : 24,
+                            right: constraints.maxWidth < 400
+                                ? 0
+                                : constraints.maxWidth < 600
+                                ? 0
+                                : 0,
+                            bottom: constraints.maxWidth < 600 ? 8 : 16,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Title
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                    left: constraints.maxWidth < 600 ? 12 : 24,
+                                    top: constraints.maxWidth < 600 ? 10 : 12,
+                                  ),
+                                  child: Text(
+                                    'Miniaturas',
+                                    style: TextStyle(
+                                      fontFamily: 'Plus Jakarta Sans',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: headerTitleFontSize,
+                                      color: Colors.white,
+                                      letterSpacing: -0.5,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            // Search Bar
-                            Container(
-                              margin: searchBarMargin,
-                              constraints: BoxConstraints(
-                                maxWidth: searchBarMaxWidth,
-                                minWidth: searchBarMinWidth,
-                              ),
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: const Color(0xFF472426),
-                                  borderRadius: BorderRadius.circular(8),
+                              // Search Bar
+                              Container(
+                                margin: searchBarMargin,
+                                constraints: BoxConstraints(
+                                  maxWidth: searchBarMaxWidth,
+                                  minWidth: searchBarMinWidth,
                                 ),
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 5,
-                                        right: 8,
-                                      ),
-                                      child: Image.network(
-                                        'https://app.codigma.io/api/uploads/assets/c46ff67b-2d78-4c94-afc4-6de1a1434218.svg',
-                                        width: constraints.maxWidth < 600
-                                            ? 18
-                                            : 20,
-                                        height: constraints.maxWidth < 600
-                                            ? 18
-                                            : 20,
-                                        color: const Color(0xFFC99194),
-                                        errorBuilder: (c, _, __) => Icon(
-                                          Icons.search,
-                                          color: const Color(0xFFC99194),
-                                          size: 20,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    //color: const Color(0xFF472426),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 5,
+                                          right: 8,
                                         ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: TextField(
-                                        controller: _searchController,
-                                        onChanged: (val) {
-                                          setState(() => _searchValue = val);
-                                        },
-                                        style: TextStyle(
+                                        child: Image.network(
+                                          'https://app.codigma.io/api/uploads/assets/c46ff67b-2d78-4c94-afc4-6de1a1434218.svg',
+                                          width: constraints.maxWidth < 600
+                                              ? 18
+                                              : 20,
+                                          height: constraints.maxWidth < 600
+                                              ? 18
+                                              : 20,
                                           color: const Color(0xFFC99194),
-                                          fontSize: constraints.maxWidth < 600
-                                              ? 14
-                                              : 16,
-                                          fontWeight: FontWeight.w400,
-                                          //fontFamily: 'Plus Jakarta Sans',
-                                          letterSpacing: .1,
-                                        ),
-                                        decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.zero,
-                                          isDense: true,
-                                          border: InputBorder.none,
-                                          hintText: 'Search miniatures',
-                                          hintStyle: TextStyle(
-                                            color: const Color(
-                                              0xFFC99194,
-                                            ).withAlpha(3),
+                                          errorBuilder: (c, _, __) => Icon(
+                                            Icons.search,
+                                            color: const Color(0xFFC99194),
+                                            size: 20,
                                           ),
-                                          prefixIconConstraints:
-                                              BoxConstraints.tightFor(width: 0),
                                         ),
-                                        cursorColor: const Color(0xFFC99194),
                                       ),
-                                    ),
-                                  ],
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _searchController,
+                                          onChanged: (val) {
+                                            setState(() => _searchValue = val);
+                                          },
+                                          style: TextStyle(
+                                            color: const Color(0xFFC99194),
+                                            fontSize: constraints.maxWidth < 600
+                                                ? 14
+                                                : 16,
+                                            fontWeight: FontWeight.w400,
+                                            //fontFamily: 'Plus Jakarta Sans',
+                                            letterSpacing: .1,
+                                          ),
+                                          decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.zero,
+                                            isDense: true,
+                                            border: InputBorder.none,
+                                            hintText: 'Search miniatures',
+                                            hintStyle: TextStyle(
+                                              color: const Color(
+                                                0xFFC99194,
+                                              ).withAlpha(3),
+                                            ),
+                                            prefixIconConstraints:
+                                                BoxConstraints.tightFor(
+                                                  width: 0,
+                                                ),
+                                          ),
+                                          cursorColor: const Color(0xFFC99194),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Destaques
+                        _Section(
+                          //background: const Color(0xFF331A1C),
+                          borderColor: const Color(0xFF472426),
+                          horizontalPadding: sectionHorizontalPadding,
+                          verticalPadding: constraints.maxWidth < 600
+                              ? const EdgeInsets.only(top: 14, bottom: 10)
+                              : const EdgeInsets.only(top: 24, bottom: 18),
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: constraints.maxWidth < 600 ? 11 : 16,
+                              ),
+                              child: Text(
+                                'Highlights',
+                                style: TextStyle(
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: sectionTitleFontSize,
+                                  color: Colors.white,
+                                  letterSpacing: -0.25,
+                                ),
+                              ),
+                            ),
+                            _HorizontalItemsList(
+                              items: _highlightItems,
+                              width: itemCardWidth,
+                              height: itemCardHeight,
+                              imgHeight: itemImageHeight,
+                              isScrollable: constraints.maxWidth < 600,
+                            ),
+                          ],
+                        ),
+                        // Novidades
+                        _Section(
+                          //background: const Color(0xFF331A1C),
+                          borderColor: const Color(0xFF472426),
+                          horizontalPadding: sectionHorizontalPadding,
+                          verticalPadding: constraints.maxWidth < 600
+                              ? const EdgeInsets.only(top: 14, bottom: 10)
+                              : const EdgeInsets.only(top: 24, bottom: 18),
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: constraints.maxWidth < 600 ? 11 : 16,
+                              ),
+                              child: Text(
+                                'New Arrivals',
+                                style: TextStyle(
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: sectionTitleFontSize,
+                                  color: Colors.white,
+                                  letterSpacing: -0.25,
+                                ),
+                              ),
+                            ),
+                            _HorizontalItemsList(
+                              items: _newArrivals,
+                              width: itemCardWidth,
+                              height: itemCardHeight,
+                              imgHeight: itemImageHeight,
+                              isScrollable: constraints.maxWidth < 600,
+                            ),
+                          ],
+                        ),
+                        // Categories
+                        _Section(
+                          //background: const Color(0xFF331A1C),
+                          borderColor: const Color(0xFF472426),
+                          horizontalPadding: sectionHorizontalPadding,
+                          verticalPadding: constraints.maxWidth < 600
+                              ? const EdgeInsets.only(top: 14, bottom: 10)
+                              : const EdgeInsets.only(top: 24, bottom: 18),
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: constraints.maxWidth < 600 ? 11 : 16,
+                              ),
+                              child: Text(
+                                'Categories',
+                                style: TextStyle(
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: sectionTitleFontSize,
+                                  color: Colors.white,
+                                  letterSpacing: -0.25,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                top: constraints.maxWidth < 600 ? 2 : 6,
+                              ),
+                              child: Wrap(
+                                spacing: constraints.maxWidth < 600 ? 10 : 16,
+                                runSpacing: 8,
+                                alignment: WrapAlignment.start,
+                                children: _categories
+                                    .map(
+                                      (cat) => _CategoryItem(
+                                        label: cat,
+                                        fontSize: constraints.maxWidth < 600
+                                            ? 13
+                                            : 15,
+                                        padding: constraints.maxWidth < 600
+                                            ? const EdgeInsets.symmetric(
+                                                horizontal: 14,
+                                                vertical: 7,
+                                              )
+                                            : const EdgeInsets.symmetric(
+                                                horizontal: 24,
+                                                vertical: 8,
+                                              ),
+                                        minWidth: constraints.maxWidth < 600
+                                            ? 50
+                                            : 70,
+                                      ),
+                                    )
+                                    .toList(),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      // Destaques
-                      _Section(
-                        background: const Color(0xFF331A1C),
-                        borderColor: const Color(0xFF472426),
-                        horizontalPadding: sectionHorizontalPadding,
-                        verticalPadding: constraints.maxWidth < 600
-                            ? const EdgeInsets.only(top: 14, bottom: 10)
-                            : const EdgeInsets.only(top: 24, bottom: 18),
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: constraints.maxWidth < 600 ? 11 : 16,
-                            ),
-                            child: Text(
-                              'Highlights',
-                              style: TextStyle(
-                                fontFamily: 'Plus Jakarta Sans',
-                                fontWeight: FontWeight.w700,
-                                fontSize: sectionTitleFontSize,
-                                color: Colors.white,
-                                letterSpacing: -0.25,
-                              ),
-                            ),
-                          ),
-                          _HorizontalItemsList(
-                            items: _highlightItems,
-                            width: itemCardWidth,
-                            height: itemCardHeight,
-                            imgHeight: itemImageHeight,
-                            isScrollable: constraints.maxWidth < 600,
-                          ),
-                        ],
-                      ),
-                      // Novidades
-                      _Section(
-                        background: const Color(0xFF331A1C),
-                        borderColor: const Color(0xFF472426),
-                        horizontalPadding: sectionHorizontalPadding,
-                        verticalPadding: constraints.maxWidth < 600
-                            ? const EdgeInsets.only(top: 14, bottom: 10)
-                            : const EdgeInsets.only(top: 24, bottom: 18),
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: constraints.maxWidth < 600 ? 11 : 16,
-                            ),
-                            child: Text(
-                              'New Arrivals',
-                              style: TextStyle(
-                                fontFamily: 'Plus Jakarta Sans',
-                                fontWeight: FontWeight.w700,
-                                fontSize: sectionTitleFontSize,
-                                color: Colors.white,
-                                letterSpacing: -0.25,
-                              ),
-                            ),
-                          ),
-                          _HorizontalItemsList(
-                            items: _newArrivals,
-                            width: itemCardWidth,
-                            height: itemCardHeight,
-                            imgHeight: itemImageHeight,
-                            isScrollable: constraints.maxWidth < 600,
-                          ),
-                        ],
-                      ),
-                      // Categories
-                      _Section(
-                        background: const Color(0xFF331A1C),
-                        borderColor: const Color(0xFF472426),
-                        horizontalPadding: sectionHorizontalPadding,
-                        verticalPadding: constraints.maxWidth < 600
-                            ? const EdgeInsets.only(top: 14, bottom: 10)
-                            : const EdgeInsets.only(top: 24, bottom: 18),
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: constraints.maxWidth < 600 ? 11 : 16,
-                            ),
-                            child: Text(
-                              'Categories',
-                              style: TextStyle(
-                                fontFamily: 'Plus Jakarta Sans',
-                                fontWeight: FontWeight.w700,
-                                fontSize: sectionTitleFontSize,
-                                color: Colors.white,
-                                letterSpacing: -0.25,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              top: constraints.maxWidth < 600 ? 2 : 6,
-                            ),
-                            child: Wrap(
-                              spacing: constraints.maxWidth < 600 ? 10 : 16,
-                              runSpacing: 8,
-                              alignment: WrapAlignment.start,
-                              children: _categories
-                                  .map(
-                                    (cat) => _CategoryItem(
-                                      label: cat,
-                                      fontSize: constraints.maxWidth < 600
-                                          ? 13
-                                          : 15,
-                                      padding: constraints.maxWidth < 600
-                                          ? const EdgeInsets.symmetric(
-                                              horizontal: 14,
-                                              vertical: 7,
-                                            )
-                                          : const EdgeInsets.symmetric(
-                                              horizontal: 24,
-                                              vertical: 8,
-                                            ),
-                                      minWidth: constraints.maxWidth < 600
-                                          ? 50
-                                          : 70,
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: constraints.maxWidth < 600 ? 85 : 100,
-                      ), // So content isn't behind nav bar
-                    ],
+                        SizedBox(
+                          height: constraints.maxWidth < 600 ? 85 : 100,
+                        ), // So content isn't behind nav bar
+                      ],
+                    ),
                   ),
-                ),
-                // Bottom nav bar
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: _MiniaturasNavBar(
-                    items: _navItems,
-                    selectedIndex: _selectedNavIndex,
-                    onItemTap: _onNavTapped,
-                    navHeight: constraints.maxWidth < 600 ? 67 : 80,
-                    iconSize: constraints.maxWidth < 600 ? 22 : 27,
-                    labelFontSize: constraints.maxWidth < 600 ? 10.6 : 12.2,
-                    navItemWidth: constraints.maxWidth < 600 ? 55 : 68,
+                  // Bottom nav bar
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: _MiniaturasNavBar(
+                      items: _navItems,
+                      selectedIndex: _selectedNavIndex,
+                      onItemTap: _onNavTapped,
+                      navHeight: constraints.maxWidth < 600 ? 67 : 80,
+                      iconSize: constraints.maxWidth < 600 ? 22 : 27,
+                      labelFontSize: constraints.maxWidth < 600 ? 10.6 : 12.2,
+                      navItemWidth: constraints.maxWidth < 600 ? 76 : 80,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
@@ -465,14 +476,14 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
 }
 
 class _Section extends StatelessWidget {
-  final Color background;
+  //final Color background;
   final Color borderColor;
   final EdgeInsets horizontalPadding;
   final EdgeInsets verticalPadding;
   final List<Widget> children;
 
   const _Section({
-    required this.background,
+    //required this.background,
     required this.borderColor,
     required this.horizontalPadding,
     required this.verticalPadding,
@@ -486,7 +497,7 @@ class _Section extends StatelessWidget {
       padding: horizontalPadding.add(verticalPadding),
       width: double.infinity,
       decoration: BoxDecoration(
-        color: background,
+        //color: background,
         border: Border(top: BorderSide(color: borderColor, width: 1.0)),
       ),
       child: Column(
@@ -712,12 +723,12 @@ class _MiniaturasNavBar extends StatelessWidget {
     final maxNavWidth = 480.0;
     return Material(
       elevation: 25,
-      color: const Color(0xFF331A1C),
+      color: CatalagoColecionadorTheme.navBarBackkgroundColor,
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
           border: Border(
-            top: BorderSide(color: const Color(0xFF472426), width: 1),
+            top: BorderSide(color: CatalagoColecionadorTheme.navBarBoxColor, width: 1),
           ),
         ),
         height: navHeight,
@@ -729,7 +740,7 @@ class _MiniaturasNavBar extends StatelessWidget {
                 .asMap()
                 .entries
                 .map(
-                  (e) => _NavBarItem(
+                  (e) => NavBarItem(
                     isSelected: selectedIndex == e.key,
                     iconUrl: e.value['icon']!,
                     label: e.value['label']!,
@@ -740,82 +751,6 @@ class _MiniaturasNavBar extends StatelessWidget {
                   ),
                 )
                 .toList(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _NavBarItem extends StatelessWidget {
-  final bool isSelected;
-  final String iconUrl;
-  final String label;
-  final VoidCallback onTap;
-  final double iconSize;
-  final double labelFontSize;
-  final double width;
-
-  const _NavBarItem({
-    required this.isSelected,
-    required this.iconUrl,
-    required this.label,
-    required this.onTap,
-    required this.iconSize,
-    required this.labelFontSize,
-    required this.width,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final baseColor = const Color(0xFFC99194);
-    final selectedColor = Colors.white;
-    return Semantics(
-      container: true,
-      label: label,
-      button: true,
-      selected: isSelected,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: Container(
-          width: width,
-          alignment: Alignment.center,
-          decoration: isSelected
-              ? BoxDecoration(
-                  color: Colors.white10,
-                  borderRadius: BorderRadius.circular(16),
-                )
-              : null,
-          padding: EdgeInsets.only(top: iconSize / 2.6),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.network(
-                iconUrl,
-                width: iconSize,
-                height: iconSize,
-                color: isSelected ? selectedColor : baseColor,
-                errorBuilder: (c, _, __) => Icon(
-                  Icons.circle,
-                  color: isSelected ? selectedColor : baseColor,
-                  size: iconSize,
-                ),
-              ),
-              SizedBox(height: 2),
-              Text(
-                label,
-                style: TextStyle(
-                  color: isSelected ? selectedColor : baseColor,
-                  fontSize: labelFontSize,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Plus Jakarta Sans',
-                  letterSpacing: -0.07,
-                  height: 1.25,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
           ),
         ),
       ),

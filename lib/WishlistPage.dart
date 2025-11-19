@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class WishlistPage extends StatefulWidget {
-  const WishlistPage({Key? key}) : super(key: key);
+  const WishlistPage({super.key});
 
   @override
   State<WishlistPage> createState() => _WishlistPageState();
@@ -47,53 +47,6 @@ class _WishlistPageState extends State<WishlistPage> {
     ),
   ];
 
-  ThemeData _getLightWishlistTheme(BuildContext context) {
-    return ThemeData(
-      brightness: Brightness.light,
-      fontFamily: 'Plus Jakarta Sans',
-      scaffoldBackgroundColor: const Color(0xFF211212),
-      textTheme: Theme.of(context).textTheme.copyWith(
-            headline6: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: Colors.white,
-              letterSpacing: 0,
-            ),
-            headline5: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: Colors.white,
-              letterSpacing: 0,
-            ),
-            subtitle1: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-              color: Colors.white,
-            ),
-            bodyText2: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: Color(0xFFC99194),
-            ),
-            bodyText1: const TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontWeight: FontWeight.w400,
-              fontSize: 16,
-              color: Color(0xFFC99194),
-            ),
-          ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.white,
-      ),
-    );
-  }
-
   void _onSearchTap() {
     // No-op, show snack bar (demo)
     ScaffoldMessenger.of(context).showSnackBar(
@@ -105,82 +58,79 @@ class _WishlistPageState extends State<WishlistPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: _getLightWishlistTheme(context),
-      child: Builder(
-        builder: (context) {
-          final media = MediaQuery.of(context);
-          return Scaffold(
-            backgroundColor: const Color(0xFF211212),
-            body: LayoutBuilder(
-              builder: (context, constraints) {
-                // Responsiveness based on width
-                double maxContainerWidth = 480;
-                double horizontalPadding = 16;
-                double wishlistItemImageSize = 104;
-                double detailsPadding = 18;
-                double headerMarginTop = 27;
-                double wishlistItemsMarginTop = 31;
-
-                if (constraints.maxWidth <= 540) {
-                  horizontalPadding = 0.04 * media.size.width;
-                  maxContainerWidth = media.size.width;
-                  wishlistItemImageSize = 92;
-                  detailsPadding = 10;
-                  headerMarginTop = 18;
-                  wishlistItemsMarginTop = 24;
-                }
-
-                return Center(
-                  child: SingleChildScrollView(
-                    // Contains the whole wishlist container
-                    child: Container(
-                      width: double.infinity,
-                      constraints: BoxConstraints(
-                        maxWidth: maxContainerWidth,
-                      ),
-                      padding: EdgeInsets.fromLTRB(horizontalPadding, 0, horizontalPadding, 36),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SizedBox(height: headerMarginTop),
-                          _WishlistHeader(
-                            onSearch: _onSearchTap,
-                          ),
-                          SizedBox(height: 24),
-                          _WishlistSearchBar(
-                            onSearchBarTap: _onSearchTap,
-                          ),
-                          SizedBox(height: wishlistItemsMarginTop),
-                          Text(
-                            'Itens na Lista de Desejos',
-                            style: Theme.of(context).textTheme.headline5,
-                          ),
-                          SizedBox(height: 17),
-                          Column(
-                            children: List.generate(
-                              _wishlistItems.length,
-                              (index) => Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: index == _wishlistItems.length - 1 ? 0 : 17.0),
-                                child: WishlistItem(
-                                  data: _wishlistItems[index],
-                                  imageSize: wishlistItemImageSize,
-                                  detailsPadding: detailsPadding,
-                                ),
+    return Builder(
+      builder: (context) {
+        final media = MediaQuery.of(context);
+        return Scaffold(
+          backgroundColor: const Color(0xFF211212),
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              // Responsiveness based on width
+              double maxContainerWidth = 480;
+              double horizontalPadding = 16;
+              double wishlistItemImageSize = 104;
+              double detailsPadding = 18;
+              double headerMarginTop = 27;
+              double wishlistItemsMarginTop = 31;
+    
+              if (constraints.maxWidth <= 540) {
+                horizontalPadding = 0.04 * media.size.width;
+                maxContainerWidth = media.size.width;
+                wishlistItemImageSize = 92;
+                detailsPadding = 10;
+                headerMarginTop = 18;
+                wishlistItemsMarginTop = 24;
+              }
+    
+              return Center(
+                child: SingleChildScrollView(
+                  // Contains the whole wishlist container
+                  child: Container(
+                    width: double.infinity,
+                    constraints: BoxConstraints(
+                      maxWidth: maxContainerWidth,
+                    ),
+                    padding: EdgeInsets.fromLTRB(horizontalPadding, 0, horizontalPadding, 36),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: headerMarginTop),
+                        _WishlistHeader(
+                          onSearch: _onSearchTap,
+                        ),
+                        SizedBox(height: 24),
+                        _WishlistSearchBar(
+                          onSearchBarTap: _onSearchTap,
+                        ),
+                        SizedBox(height: wishlistItemsMarginTop),
+                        Text(
+                          'Itens na Lista de Desejos',
+                          //style: Theme.of(context).textTheme.headline5,
+                        ),
+                        SizedBox(height: 17),
+                        Column(
+                          children: List.generate(
+                            _wishlistItems.length,
+                            (index) => Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: index == _wishlistItems.length - 1 ? 0 : 17.0),
+                              child: WishlistItem(
+                                data: _wishlistItems[index],
+                                imageSize: wishlistItemImageSize,
+                                detailsPadding: detailsPadding,
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
-          );
-        },
-      ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
@@ -189,7 +139,7 @@ class _WishlistPageState extends State<WishlistPage> {
 class _WishlistHeader extends StatelessWidget {
   final VoidCallback onSearch;
 
-  const _WishlistHeader({Key? key, required this.onSearch}) : super(key: key);
+  const _WishlistHeader({required this.onSearch});
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +152,7 @@ class _WishlistHeader extends StatelessWidget {
           Center(
             child: Text(
               'Lista de Desejos',
-              style: Theme.of(context).textTheme.headline6,
+              //style: Theme.of(context).textTheme.headline6,
               textAlign: TextAlign.center,
             ),
           ),
@@ -244,7 +194,7 @@ class _WishlistHeader extends StatelessWidget {
 class _WishlistSearchBar extends StatelessWidget {
   final VoidCallback onSearchBarTap;
 
-  const _WishlistSearchBar({Key? key, required this.onSearchBarTap}) : super(key: key);
+  const _WishlistSearchBar({required this.onSearchBarTap});
 
   @override
   Widget build(BuildContext context) {
@@ -275,7 +225,7 @@ class _WishlistSearchBar extends StatelessWidget {
                 const SizedBox(width: 12),
                 Text(
                   'Pesquisar',
-                  style: Theme.of(context).textTheme.bodyText1,
+                  //style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],
             ),
@@ -293,11 +243,11 @@ class WishlistItem extends StatelessWidget {
   final double detailsPadding;
 
   const WishlistItem({
-    Key? key,
+    super.key,
     required this.data,
     this.imageSize = 104,
     this.detailsPadding = 18,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -347,7 +297,7 @@ class WishlistItem extends StatelessWidget {
                   children: [
                     Text(
                       data.title,
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -356,13 +306,13 @@ class WishlistItem extends StatelessWidget {
                       children: [
                         Text(
                           data.year,
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                         const SizedBox(width: 12),
                         const Spacer(),
                         Text(
                           data.brand,
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),

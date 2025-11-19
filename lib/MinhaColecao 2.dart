@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class MinhaColecao extends StatefulWidget {
-  const MinhaColecao({Key? key}) : super(key: key);
+  const MinhaColecao({super.key});
 
   @override
   State<MinhaColecao> createState() => _MinhaColecaoState();
@@ -10,7 +10,6 @@ class MinhaColecao extends StatefulWidget {
 
 class _MinhaColecaoState extends State<MinhaColecao> {
   // View modes
-  enum ViewMode { grid, list }
 
   ViewMode _selectedView = ViewMode.grid;
 
@@ -461,19 +460,19 @@ class _ViewOptionButton extends StatelessWidget {
         child: ElevatedButton(
           style: ButtonStyle(
             minimumSize:
-                MaterialStateProperty.all(Size(isMobile ? 70 : 120, 40)),
-            backgroundColor: MaterialStateProperty.all(
+                WidgetStateProperty.all(Size(isMobile ? 70 : 120, 40)),
+            backgroundColor: WidgetStateProperty.all(
               isSelected ? textSecondary : primaryBg,
             ),
-            foregroundColor: MaterialStateProperty.all(
+            foregroundColor: WidgetStateProperty.all(
               isSelected ? primaryBg : textSecondary,
             ),
-            elevation: MaterialStateProperty.all(1),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            elevation: WidgetStateProperty.all(1),
+            shape: WidgetStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             )),
             overlayColor:
-                MaterialStateProperty.all(Colors.white.withOpacity(0.04)),
+                WidgetStateProperty.all(Colors.white.withOpacity(0.04)),
           ),
           onPressed: onTap,
           child: Text(

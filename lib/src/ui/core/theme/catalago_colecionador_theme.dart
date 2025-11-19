@@ -9,6 +9,10 @@ final class CatalagoColecionadorTheme {
   static const blackClaroColor = Color(0xFF242E47);
   static const blueFaceBook = Color(0xFF3b5998);
   static const barColor = Color(0xFF364828);
+  static const navBarBackkgroundColor = Color(0xFFF1D0B1);
+  static const navBarBoxItemColor = Color.fromARGB(255, 55, 48, 151);
+  static const navBarBoxContornoColor = Color.fromARGB(255, 235, 174, 118);
+  static const navBarBoxColor = Color(0xFFDCE9F1);
 
   static final _defaultInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(16),
