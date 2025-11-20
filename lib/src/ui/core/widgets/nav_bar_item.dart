@@ -54,25 +54,13 @@ class NavBarItem extends StatelessWidget {
                 width: iconSize,
                 semanticsLabel: label,
               ),
-              // Image.asset(
-              //   iconLogo,
-              //   width: iconSize,
-              //   height: iconSize,
-              //   color: isSelected ? selectedColor : baseColor,
-              //   errorBuilder: (c, _, __) => Icon(
-              //     Icons.circle,
-              //     color: isSelected ? selectedColor : baseColor,
-              //     size: iconSize,
-              //   ),
-              // ),
               SizedBox(height: 2),
               Text(
                 label,
-                style: TextStyle(
+                style: CatalagoColecionadorTheme.textBold.copyWith(
                   color: isSelected ? selectedColor : baseColor,
                   fontSize: labelFontSize,
                   fontWeight: FontWeight.w500,
-                  fontFamily: 'Plus Jakarta Sans',
                   letterSpacing: -0.07,
                   height: 1.25,
                 ),

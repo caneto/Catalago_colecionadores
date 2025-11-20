@@ -7,7 +7,8 @@ class CategoryItem extends StatelessWidget {
   final EdgeInsets padding;
   final double minWidth;
 
-  const CategoryItem({super.key, 
+  const CategoryItem({
+    super.key,
     required this.label,
     required this.fontSize,
     required this.padding,
@@ -26,15 +27,14 @@ class CategoryItem extends StatelessWidget {
       child: Text(
         label,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: CatalagoColecionadorTheme.textBold.copyWith(
           color: Colors.white,
-          fontFamily: 'Plus Jakarta Sans',
           fontSize: fontSize,
-          letterSpacing: -.1,
           fontWeight: FontWeight.w500,
+          letterSpacing: -.1,
+          height: 1.25,
         ),
       ),
     );
   }
-
 }

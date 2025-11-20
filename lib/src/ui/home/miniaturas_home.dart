@@ -630,11 +630,10 @@ class _ItemCard extends StatelessWidget {
                 child: Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontFamily: 'Plus Jakarta Sans',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 15,
+                  style: CatalagoColecionadorTheme.textBold.copyWith(
                     color: Colors.white,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
                     letterSpacing: -0.07,
                   ),
                 ),
