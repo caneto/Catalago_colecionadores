@@ -1,10 +1,10 @@
 import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class NavBarItem extends StatelessWidget {
-
   final bool isSelected;
-  final String iconUrl;
+  final String iconLogo;
   final String label;
   final VoidCallback onTap;
   final double iconSize;
@@ -14,7 +14,7 @@ class NavBarItem extends StatelessWidget {
   const NavBarItem({
     super.key,
     required this.isSelected,
-    required this.iconUrl,
+    required this.iconLogo,
     required this.label,
     required this.onTap,
     required this.iconSize,
@@ -48,17 +48,23 @@ class NavBarItem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(
-                iconUrl,
-                width: iconSize,
+              SvgPicture.asset(
+                'assets/images/$iconLogo', // Path to your SVG asset
                 height: iconSize,
-                color: isSelected ? selectedColor : baseColor,
-                errorBuilder: (c, _, __) => Icon(
-                  Icons.circle,
-                  color: isSelected ? selectedColor : baseColor,
-                  size: iconSize,
-                ),
+                width: iconSize,
+                semanticsLabel: label,
               ),
+              // Image.asset(
+              //   iconLogo,
+              //   width: iconSize,
+              //   height: iconSize,
+              //   color: isSelected ? selectedColor : baseColor,
+              //   errorBuilder: (c, _, __) => Icon(
+              //     Icons.circle,
+              //     color: isSelected ? selectedColor : baseColor,
+              //     size: iconSize,
+              //   ),
+              // ),
               SizedBox(height: 2),
               Text(
                 label,

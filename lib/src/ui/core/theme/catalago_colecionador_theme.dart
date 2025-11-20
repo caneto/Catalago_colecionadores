@@ -13,6 +13,9 @@ final class CatalagoColecionadorTheme {
   static const navBarBoxItemColor = Color.fromARGB(255, 55, 48, 151);
   static const navBarBoxContornoColor = Color.fromARGB(255, 235, 174, 118);
   static const navBarBoxColor = Color(0xFFDCE9F1);
+  static const lineDividColor = Color.fromARGB(255, 161, 226, 85);
+  static const cardCategyColor = Color.fromARGB(255, 84, 123, 209);
+  static const cardItemAndImageColor = Color.fromARGB(255, 84, 123, 209);
 
   static final _defaultInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(16),
