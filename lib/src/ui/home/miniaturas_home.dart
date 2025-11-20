@@ -1,9 +1,11 @@
 import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/ui/core/theme/resource.dart';
-import 'package:catalago_colecionadores/src/ui/core/widgets/nav_bar_item.dart';
+import 'package:catalago_colecionadores/src/ui/core/widgets/miniaturas_nav_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/category_item.dart';
+import 'widgets/horizontal_items_list.dart';
 
 class MiniaturasHome extends StatefulWidget {
   const MiniaturasHome({super.key});
@@ -55,12 +57,12 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
   ];
 
   static const _categories = [
-    'Cars',
-    'Motorcycles',
-    'Airplanes',
-    'Trucks',
-    'Boats',
-    'Others',
+    'Carros',
+    'Motos',
+    'Aviões',
+    'Caminhoes',
+    'Barcos',
+    'Outros',
   ];
 
   static const _navItems = [
@@ -154,6 +156,12 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
     return 224;
   }
 
+  void onItemCardTap(String item) {
+    if (kDebugMode) {
+      print('Item tapped: $item');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
@@ -163,7 +171,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
       body: SafeArea(
         child: LayoutBuilder(
           builder: (ctx, constraints) {
-            final screenWidth = MediaQuery.of(context).size.width;
+            //final screenWidth = MediaQuery.of(context).size.width;
             // Calculate responsive parameters
             final sectionHorizontalPadding = _horizontalPadding(constraints);
             final itemCardWidth = _getItemCardWidth(constraints);
@@ -221,13 +229,14 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                   ),
                                   child: Text(
                                     'Miniaturas',
-                                    style: TextStyle(
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: headerTitleFontSize,
-                                      color: Colors.white,
-                                      letterSpacing: -0.5,
-                                    ),
+                                    style: CatalagoColecionadorTheme
+                                        .titleStyleNormal
+                                        .copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: headerTitleFontSize,
+                                          color: Colors.white,
+                                          letterSpacing: -0.5,
+                                        ),
                                   ),
                                 ),
                               ),
@@ -250,20 +259,15 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                           left: 5,
                                           right: 8,
                                         ),
-                                        child: Image.network(
-                                          'https://app.codigma.io/api/uploads/assets/c46ff67b-2d78-4c94-afc4-6de1a1434218.svg',
-                                          width: constraints.maxWidth < 600
-                                              ? 18
-                                              : 20,
-                                          height: constraints.maxWidth < 600
-                                              ? 18
-                                              : 20,
-                                          color: const Color(0xFFC99194),
-                                          errorBuilder: (c, _, __) => Icon(
-                                            Icons.search,
-                                            color: const Color(0xFFC99194),
-                                            size: 20,
+                                        child: Icon(
+                                          Icons.search,
+                                          color: const Color.fromARGB(
+                                            255,
+                                            211,
+                                            220,
+                                            233,
                                           ),
+                                          size: 20,
                                         ),
                                       ),
                                       Expanded(
@@ -273,30 +277,44 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                             setState(() => _searchValue = val);
                                           },
                                           style: TextStyle(
-                                            color: const Color(0xFFC99194),
+                                            color: const Color.fromARGB(
+                                              255,
+                                              27,
+                                              27,
+                                              27,
+                                            ),
                                             fontSize: constraints.maxWidth < 600
                                                 ? 14
                                                 : 16,
                                             fontWeight: FontWeight.w400,
-                                            //fontFamily: 'Plus Jakarta Sans',
                                             letterSpacing: .1,
                                           ),
                                           decoration: InputDecoration(
                                             contentPadding: EdgeInsets.zero,
                                             isDense: true,
                                             border: InputBorder.none,
-                                            hintText: 'Search miniatures',
-                                            hintStyle: TextStyle(
-                                              color: const Color(
-                                                0xFFC99194,
-                                              ).withAlpha(3),
-                                            ),
+                                            hintText: 'Busca de Miniaturas',
+                                            hintStyle: CatalagoColecionadorTheme
+                                                .titleStyleNormal
+                                                .copyWith(
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    37,
+                                                    21,
+                                                    185,
+                                                  ).withAlpha(3),
+                                                ),
                                             prefixIconConstraints:
                                                 BoxConstraints.tightFor(
                                                   width: 0,
                                                 ),
                                           ),
-                                          cursorColor: const Color(0xFFC99194),
+                                          cursorColor: const Color.fromARGB(
+                                            255,
+                                            66,
+                                            126,
+                                            10,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -308,7 +326,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                         ),
                         // Destaques
                         _Section(
-                          //background: const Color(0xFF331A1C),
                           borderColor: CatalagoColecionadorTheme.lineDividColor,
                           horizontalPadding: sectionHorizontalPadding,
                           verticalPadding: constraints.maxWidth < 600
@@ -330,7 +347,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                     ),
                               ),
                             ),
-                            _HorizontalItemsList(
+                            HorizontalItemsList(
                               items: _highlightItems,
                               width: itemCardWidth,
                               height: itemCardHeight,
@@ -341,7 +358,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                         ),
                         // Novidades
                         _Section(
-                          //background: const Color(0xFF331A1C),
                           borderColor: CatalagoColecionadorTheme.lineDividColor,
                           horizontalPadding: sectionHorizontalPadding,
                           verticalPadding: constraints.maxWidth < 600
@@ -363,7 +379,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                     ),
                               ),
                             ),
-                            _HorizontalItemsList(
+                            HorizontalItemsList(
                               items: _newArrivals,
                               width: itemCardWidth,
                               height: itemCardHeight,
@@ -374,7 +390,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                         ),
                         // Categories
                         _Section(
-                          //background: const Color(0xFF331A1C),
                           borderColor: CatalagoColecionadorTheme.lineDividColor,
                           horizontalPadding: sectionHorizontalPadding,
                           verticalPadding: constraints.maxWidth < 600
@@ -423,6 +438,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                         minWidth: constraints.maxWidth < 600
                                             ? 50
                                             : 70,
+                                        onTap: onItemCardTap,
                                       ),
                                     )
                                     .toList(),
@@ -441,7 +457,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    child: _MiniaturasNavBar(
+                    child: MiniaturasNavBar(
                       items: _navItems,
                       selectedIndex: _selectedNavIndex,
                       onItemTap: _onNavTapped,
@@ -489,221 +505,6 @@ class _Section extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: children,
-      ),
-    );
-  }
-}
-
-class _HorizontalItemsList extends StatelessWidget {
-  final List<Map<String, String>> items;
-  final double width;
-  final double height;
-  final double imgHeight;
-  final bool isScrollable;
-
-  const _HorizontalItemsList({
-    required this.items,
-    required this.width,
-    required this.height,
-    required this.imgHeight,
-    this.isScrollable = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final gap = isScrollable ? 8.0 : 16.0;
-
-    Widget list = Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (var i = 0; i < items.length; i++) ...[
-          _ItemCard(
-            imageUrl: items[i]['image']!,
-            title: items[i]['title']!,
-            width: width,
-            height: height,
-            imageHeight: imgHeight,
-          ),
-          if (i != items.length - 1) SizedBox(width: gap),
-        ],
-      ],
-    );
-
-    if (isScrollable) {
-      return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 4.0),
-          child: list,
-        ),
-      );
-    }
-    return Padding(padding: const EdgeInsets.only(bottom: 4.0), child: list);
-  }
-}
-
-class _ItemCard extends StatelessWidget {
-  final String imageUrl;
-  final String title;
-  final double width;
-  final double height;
-  final double imageHeight;
-
-  const _ItemCard({
-    required this.imageUrl,
-    required this.title,
-    required this.width,
-    required this.height,
-    required this.imageHeight,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: title,
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          color: CatalagoColecionadorTheme.cardItemAndImageColor,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 0,
-              spreadRadius: 0,
-              color: Colors.transparent,
-            ),
-          ],
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Image.network(
-                  imageUrl,
-                  width: width,
-                  height: imageHeight,
-                  fit: BoxFit.cover,
-                  errorBuilder: (ctx, _, __) => Container(
-                    height: imageHeight,
-                    color: const Color(0xFF332022),
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.broken_image_outlined,
-                      color: Colors.white24,
-                      size: 38,
-                    ),
-                  ),
-                  loadingBuilder: (ctx, child, progress) => progress == null
-                      ? child
-                      : Container(
-                          height: imageHeight,
-                          color: const Color(0xFF332022),
-                          alignment: Alignment.center,
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white24,
-                            ),
-                            strokeWidth: 2.1,
-                          ),
-                        ),
-                ),
-              ),
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: CatalagoColecionadorTheme.cardItemAndImageColor,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(8),
-                    bottomRight: Radius.circular(8),
-                  ),
-                ),
-                padding: const EdgeInsets.only(top: 12, bottom: 11),
-                alignment: Alignment.center,
-                child: Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: CatalagoColecionadorTheme.textBold.copyWith(
-                    color: Colors.white,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: -0.07,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MiniaturasNavBar extends StatelessWidget {
-  final List<Map<String, String>> items;
-  final int selectedIndex;
-  final void Function(int) onItemTap;
-  final double navHeight;
-  final double iconSize;
-  final double labelFontSize;
-  final double navItemWidth;
-
-  const _MiniaturasNavBar({
-    required this.items,
-    required this.selectedIndex,
-    required this.onItemTap,
-    required this.navHeight,
-    required this.iconSize,
-    required this.labelFontSize,
-    required this.navItemWidth,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // The nav bar max width, for mobile layout, is 480px
-    final maxNavWidth = 480.0;
-    return Material(
-      elevation: 25,
-      color: CatalagoColecionadorTheme.navBarBackkgroundColor,
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: CatalagoColecionadorTheme.navBarBoxColor,
-              width: 1,
-            ),
-          ),
-        ),
-        height: navHeight,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: maxNavWidth),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: items
-                .asMap()
-                .entries
-                .map(
-                  (e) => NavBarItem(
-                    isSelected: selectedIndex == e.key,
-                    iconLogo: e.value['iconLogo']!,
-                    label: e.value['label']!,
-                    onTap: () => onItemTap(e.key),
-                    iconSize: iconSize,
-                    labelFontSize: labelFontSize,
-                    width: navItemWidth,
-                  ),
-                )
-                .toList(),
-          ),
-        ),
       ),
     );
   }
