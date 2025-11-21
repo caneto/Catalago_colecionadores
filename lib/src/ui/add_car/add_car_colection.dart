@@ -1,5 +1,7 @@
-
+import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
+import 'package:catalago_colecionadores/src/ui/core/theme/resource.dart';
 import 'package:catalago_colecionadores/src/ui/core/widgets/miniaturas_nav_bar.dart';
+import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:flutter/material.dart';
 
 // Colors (adapted from CSS variables)
@@ -12,20 +14,14 @@ const Color _textMain = Colors.white;
 const Color _textPlaceholder = Color(0xFFC99194);
 const Color _footerBg = Color(0xFF331A1C);
 
-// Asset URLs
-const String _logoUrl =
-    'https://app.codigma.io/api/uploads/assets/1df592e2-c193-463c-9fc1-cb273cb526cd.svg';
-
-
 const _navItems = [
-    {'iconLogo': 'home.svg', 'label': 'Home'},
-    {'iconLogo': 'minhacolecao.svg', 'label': 'Minha Coleção'},
-    {'iconLogo': 'estrela.svg', 'label': 'Adicionar'},
-    {'iconLogo': 'engrenagem.svg', 'label': 'Configuração'},
-  ];
+  {'iconLogo': 'home.svg', 'label': 'Home'},
+  {'iconLogo': 'minhacolecao.svg', 'label': 'Minha Coleção'},
+  {'iconLogo': 'estrela.svg', 'label': 'Adicionar'},
+  {'iconLogo': 'engrenagem.svg', 'label': 'Configuração'},
+];
 
-int _selectedNavIndex = 0;
-
+int _selectedNavIndex = 2; // "Add" é este ícone
 
 class AddCarColection extends StatefulWidget {
   const AddCarColection({super.key});
@@ -43,9 +39,9 @@ class _AddCarColectionState extends State<AddCarColection> {
   String? _condition;
   final TextEditingController _notesController = TextEditingController();
 
-  int _currentNavIndex = 2; // "Add" is the third icon
+  //final int _currentNavIndex = 2; // "Add" is the third icon
 
-void _onNavTapped(int idx) {
+  void _onNavTapped(int idx) {
     if (idx == _selectedNavIndex) return;
     setState(() {
       _selectedNavIndex = idx;
@@ -53,14 +49,12 @@ void _onNavTapped(int idx) {
         idx == 0
             ? '/home'
             : idx == 1
-                ? '/collection'
-                : idx == 2
-                    ? '/add_car'
-                    : '/settings',
+            ? '/collection'
+            : idx == 2
+            ? '/add_car'
+            : '/settings',
       );
     });
-    // Place navigation logic here
-    // Example: Navigator.push(context, ...), or any other route
   }
 
   static const List<String> _conditions = [
@@ -92,7 +86,7 @@ void _onNavTapped(int idx) {
     );
   }
 
-  void _onNavTap(int index) {
+  /* void _onNavTap(int index) {
     if (index == _currentNavIndex) return;
     setState(() => _currentNavIndex = index);
     // Navigation logic using Navigator 1.0
@@ -110,7 +104,7 @@ void _onNavTapped(int idx) {
         Navigator.of(context).pushReplacementNamed('/settings');
         break;
     }
-  }
+  } */
 
   EdgeInsets _mainHorizontalPadding(BuildContext context, BoxConstraints c) {
     final w = c.maxWidth;
@@ -122,79 +116,100 @@ void _onNavTapped(int idx) {
 
   @override
   Widget build(BuildContext context) {
-    final brightness = Theme.of(context).brightness;
+    final sizeOf = MediaQuery.sizeOf(context);
+    _selectedNavIndex = 2; // Seta o select para o "Add"
+
+    //final brightness = Theme.of(context).brightness;
     final double maxContentWidth = 390.0;
-    return Material(
-      color: _bgMain,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final horizontalPadding = _mainHorizontalPadding(context, constraints);
-          return SafeArea(
-            bottom: false,
-            child: Scaffold(
-              resizeToAvoidBottomInset: true,
-              backgroundColor: _bgMain,
-              body: Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final horizontalPadding = _mainHorizontalPadding(
+              context,
+              constraints,
+            );
+            return Container(
+              constraints: BoxConstraints(minHeight: sizeOf.height),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          // Header
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 36,
-                              bottom: 16,
+                  Column(
+                    children: [
+                      // Header (não scrollável)
+                      Padding(
+                        padding: EdgeInsets.only(top: 36, bottom: 16),
+                        child: Center(
+                          child: Container(
+                            width: maxContentWidth,
+                            constraints: BoxConstraints(
+                              maxWidth: constraints.maxWidth,
                             ),
-                            child: Center(
-                              child: Container(
-                                width: maxContentWidth,
-                                constraints: BoxConstraints(
-                                  maxWidth: constraints.maxWidth,
-                                ),
-                                padding: horizontalPadding,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Semantics(
-                                        label: 'Logo',
-                                        child: Image.network(
-                                          _logoUrl,
-                                          width: 48,
-                                          height: 48,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Flexible(
-                                      child: Text(
-                                        'Add Thumbnail',
+                            padding: horizontalPadding,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: RichText(
+                                      text: TextSpan(
                                         style: const TextStyle(
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: _textMain,
-                                          height: 1.3,
-                                          letterSpacing: -0.2,
+                                          color: CatalagoColecionadorTheme
+                                              .blackColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
                                         ),
+                                        children: [
+                                          TextSpan(
+                                            text: 'Adicionar Miniatura  ',
+                                            style: CatalagoColecionadorTheme
+                                                .titleStyleNormal
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  height: 1.3,
+                                                  letterSpacing: -0.2,
+                                                ),
+                                          ),
+                                          TextSpan(
+                                            text: 'Cancelar',
+                                            style: const TextStyle(
+                                              color: CatalagoColecionadorTheme
+                                                  .orangeColor,
+                                              decoration:
+                                                  TextDecoration.underline,
+                                            ),
+                                            recognizer: TapGestureRecognizer()
+                                              ..onTap = () {},
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
-                          // Form Section
-                          Center(
+                        ),
+                      ),
+                      // Form Section (scrollável)
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Center(
                             child: Container(
-                              margin: EdgeInsets.only(bottom: 20),
+                              margin: EdgeInsets.only(bottom: 60), // espaço para navbar
                               constraints: BoxConstraints(
                                 maxWidth: maxContentWidth,
                               ),
-                              padding: EdgeInsets.only(top: 0), // To align top to header
+                              padding: EdgeInsets.only(top: 0),
                               child: Padding(
                                 padding: horizontalPadding,
                                 child: _AddCarColectionForm(
@@ -212,99 +227,30 @@ void _onNavTapped(int idx) {
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                   // Footer Navigation (sticky)
-                  MiniaturasNavBar(
-                    items: _navItems,
-                    selectedIndex: _selectedNavIndex,
-                    onItemTap: _onNavTapped,
-                    navHeight: constraints.maxWidth < 600 ? 67 : 80,
-                    iconSize: constraints.maxWidth < 600 ? 22 : 27,
-                    labelFontSize: constraints.maxWidth < 600 ? 10.6 : 12.2,
-                    navItemWidth: constraints.maxWidth < 600 ? 76 : 80,
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: MiniaturasNavBar(
+                      items: _navItems,
+                      selectedIndex: _selectedNavIndex,
+                      onItemTap: _onNavTapped,
+                      navHeight: constraints.maxWidth < 600 ? 67 : 80,
+                      iconSize: constraints.maxWidth < 600 ? 22 : 27,
+                      labelFontSize: constraints.maxWidth < 600 ? 10.6 : 12.2,
+                      navItemWidth: constraints.maxWidth < 600 ? 76 : 80,
+                    ),
                   ),
-              /*     Container(
-                    width: double.infinity,
-                    color: _footerBg,
-                    padding: EdgeInsets.only(
-                      top: 0,
-                      bottom: MediaQuery.of(context).padding.bottom,
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(color: _borderFooter, width: 1),
-                        ),
-                        color: _footerBg,
-                      ),
-                      child: Center(
-                        child: Container(
-                          width: maxContentWidth,
-                          constraints: BoxConstraints(
-                            maxWidth: constraints.maxWidth,
-                          ),
-                          padding: horizontalPadding.add(const EdgeInsets.only(
-                            left: 0,
-                            right: 0,
-                            top: 10,
-                            bottom: 14,
-                          )),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: List.generate(_navigationItems.length, (i) {
-                              final item = _navigationItems[i];
-                              final isActive = i == _currentNavIndex;
-                              return Expanded(
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: () => _onNavTap(i),
-                                  splashColor: _accent.withOpacity(0.18),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Semantics(
-                                        label: item['label'],
-                                        selected: isActive,
-                                        child: Image.network(
-                                          item['icon']!,
-                                          width: 24,
-                                          height: 24,
-                                          color:
-                                              isActive ? _accent : _textPlaceholder,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        item['label']!,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontFamily: 'Plus Jakarta Sans',
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: isActive
-                                              ? _accent
-                                              : _textPlaceholder,
-                                          height: 1.4,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ), */
                 ],
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -334,7 +280,10 @@ class _AddCarColectionForm extends StatelessWidget {
     required this.onSave,
   });
 
-  InputDecoration _inputDecoration({String? hintText, bool isTextArea = false}) {
+  InputDecoration _inputDecoration({
+    String? hintText,
+    bool isTextArea = false,
+  }) {
     return InputDecoration(
       hintText: hintText,
       filled: true,
@@ -369,21 +318,48 @@ class _AddCarColectionForm extends StatelessWidget {
       key: formKey,
       child: Container(
         decoration: BoxDecoration(
-          color: _bgForm,
+          color: Colors.white70,
           borderRadius: BorderRadius.circular(22),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.10),
               offset: const Offset(0, 4),
               blurRadius: 16,
-            )
+            ),
           ],
         ),
         padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 25),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: Colors.lightBlue.shade500, width: 0.5),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
+                  SizedBox(height: 12),
+                  Text(
+                    "Adicionar miniatura",
+                    style: CatalagoColecionadorTheme.subTitleSmallStyle
+                        .copyWith(fontSize: 16),
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    "Selecione o a imagem que deseja carregar",
+                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                  ),
+                ],
+              ),
+            ),
             // Brand
+            SizedBox(height: 12),
             _FormGroup(
               label: 'Brand',
               child: TextFormField(
@@ -456,7 +432,10 @@ class _AddCarColectionForm extends StatelessWidget {
                 dropdownColor: _bgInput,
                 focusColor: _bgInput,
                 initialValue: condition,
-                icon: const Icon(Icons.arrow_drop_down, color: _textPlaceholder),
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: _textPlaceholder,
+                ),
                 style: const TextStyle(
                   color: _textMain,
                   fontSize: 15,
@@ -480,8 +459,9 @@ class _AddCarColectionForm extends StatelessWidget {
                       ),
                     )
                     .toList(),
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Condition required' : null,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? 'Condition required'
+                    : null,
                 onChanged: onConditionChanged,
               ),
             ),
@@ -498,8 +478,10 @@ class _AddCarColectionForm extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                   fontFamily: 'Plus Jakarta Sans',
                 ),
-                decoration:
-                    _inputDecoration(hintText: 'Write any notes...', isTextArea: true),
+                decoration: _inputDecoration(
+                  hintText: 'Write any notes...',
+                  isTextArea: true,
+                ),
               ),
             ),
             // Save Button
@@ -545,10 +527,7 @@ class _FormGroup extends StatelessWidget {
   final String label;
   final Widget child;
 
-  const _FormGroup({
-    required this.label,
-    required this.child,
-  });
+  const _FormGroup({required this.label, required this.child});
 
   @override
   Widget build(BuildContext context) {

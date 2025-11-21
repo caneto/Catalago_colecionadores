@@ -180,6 +180,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
   @override
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
+    _selectedNavIndex = 0; // Seta o select para o "Home"
 
     return Scaffold(
       floatingActionButtonLocation: ExpandableFab.location,

@@ -24,7 +24,6 @@ class MiniaturasNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // The nav bar max width, for mobile layout, is 480px
     final maxNavWidth = 480.0;
     return Material(
       elevation: 25,
@@ -49,7 +48,7 @@ class MiniaturasNavBar extends StatelessWidget {
                 .entries
                 .map(
                   (e) => NavBarItem(
-                    isSelected: selectedIndex == e.key,
+                    isSelected: (selectedIndex == e.key) || false,
                     iconLogo: e.value['iconLogo']!,
                     label: e.value['label']!,
                     onTap: () => onItemTap(e.key),
