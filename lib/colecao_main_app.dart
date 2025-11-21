@@ -1,3 +1,4 @@
+import 'package:catalago_colecionadores/src/ui/add_car/add_car_colection.dart';
 import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/ui/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/ui/login/login_page.dart';
@@ -7,7 +8,7 @@ import 'package:catalago_colecionadores/src/ui/splash/splash_screen.dart';
 import 'package:catalago_colecionadores/src/ui/start/start_screen.dart';
 import 'package:flutter/material.dart';
 
-final navKey = GlobalKey<NavigatorState>();
+import 'global.dart';
 
 class ColecaoMainApp extends StatelessWidget {
   const ColecaoMainApp({super.key});
@@ -16,6 +17,7 @@ class ColecaoMainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: scaffoldMessengerKey,
       title: 'Minha Coleção',
       theme: CatalagoColecionadorTheme.lightTheme,
       darkTheme: CatalagoColecionadorTheme.darkTheme,
@@ -27,6 +29,7 @@ class ColecaoMainApp extends StatelessWidget {
         '/home': (_) => MiniaturasHome(),
         '/start': (_) => StartScreen(),
         '/pos_start': (_) => PosStartScreen(),
+        '/add_car': (_) => AddCarColection(),
       },
     );
   }

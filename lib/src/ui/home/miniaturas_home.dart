@@ -1,11 +1,14 @@
+import 'package:catalago_colecionadores/global.dart';
 import 'package:catalago_colecionadores/src/ui/core/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/ui/core/theme/resource.dart';
 import 'package:catalago_colecionadores/src/ui/core/widgets/miniaturas_nav_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 import 'widgets/category_item.dart';
 import 'widgets/horizontal_items_list.dart';
+
 
 class MiniaturasHome extends StatefulWidget {
   const MiniaturasHome({super.key});
@@ -15,6 +18,9 @@ class MiniaturasHome extends StatefulWidget {
 }
 
 class _MiniaturasHomeState extends State<MiniaturasHome> {
+
+  final _key = GlobalKey<ExpandableFabState>();
+
   final _searchController = TextEditingController();
   String _searchValue = '';
 
@@ -77,6 +83,15 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
     if (idx == _selectedNavIndex) return;
     setState(() {
       _selectedNavIndex = idx;
+      Navigator.of(context).pushReplacementNamed(
+        idx == 0
+            ? '/home'
+            : idx == 1
+                ? '/collection'
+                : idx == 2
+                    ? '/add_car'
+                    : '/settings',
+      );
     });
     // Place navigation logic here
     // Example: Navigator.push(context, ...), or any other route
@@ -167,6 +182,83 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
     final sizeOf = MediaQuery.sizeOf(context);
 
     return Scaffold(
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        key: _key,
+         margin: const EdgeInsets.only(bottom: 65),
+        // duration: const Duration(milliseconds: 500),
+        // distance: 200.0,
+        // type: ExpandableFabType.up,
+        // pos: ExpandableFabPos.left,
+        // childrenOffset: const Offset(0, 20),
+        // childrenAnimation: ExpandableFabAnimation.none,
+        // fanAngle: 40,
+        // openButtonBuilder: RotateFloatingActionButtonBuilder(
+        //   child: const Icon(Icons.abc),
+        //   fabSize: ExpandableFabSize.large,
+        //   foregroundColor: Colors.amber,
+        //   backgroundColor: Colors.green,
+        //   shape: const CircleBorder(),
+        //   angle: 3.14 * 2,
+        //   elevation: 5,
+        // ),
+        // closeButtonBuilder: FloatingActionButtonBuilder(
+        //   size: 56,
+        //   builder: (BuildContext context, void Function()? onPressed,
+        //       Animation<double> progress) {
+        //     return IconButton(
+        //       onPressed: onPressed,
+        //       icon: const Icon(
+        //         Icons.check_circle_outline,
+        //         size: 40,
+        //       ),
+        //     );
+        //   },
+        // ),
+        overlayStyle: ExpandableFabOverlayStyle(
+          color: Colors.black.withValues(alpha: 0.5),
+          blur: 5,
+        ),
+        onOpen: () {
+          debugPrint('onOpen');
+        },
+        afterOpen: () {
+          debugPrint('afterOpen');
+        },
+        onClose: () {
+          debugPrint('onClose');
+        },
+        afterClose: () {
+          debugPrint('afterClose');
+        },
+        children: [
+          FloatingActionButton.small(
+            // shape: const CircleBorder(),
+            heroTag: null,
+            child: const Icon(Icons.add_box_rounded),
+            onPressed: () {
+              const SnackBar snackBar = SnackBar(
+                content: Text("Cadastra carrinho"),
+              );
+              scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+              Navigator.of(context).pushReplacementNamed('/add_car');
+            },
+          ),
+          FloatingActionButton.small(
+           // shape: const CircleBorder(),
+            heroTag: null,
+            child: const Icon(Icons.add_circle_outline_rounded),
+            onPressed: () {
+              const SnackBar snackBar = SnackBar(
+                content: Text("Cadastra categoria"),
+              );
+              scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+              ///Navigator.of(context).push(
+              //    MaterialPageRoute(builder: ((context) => const NextPage())));
+            },
+          ),
+        ],
+      ),
       //backgroundColor: const Color(0xFF211212),
       body: SafeArea(
         child: LayoutBuilder(

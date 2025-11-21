@@ -1,5 +1,5 @@
-// File: AddThumbnail.dart
 
+import 'package:catalago_colecionadores/src/ui/core/widgets/miniaturas_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 // Colors (adapted from CSS variables)
@@ -16,37 +16,25 @@ const Color _footerBg = Color(0xFF331A1C);
 const String _logoUrl =
     'https://app.codigma.io/api/uploads/assets/1df592e2-c193-463c-9fc1-cb273cb526cd.svg';
 
-const List<Map<String, String>> _navigationItems = [
-  {
-    'icon':
-        'https://app.codigma.io/api/uploads/assets/4151354f-6375-4db1-afa9-0b26f7667515.svg',
-    'label': 'Home',
-  },
-  {
-    'icon':
-        'https://app.codigma.io/api/uploads/assets/d951a489-d07d-4547-a76f-50d4a2a949f2.svg',
-    'label': 'My Collection',
-  },
-  {
-    'icon':
-        'https://app.codigma.io/api/uploads/assets/22d87ca2-66e0-4bce-af56-a5478706ac04.svg',
-    'label': 'Add',
-  },
-  {
-    'icon':
-        'https://app.codigma.io/api/uploads/assets/8b3b28dd-24db-443d-9f08-ed9a435498c0.svg',
-    'label': 'Settings',
-  },
-];
 
-class AddThumbnail extends StatefulWidget {
-  const AddThumbnail({Key? key}) : super(key: key);
+const _navItems = [
+    {'iconLogo': 'home.svg', 'label': 'Home'},
+    {'iconLogo': 'minhacolecao.svg', 'label': 'Minha Coleção'},
+    {'iconLogo': 'estrela.svg', 'label': 'Adicionar'},
+    {'iconLogo': 'engrenagem.svg', 'label': 'Configuração'},
+  ];
+
+int _selectedNavIndex = 0;
+
+
+class AddCarColection extends StatefulWidget {
+  const AddCarColection({super.key});
 
   @override
-  State<AddThumbnail> createState() => _AddThumbnailState();
+  State<AddCarColection> createState() => _AddCarColectionState();
 }
 
-class _AddThumbnailState extends State<AddThumbnail> {
+class _AddCarColectionState extends State<AddCarColection> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _brandController = TextEditingController();
   final TextEditingController _modelController = TextEditingController();
@@ -56,6 +44,24 @@ class _AddThumbnailState extends State<AddThumbnail> {
   final TextEditingController _notesController = TextEditingController();
 
   int _currentNavIndex = 2; // "Add" is the third icon
+
+void _onNavTapped(int idx) {
+    if (idx == _selectedNavIndex) return;
+    setState(() {
+      _selectedNavIndex = idx;
+      Navigator.of(context).pushReplacementNamed(
+        idx == 0
+            ? '/home'
+            : idx == 1
+                ? '/collection'
+                : idx == 2
+                    ? '/add_car'
+                    : '/settings',
+      );
+    });
+    // Place navigation logic here
+    // Example: Navigator.push(context, ...), or any other route
+  }
 
   static const List<String> _conditions = [
     'New',
@@ -191,7 +197,7 @@ class _AddThumbnailState extends State<AddThumbnail> {
                               padding: EdgeInsets.only(top: 0), // To align top to header
                               child: Padding(
                                 padding: horizontalPadding,
-                                child: _AddThumbnailForm(
+                                child: _AddCarColectionForm(
                                   formKey: _formKey,
                                   brandController: _brandController,
                                   modelController: _modelController,
@@ -211,7 +217,16 @@ class _AddThumbnailState extends State<AddThumbnail> {
                     ),
                   ),
                   // Footer Navigation (sticky)
-                  Container(
+                  MiniaturasNavBar(
+                    items: _navItems,
+                    selectedIndex: _selectedNavIndex,
+                    onItemTap: _onNavTapped,
+                    navHeight: constraints.maxWidth < 600 ? 67 : 80,
+                    iconSize: constraints.maxWidth < 600 ? 22 : 27,
+                    labelFontSize: constraints.maxWidth < 600 ? 10.6 : 12.2,
+                    navItemWidth: constraints.maxWidth < 600 ? 76 : 80,
+                  ),
+              /*     Container(
                     width: double.infinity,
                     color: _footerBg,
                     padding: EdgeInsets.only(
@@ -284,7 +299,7 @@ class _AddThumbnailState extends State<AddThumbnail> {
                         ),
                       ),
                     ),
-                  ),
+                  ), */
                 ],
               ),
             ),
@@ -296,7 +311,7 @@ class _AddThumbnailState extends State<AddThumbnail> {
 }
 
 // --- FORM WIDGET ---
-class _AddThumbnailForm extends StatelessWidget {
+class _AddCarColectionForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController brandController;
   final TextEditingController modelController;
@@ -307,8 +322,7 @@ class _AddThumbnailForm extends StatelessWidget {
   final TextEditingController notesController;
   final VoidCallback onSave;
 
-  const _AddThumbnailForm({
-    Key? key,
+  const _AddCarColectionForm({
     required this.formKey,
     required this.brandController,
     required this.modelController,
@@ -318,7 +332,7 @@ class _AddThumbnailForm extends StatelessWidget {
     required this.onConditionChanged,
     required this.notesController,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   InputDecoration _inputDecoration({String? hintText, bool isTextArea = false}) {
     return InputDecoration(
@@ -441,7 +455,7 @@ class _AddThumbnailForm extends StatelessWidget {
                 isExpanded: true,
                 dropdownColor: _bgInput,
                 focusColor: _bgInput,
-                value: condition,
+                initialValue: condition,
                 icon: const Icon(Icons.arrow_drop_down, color: _textPlaceholder),
                 style: const TextStyle(
                   color: _textMain,
@@ -450,7 +464,7 @@ class _AddThumbnailForm extends StatelessWidget {
                   fontFamily: 'Plus Jakarta Sans',
                 ),
                 decoration: _inputDecoration(hintText: 'Select'),
-                items: _AddThumbnailState._conditions
+                items: _AddCarColectionState._conditions
                     .map(
                       (c) => DropdownMenuItem<String>(
                         value: c,
@@ -532,10 +546,9 @@ class _FormGroup extends StatelessWidget {
   final Widget child;
 
   const _FormGroup({
-    Key? key,
     required this.label,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
