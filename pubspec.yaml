@@ -39,7 +39,7 @@ dependencies:
   signals_flutter: ^6.2.0
   flutter_svg: ^2.0.7
   flutter_expandable_fab: ^2.5.2
-  camera: ^0.11.3
+  camera: ^0.10.5+9
   
 dev_dependencies:
   flutter_test:

@@ -9,8 +9,6 @@ const Color _bgMain = Color(0xFF211212);
 const Color _bgForm = Color(0xFF331A1C);
 const Color _bgInput = Color(0xFF472426);
 const Color _borderFooter = Color(0xFF472426);
-const Color _accent = Color(0xFFED121F);
-const Color _textMain = Colors.white;
 const Color _textPlaceholder = Color(0xFFC99194);
 const Color _footerBg = Color(0xFF331A1C);
 
@@ -32,12 +30,19 @@ class AddCarColection extends StatefulWidget {
 
 class _AddCarColectionState extends State<AddCarColection> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _brandController = TextEditingController();
-  final TextEditingController _modelController = TextEditingController();
-  final TextEditingController _yearController = TextEditingController();
-  final TextEditingController _scaleController = TextEditingController();
-  String? _condition;
+  final TextEditingController _nomeMiniaturaController =
+      TextEditingController();
+  final TextEditingController _marcaController = TextEditingController();
+  final TextEditingController _modeloController = TextEditingController();
+  final TextEditingController _anoFabricacaoController =
+      TextEditingController();
+  final TextEditingController _escalaController = TextEditingController();
+  final TextEditingController _dataAquizicaoController =
+      TextEditingController();
+  final TextEditingController _precoPagoController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
+  String? _condition;
+  String? _collectionCondition; // <-- Nova variável
 
   //final int _currentNavIndex = 2; // "Add" is the third icon
 
@@ -66,10 +71,13 @@ class _AddCarColectionState extends State<AddCarColection> {
 
   @override
   void dispose() {
-    _brandController.dispose();
-    _modelController.dispose();
-    _yearController.dispose();
-    _scaleController.dispose();
+    _nomeMiniaturaController.dispose();
+    _modeloController.dispose();
+    _marcaController.dispose();
+    _escalaController.dispose();
+    _anoFabricacaoController.dispose();
+    _dataAquizicaoController.dispose();
+    _precoPagoController.dispose();
     _notesController.dispose();
     super.dispose();
   }
@@ -80,31 +88,11 @@ class _AddCarColectionState extends State<AddCarColection> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Thumbnail saved!'),
-        backgroundColor: _accent,
+        backgroundColor: CatalagoColecionadorTheme.bgInputAccent,
         behavior: SnackBarBehavior.floating,
       ),
     );
   }
-
-  /* void _onNavTap(int index) {
-    if (index == _currentNavIndex) return;
-    setState(() => _currentNavIndex = index);
-    // Navigation logic using Navigator 1.0
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushReplacementNamed('/home');
-        break;
-      case 1:
-        Navigator.of(context).pushReplacementNamed('/collection');
-        break;
-      case 2:
-        Navigator.of(context).pushReplacementNamed('/add');
-        break;
-      case 3:
-        Navigator.of(context).pushReplacementNamed('/settings');
-        break;
-    }
-  } */
 
   EdgeInsets _mainHorizontalPadding(BuildContext context, BoxConstraints c) {
     final w = c.maxWidth;
@@ -205,7 +193,9 @@ class _AddCarColectionState extends State<AddCarColection> {
                         child: SingleChildScrollView(
                           child: Center(
                             child: Container(
-                              margin: EdgeInsets.only(bottom: 60), // espaço para navbar
+                              margin: EdgeInsets.only(
+                                bottom: 60,
+                              ), // espaço para navbar
                               constraints: BoxConstraints(
                                 maxWidth: maxContentWidth,
                               ),
@@ -214,14 +204,25 @@ class _AddCarColectionState extends State<AddCarColection> {
                                 padding: horizontalPadding,
                                 child: _AddCarColectionForm(
                                   formKey: _formKey,
-                                  brandController: _brandController,
-                                  modelController: _modelController,
-                                  yearController: _yearController,
-                                  scaleController: _scaleController,
+                                  nomeMiniaturaController:
+                                      _nomeMiniaturaController,
+                                  modeloController: _modeloController,
+                                  marcaController: _marcaController,
+                                  escalaController: _escalaController,
+                                  anoFabricacaoController:
+                                      _anoFabricacaoController,
+                                  dataAquizicaoController:
+                                      _dataAquizicaoController,
+                                  precoPagoController: _precoPagoController,
+                                  notesController: _notesController,
                                   condition: _condition,
                                   onConditionChanged: (val) =>
                                       setState(() => _condition = val),
-                                  notesController: _notesController,
+                                  collectionCondition: _collectionCondition,
+                                  onCollectionConditionChanged: (val) =>
+                                      setState(
+                                        () => _collectionCondition = val,
+                                      ),
                                   onSave: _onSave,
                                 ),
                               ),
@@ -259,270 +260,413 @@ class _AddCarColectionState extends State<AddCarColection> {
 // --- FORM WIDGET ---
 class _AddCarColectionForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
-  final TextEditingController brandController;
-  final TextEditingController modelController;
-  final TextEditingController yearController;
-  final TextEditingController scaleController;
+  final TextEditingController nomeMiniaturaController;
+  final TextEditingController marcaController;
+  final TextEditingController modeloController;
+  final TextEditingController anoFabricacaoController;
+  final TextEditingController escalaController;
+  final TextEditingController dataAquizicaoController;
+  final TextEditingController precoPagoController;
   final String? condition;
   final ValueChanged<String?> onConditionChanged;
+  final String? collectionCondition;
+  final ValueChanged<String?> onCollectionConditionChanged;
   final TextEditingController notesController;
   final VoidCallback onSave;
 
   const _AddCarColectionForm({
     required this.formKey,
-    required this.brandController,
-    required this.modelController,
-    required this.yearController,
-    required this.scaleController,
+    required this.nomeMiniaturaController,
+    required this.marcaController,
+    required this.modeloController,
+    required this.anoFabricacaoController,
+    required this.escalaController,
+    required this.dataAquizicaoController,
+    required this.precoPagoController,
     required this.condition,
     required this.onConditionChanged,
+    required this.collectionCondition,
+    required this.onCollectionConditionChanged,
     required this.notesController,
     required this.onSave,
   });
-
-  InputDecoration _inputDecoration({
-    String? hintText,
-    bool isTextArea = false,
-  }) {
-    return InputDecoration(
-      hintText: hintText,
-      filled: true,
-      fillColor: _bgInput,
-      hintStyle: const TextStyle(
-        color: _textPlaceholder,
-        fontWeight: FontWeight.w500,
-        fontSize: 15,
-        fontFamily: 'Plus Jakarta Sans',
-      ),
-      contentPadding: isTextArea
-          ? const EdgeInsets.fromLTRB(14, 15, 14, 40)
-          : const EdgeInsets.symmetric(horizontal: 14, vertical: 15),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide.none,
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: const BorderSide(color: _accent, width: 2),
-      ),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(8),
-        borderSide: BorderSide.none,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white70,
-          borderRadius: BorderRadius.circular(22),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.10),
-              offset: const Offset(0, 4),
-              blurRadius: 16,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(vertical: 25),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.lightBlue.shade500, width: 0.5),
             ),
-          ],
-        ),
-        padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 25),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.lightBlue.shade500, width: 0.5),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
-                  SizedBox(height: 12),
-                  Text(
-                    "Adicionar miniatura",
-                    style: CatalagoColecionadorTheme.subTitleSmallStyle
-                        .copyWith(fontSize: 16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
+                SizedBox(height: 12),
+                Text(
+                  "Adicionar miniatura",
+                  style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(
+                    fontSize: 16,
                   ),
-                  SizedBox(height: 6),
-                  Text(
-                    "Selecione o a imagem que deseja carregar",
-                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  "Selecione o a imagem que deseja carregar",
+                  style: TextStyle(fontSize: 14, color: Colors.black54),
+                ),
+              ],
+            ),
+          ),
+          // Nome da Miniatura
+          SizedBox(height: 16),
+          Text(
+            "Detalhes Principais",
+            style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(
+              color: CatalagoColecionadorTheme.whiteColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(height: 10),
+          _FormGroup(
+            label: 'Nome da Miniatura',
+            child: TextFormField(
+              controller: nomeMiniaturaController,
+              style: CatalagoColecionadorTheme.textBold.copyWith(
+                color: CatalagoColecionadorTheme.textDescriptColor,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
+                hintText: 'Exemplo Ford Mustang',
+                colorSide: CatalagoColecionadorTheme.textMainAccent,
+              ),
+              validator: (v) => (v?.trim().isEmpty ?? true)
+                  ? 'Nome da Miniatura exigido'
+                  : null,
+            ),
+          ),
+          // Marca e Modelo na mesma linha
+          SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: _FormGroup(
+                  label: 'Marca',
+                  child: TextFormField(
+                    controller: marcaController,
+                    style: CatalagoColecionadorTheme.textBold.copyWith(
+                      color: CatalagoColecionadorTheme.textDescriptColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    decoration:
+                        CatalagoColecionadorTheme.inputDecorationAddCard(
+                          hintText: 'Exemplo Hot Wheels',
+                          colorSide: CatalagoColecionadorTheme.textMainAccent,
+                        ),
+                    validator: (v) =>
+                        (v?.trim().isEmpty ?? true) ? 'Marca exigida' : null,
                   ),
-                ],
+                ),
               ),
-            ),
-            // Brand
-            SizedBox(height: 12),
-            _FormGroup(
-              label: 'Brand',
-              child: TextFormField(
-                controller: brandController,
-                style: const TextStyle(
-                  color: _textMain,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Plus Jakarta Sans',
+              SizedBox(width: 12), // Espaço entre os campos
+              Expanded(
+                child: _FormGroup(
+                  label: 'Modelo',
+                  child: TextFormField(
+                    controller: modeloController,
+                    style: CatalagoColecionadorTheme.textBold.copyWith(
+                      color: CatalagoColecionadorTheme.textDescriptColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    decoration:
+                        CatalagoColecionadorTheme.inputDecorationAddCard(
+                          hintText: 'Exempplo Ford Mustang',
+                          colorSide: CatalagoColecionadorTheme.textMainAccent,
+                        ),
+                    validator: (v) =>
+                        (v?.trim().isEmpty ?? true) ? 'Modelo exigido' : null,
+                  ),
                 ),
-                decoration: _inputDecoration(hintText: 'e.g. Hot Wheels'),
-                validator: (v) =>
-                    (v?.trim().isEmpty ?? true) ? 'Brand required' : null,
               ),
-            ),
-            // Model
-            _FormGroup(
-              label: 'Model',
-              child: TextFormField(
-                controller: modelController,
-                style: const TextStyle(
-                  color: _textMain,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Plus Jakarta Sans',
-                ),
-                decoration: _inputDecoration(hintText: 'e.g. Ford Mustang'),
-                validator: (v) =>
-                    (v?.trim().isEmpty ?? true) ? 'Model required' : null,
+            ],
+          ),
+          // Ano de Fabricação
+          _FormGroup(
+            label: 'Ano de Fabricação',
+            child: TextFormField(
+              controller: anoFabricacaoController,
+              style: CatalagoColecionadorTheme.textBold.copyWith(
+                color: CatalagoColecionadorTheme.textDescriptColor,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
               ),
-            ),
-            // Year
-            _FormGroup(
-              label: 'Year',
-              child: TextFormField(
-                controller: yearController,
-                style: const TextStyle(
-                  color: _textMain,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Plus Jakarta Sans',
-                ),
-                decoration: _inputDecoration(hintText: 'e.g. 1967'),
-                keyboardType: TextInputType.number,
-                validator: (v) =>
-                    (v?.trim().isEmpty ?? true) ? 'Year required' : null,
+              decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
+                hintText: 'Exemplo 2008',
+                colorSide: CatalagoColecionadorTheme.textMainAccent,
               ),
+              keyboardType: TextInputType.number,
+              validator: (v) =>
+                  (v?.trim().isEmpty ?? true) ? 'Ano exigido' : null,
             ),
-            // Scale
-            _FormGroup(
-              label: 'Scale',
-              child: TextFormField(
-                controller: scaleController,
-                style: const TextStyle(
-                  color: _textMain,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Plus Jakarta Sans',
-                ),
-                decoration: _inputDecoration(hintText: 'e.g. 1:64'),
-                validator: (v) =>
-                    (v?.trim().isEmpty ?? true) ? 'Scale required' : null,
+          ),
+
+          SizedBox(height: 12),
+          // Escala
+          _FormGroup(
+            label: 'Escala',
+            child: TextFormField(
+              controller: escalaController,
+              style: CatalagoColecionadorTheme.textBold.copyWith(
+                color: CatalagoColecionadorTheme.textDescriptColor,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
               ),
+              decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
+                hintText: 'Exemplo 1:64',
+                colorSide: CatalagoColecionadorTheme.textMainAccent,
+              ),
+              validator: (v) =>
+                  (v?.trim().isEmpty ?? true) ? 'Scale required' : null,
             ),
-            // Condition
-            _FormGroup(
-              label: 'Condition',
-              child: DropdownButtonFormField<String>(
-                isExpanded: true,
-                dropdownColor: _bgInput,
-                focusColor: _bgInput,
-                initialValue: condition,
-                icon: const Icon(
-                  Icons.arrow_drop_down,
-                  color: _textPlaceholder,
-                ),
-                style: const TextStyle(
-                  color: _textMain,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Plus Jakarta Sans',
-                ),
-                decoration: _inputDecoration(hintText: 'Select'),
-                items: _AddCarColectionState._conditions
-                    .map(
-                      (c) => DropdownMenuItem<String>(
-                        value: c,
-                        child: Text(
-                          c,
-                          style: const TextStyle(
-                            color: _textMain,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Plus Jakarta Sans',
+          ),
+
+          //Detalhes da Coleção
+          SizedBox(height: 14),
+          Text(
+            "Detalhes da Coleção",
+            style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(
+              color: CatalagoColecionadorTheme.whiteColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            "Condição",
+            style: CatalagoColecionadorTheme.textBold.copyWith(
+              color: CatalagoColecionadorTheme.whiteColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          SizedBox(height: 12),
+          Row(
+            children: [
+              _CollectionConditionCard(
+                title: 'Na caixa',
+                isSelected: collectionCondition == 'Na caixa',
+                onTap: () => onCollectionConditionChanged('Na caixa'),
+              ),
+              SizedBox(width: 8),
+              _CollectionConditionCard(
+                title: 'Novo',
+                isSelected: collectionCondition == 'Novo',
+                onTap: () => onCollectionConditionChanged('Novo'),
+              ),
+              SizedBox(width: 8),
+              _CollectionConditionCard(
+                title: 'Usado',
+                isSelected: collectionCondition == 'Usado',
+                onTap: () => onCollectionConditionChanged('Usado'),
+              ),
+            ],
+          ),
+          SizedBox(height: 12),
+          // Data da Aquisição
+          Row(
+            children: [
+              Expanded(
+                child: _FormGroup(
+                  label: 'Data da Aquisição',
+                  child: GestureDetector(
+                    onTap: () async {
+                      final DateTime? picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1950),
+                        lastDate: DateTime.now(),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.dark(
+                                primary: CatalagoColecionadorTheme.bgInput,
+                                onPrimary: Colors.white,
+                                surface: _bgInput,
+                                onSurface: CatalagoColecionadorTheme.textMain,
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        },
+                      );
+                      if (picked != null) {
+                        dataAquizicaoController.text =
+                            '${picked.day}/${picked.month}/${picked.year}';
+                      }
+                    },
+                    child: TextFormField(
+                      controller: dataAquizicaoController,
+                      enabled: false,
+                      style: CatalagoColecionadorTheme.textBold.copyWith(
+                        color: CatalagoColecionadorTheme.textDescriptColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration:
+                          CatalagoColecionadorTheme.inputDecorationAddCard(
+                            hintText: 'dd/MM/aaaa',
+                          ).copyWith(
+                            suffixIcon: const Icon(
+                              Icons.calendar_today,
+                              color: CatalagoColecionadorTheme.bgInput,
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-                validator: (v) => (v == null || v.trim().isEmpty)
-                    ? 'Condition required'
-                    : null,
-                onChanged: onConditionChanged,
-              ),
-            ),
-            // Notes
-            _FormGroup(
-              label: 'Notes',
-              child: TextFormField(
-                controller: notesController,
-                minLines: 2,
-                maxLines: 5,
-                style: const TextStyle(
-                  color: _textMain,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Plus Jakarta Sans',
-                ),
-                decoration: _inputDecoration(
-                  hintText: 'Write any notes...',
-                  isTextArea: true,
-                ),
-              ),
-            ),
-            // Save Button
-            Container(
-              margin: const EdgeInsets.only(top: 12, bottom: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 192,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _accent,
-                        foregroundColor: Colors.white,
-                        elevation: 2,
-                        padding: const EdgeInsets.symmetric(vertical: 13),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                        shadowColor: _accent.withOpacity(0.13),
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 17,
-                          fontFamily: 'Plus Jakarta Sans',
-                        ),
-                      ),
-                      onPressed: onSave,
-                      child: const Text('Save'),
+                      validator: (v) =>
+                          (v?.trim().isEmpty ?? true) ? 'Data exigida' : null,
                     ),
                   ),
-                ],
+                ),
+              ),
+              SizedBox(width: 12), // Espaço entre os campos
+              Expanded(
+                child: _FormGroup(
+                  label: 'Preço Pago',
+                  child: TextFormField(
+                    controller: precoPagoController,
+                    style: CatalagoColecionadorTheme.textBold.copyWith(
+                      color: CatalagoColecionadorTheme.textDescriptColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
+                      hintText: 'Exemplo R\$ 19,99',
+                      colorSide: CatalagoColecionadorTheme.textMainAccent,
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (v) =>
+                        (v?.trim().isEmpty ?? true) ? 'Ano exigido' : null,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Notes
+          SizedBox(height: 20),
+          _FormGroup(
+            label: 'Notes',
+            child: TextFormField(
+              controller: notesController,
+              minLines: 2,
+              maxLines: 5,
+              style: CatalagoColecionadorTheme.textBold.copyWith(
+                color: CatalagoColecionadorTheme.textDescriptColor,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
+                hintText: 'Escreva as anotas caso precise...',
+                isTextArea: true,
               ),
             ),
-          ],
+          ),
+          // Save Button
+          Container(
+            margin: const EdgeInsets.only(top: 12, bottom: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  width: double
+                      .infinity, // <-- Mude aqui de 192 para double.infinity
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: CatalagoColecionadorTheme.bgInputAccent,
+                      foregroundColor: Colors.white,
+                      elevation: 2,
+                      padding: const EdgeInsets.symmetric(vertical: 13),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+                      shadowColor: CatalagoColecionadorTheme.blueColor
+                          .withAlpha((0.13 * 255).round()),
+                      textStyle: CatalagoColecionadorTheme.textBold.copyWith(
+                        color: CatalagoColecionadorTheme.textDescriptColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    onPressed: onSave,
+                    child: const Text('Salvar Miniatura'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Wigets auxiliares
+class _CollectionConditionCard extends StatelessWidget {
+  final String title;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _CollectionConditionCard({
+    required this.title,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? CatalagoColecionadorTheme.bgInputAccent
+                : CatalagoColecionadorTheme.bgInput,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isSelected
+                  ? CatalagoColecionadorTheme.bgInputAccent
+                  : _borderFooter,
+              width: 1.5,
+            ),
+          ),
+          child: Center(
+            child: Text(
+              title,
+              style: CatalagoColecionadorTheme.textBold.copyWith(
+                color: CatalagoColecionadorTheme.textDescriptColor,
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-// --- FORM GROUP (for accessible labeling and spacing) ---
+// Widget para agrupar label e campo do formulário
 class _FormGroup extends StatelessWidget {
   final String label;
   final Widget child;
@@ -535,7 +679,7 @@ class _FormGroup extends StatelessWidget {
       container: true,
       label: label,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.only(bottom: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -543,11 +687,10 @@ class _FormGroup extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 6, left: 2),
               child: Text(
                 label,
-                style: const TextStyle(
-                  color: _textMain,
-                  fontWeight: FontWeight.w600,
+                style: CatalagoColecionadorTheme.textBold.copyWith(
+                  color: CatalagoColecionadorTheme.textDescriptColor,
                   fontSize: 15,
-                  fontFamily: 'Plus Jakarta Sans',
+                  fontWeight: FontWeight.w600,
                   height: 1.2,
                 ),
               ),
