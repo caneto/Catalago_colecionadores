@@ -341,7 +341,7 @@ class _AddCarColectionForm extends StatelessWidget {
             child: TextFormField(
               controller: nomeMiniaturaController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
-                color: CatalagoColecionadorTheme.textDescriptColor,
+                color: CatalagoColecionadorTheme.blackClaroColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
@@ -364,7 +364,7 @@ class _AddCarColectionForm extends StatelessWidget {
                   child: TextFormField(
                     controller: marcaController,
                     style: CatalagoColecionadorTheme.textBold.copyWith(
-                      color: CatalagoColecionadorTheme.textDescriptColor,
+                      color: CatalagoColecionadorTheme.blackClaroColor,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
@@ -385,13 +385,13 @@ class _AddCarColectionForm extends StatelessWidget {
                   child: TextFormField(
                     controller: modeloController,
                     style: CatalagoColecionadorTheme.textBold.copyWith(
-                      color: CatalagoColecionadorTheme.textDescriptColor,
+                      color: CatalagoColecionadorTheme.blackClaroColor,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
                     decoration:
                         CatalagoColecionadorTheme.inputDecorationAddCard(
-                          hintText: 'Exempplo Ford Mustang',
+                          hintText: 'Exemplo Ford Mustang',
                           colorSide: CatalagoColecionadorTheme.textMainAccent,
                         ),
                     validator: (v) =>
@@ -407,7 +407,7 @@ class _AddCarColectionForm extends StatelessWidget {
             child: TextFormField(
               controller: anoFabricacaoController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
-                color: CatalagoColecionadorTheme.textDescriptColor,
+                color: CatalagoColecionadorTheme.blackClaroColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
@@ -428,7 +428,7 @@ class _AddCarColectionForm extends StatelessWidget {
             child: TextFormField(
               controller: escalaController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
-                color: CatalagoColecionadorTheme.textDescriptColor,
+                color: CatalagoColecionadorTheme.blackClaroColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
@@ -496,14 +496,28 @@ class _AddCarColectionForm extends StatelessWidget {
                         initialDate: DateTime.now(),
                         firstDate: DateTime(1950),
                         lastDate: DateTime.now(),
+                        locale: const Locale("pt", "BR"),
                         builder: (context, child) {
                           return Theme(
                             data: Theme.of(context).copyWith(
-                              colorScheme: ColorScheme.dark(
-                                primary: CatalagoColecionadorTheme.bgInput,
+                              colorScheme: ColorScheme.light(
+                                primary: CatalagoColecionadorTheme.blueFaceBook,
                                 onPrimary: Colors.white,
-                                surface: _bgInput,
-                                onSurface: CatalagoColecionadorTheme.textMain,
+                                surface:
+                                    CatalagoColecionadorTheme.cardCategyColor,
+                                onSurface: CatalagoColecionadorTheme.whiteColor,
+                              ),
+                              datePickerTheme: DatePickerThemeData(
+                                cancelButtonStyle: ButtonStyle(
+                                  foregroundColor: WidgetStateProperty.all(
+                                    CatalagoColecionadorTheme.navBarBackkgroundColor,
+                                  ), // Cor do botão Cancelar
+                                ),
+                                confirmButtonStyle: ButtonStyle(
+                                  foregroundColor: WidgetStateProperty.all(
+                                    CatalagoColecionadorTheme.whiteColor,
+                                  ), // Cor do botão Ok
+                                ),
                               ),
                             ),
                             child: child!,
@@ -519,7 +533,7 @@ class _AddCarColectionForm extends StatelessWidget {
                       controller: dataAquizicaoController,
                       enabled: false,
                       style: CatalagoColecionadorTheme.textBold.copyWith(
-                        color: CatalagoColecionadorTheme.textDescriptColor,
+                        color: CatalagoColecionadorTheme.blackClaroColor,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
@@ -545,14 +559,15 @@ class _AddCarColectionForm extends StatelessWidget {
                   child: TextFormField(
                     controller: precoPagoController,
                     style: CatalagoColecionadorTheme.textBold.copyWith(
-                      color: CatalagoColecionadorTheme.textDescriptColor,
+                      color: CatalagoColecionadorTheme.blackClaroColor,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
-                    decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
-                      hintText: 'Exemplo R\$ 19,99',
-                      colorSide: CatalagoColecionadorTheme.textMainAccent,
-                    ),
+                    decoration:
+                        CatalagoColecionadorTheme.inputDecorationAddCard(
+                          hintText: 'Exemplo R\$ 19,99',
+                          colorSide: CatalagoColecionadorTheme.textMainAccent,
+                        ),
                     keyboardType: TextInputType.number,
                     validator: (v) =>
                         (v?.trim().isEmpty ?? true) ? 'Ano exigido' : null,
@@ -570,7 +585,7 @@ class _AddCarColectionForm extends StatelessWidget {
               minLines: 2,
               maxLines: 5,
               style: CatalagoColecionadorTheme.textBold.copyWith(
-                color: CatalagoColecionadorTheme.textDescriptColor,
+                color: CatalagoColecionadorTheme.blackClaroColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
