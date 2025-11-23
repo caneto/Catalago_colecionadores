@@ -1,14 +1,14 @@
 // File: MinhaColecao.dart
 import 'package:flutter/material.dart';
 
-class MinhaColecao extends StatefulWidget {
-  const MinhaColecao({super.key});
+class MinhaColecao2 extends StatefulWidget {
+  const MinhaColecao2({super.key});
 
   @override
-  State<MinhaColecao> createState() => _MinhaColecaoState();
+  State<MinhaColecao2> createState() => _MinhaColecaoState();
 }
 
-class _MinhaColecaoState extends State<MinhaColecao> {
+class _MinhaColecaoState extends State<MinhaColecao2> {
   // View modes
 
   ViewMode _selectedView = ViewMode.grid;

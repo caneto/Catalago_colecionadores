@@ -42,6 +42,7 @@ dependencies:
   flutter_svg: ^2.0.7
   flutter_expandable_fab: ^2.5.2
   camera: ^0.10.5+9
+  logger: ^2.6.2
   
 dev_dependencies:
   flutter_test:
