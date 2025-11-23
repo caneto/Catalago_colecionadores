@@ -2,6 +2,7 @@ import 'package:catalago_colecionadores/global.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
+import 'package:catalago_colecionadores/src/pages/home/widgets/section_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
@@ -414,7 +415,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                           ),
                         ),
                         // Destaques
-                        _Section(
+                        SectionWidget(
                           borderColor: CatalagoColecionadorTheme.lineDividColor,
                           horizontalPadding: sectionHorizontalPadding,
                           verticalPadding: constraints.maxWidth < 600
@@ -446,7 +447,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                           ],
                         ),
                         // Novidades
-                        _Section(
+                        SectionWidget(
                           borderColor: CatalagoColecionadorTheme.lineDividColor,
                           horizontalPadding: sectionHorizontalPadding,
                           verticalPadding: constraints.maxWidth < 600
@@ -478,7 +479,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                           ],
                         ),
                         // Categories
-                        _Section(
+                        SectionWidget(
                           borderColor: CatalagoColecionadorTheme.lineDividColor,
                           horizontalPadding: sectionHorizontalPadding,
                           verticalPadding: constraints.maxWidth < 600
@@ -566,35 +567,3 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
   }
 }
 
-class _Section extends StatelessWidget {
-  //final Color background;
-  final Color borderColor;
-  final EdgeInsets horizontalPadding;
-  final EdgeInsets verticalPadding;
-  final List<Widget> children;
-
-  const _Section({
-    //required this.background,
-    required this.borderColor,
-    required this.horizontalPadding,
-    required this.verticalPadding,
-    required this.children,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      //color: background,
-      padding: horizontalPadding.add(verticalPadding),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        //color: background,
-        border: Border(top: BorderSide(color: borderColor, width: 1.0)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
-      ),
-    );
-  }
-}
