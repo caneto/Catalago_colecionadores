@@ -1,4 +1,5 @@
 import 'package:catalago_colecionadores/global.dart';
+import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
@@ -62,38 +63,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
       'title': 'Matchbox',
     },
   ];
-
-  static const _categories = [
-    'Carros',
-    'Motos',
-    'Aviões',
-    'Caminhoes',
-    'Barcos',
-    'Outros',
-  ];
-
-  static const _navItems = [
-    {'iconLogo': 'home.svg', 'label': 'Home'},
-    {'iconLogo': 'minhacolecao.svg', 'label': 'Minha Coleção'},
-    {'iconLogo': 'estrela.svg', 'label': 'Adicionar'},
-    {'iconLogo': 'engrenagem.svg', 'label': 'Configuração'},
-  ];
-  
-  void _onNavTapped(int idx) {
-    if (idx == _selectedNavIndex) return;
-    setState(() {
-      _selectedNavIndex = idx;
-      Navigator.of(context).pushReplacementNamed(
-        idx == 0
-            ? '/home'
-            : idx == 1
-                ? '/minha_colecao'
-                : idx == 2
-                    ? '/add_car'
-                    : '/settings',
-      );
-    });
-  }
 
   @override
   void dispose() {
@@ -509,7 +478,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                 spacing: constraints.maxWidth < 600 ? 10 : 16,
                                 runSpacing: 8,
                                 alignment: WrapAlignment.start,
-                                children: _categories
+                                children: GlobalItens.categoriesItens
                                     .map(
                                       (cat) => CategoryItem(
                                         label: cat,
@@ -548,9 +517,8 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                     right: 0,
                     bottom: 0,
                     child: MiniaturasNavBar(
-                      items: _navItems,
+                      items: GlobalItens.navItems,
                       selectedIndex: _selectedNavIndex,
-                      onItemTap: _onNavTapped,
                       navHeight: constraints.maxWidth < 600 ? 67 : 80,
                       iconSize: constraints.maxWidth < 600 ? 22 : 27,
                       labelFontSize: constraints.maxWidth < 600 ? 10.6 : 12.2,

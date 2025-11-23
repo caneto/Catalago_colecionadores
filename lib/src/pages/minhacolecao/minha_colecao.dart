@@ -1,35 +1,12 @@
+import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-// --------------------
-// Helper Data Classes
-// --------------------
+import 'helpers/collection_item_data_model.dart';
+import 'widgets/collection_grid.dart';
 
-class CollectionItemData {
-  final String imageUrl;
-  final String brand;
-  final String model;
-
-  const CollectionItemData({
-    required this.imageUrl,
-    required this.brand,
-    required this.model,
-  });
-}
-
-class FilterItemData {
-  final String label;
-  final String? iconUrl;
-  final bool hasDropdown;
-
-  const FilterItemData({
-    required this.label,
-    this.iconUrl,
-    this.hasDropdown = false,
-  });
-}
 
 class FooterNavItemData {
   final String iconUrl;
@@ -41,7 +18,6 @@ class FooterNavItemData {
 // ---------------------
 // Main Widget
 // ---------------------
-
 class MinhaColecao extends StatefulWidget {
   const MinhaColecao({super.key});
 
@@ -111,12 +87,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
     FilterItemData(label: 'Categoria', hasDropdown: false),
   ];
 
-  static const _navItems = [
-    {'iconLogo': 'home.svg', 'label': 'Home'},
-    {'iconLogo': 'minhacolecao.svg', 'label': 'Minha Coleção'},
-    {'iconLogo': 'estrela.svg', 'label': 'Adicionar'},
-    {'iconLogo': 'engrenagem.svg', 'label': 'Configuração'},
-  ];
+
 
   // Colors mapped to the CSS variables
   static const Color _bgMain = Color(0xFF211212);
@@ -126,23 +97,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   static const Color _divider = Color(0xFF472426);
   static const Color _white = Colors.white;
 
-  int _selectedNavIndex = 1;
-
-  void _onNavTapped(int idx) {
-    if (idx == _selectedNavIndex) return;
-    setState(() {
-      _selectedNavIndex = idx;
-      Navigator.of(context).pushReplacementNamed(
-        idx == 0
-            ? '/home'
-            : idx == 1
-            ? '/minha_colecao'
-            : idx == 2
-            ? '/add_car'
-            : '/settings',
-      );
-    });
-  }
+  final int _selectedNavIndex = 1;
 
   // Responsive: grid columns
   int _calculateGridCount(double width) {
@@ -289,7 +244,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                     ),
                                     // COLLECTION GRID
                                     const SizedBox(height: 16),
-                                    _CollectionGrid(
+                                    CollectionGrid(
                                       items: _filteredItems,
                                       gridCount: gridCount,
                                       surface: _surface,
@@ -306,9 +261,8 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                       ),
                       // FOOTER
                       MiniaturasNavBar(
-                        items: _navItems,
+                        items: GlobalItens.navItems,
                         selectedIndex: _selectedNavIndex,
-                        onItemTap: _onNavTapped,
                         navHeight: constraints.maxWidth < 600 ? 67 : 80,
                         iconSize: constraints.maxWidth < 600 ? 22 : 27,
                         labelFontSize: constraints.maxWidth < 600
@@ -470,154 +424,3 @@ class _FilterItem extends StatelessWidget {
   }
 }
 
-// -------------
-// CollectionGrid
-// -------------
-
-class _CollectionGrid extends StatelessWidget {
-  final List<CollectionItemData> items;
-  final int gridCount;
-  final Color surface;
-  final Color brandColor;
-  final Color modelColor;
-
-  const _CollectionGrid({
-    required this.items,
-    required this.gridCount,
-    required this.surface,
-    required this.brandColor,
-    required this.modelColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Items are non-scrollable grid inside scrollview
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: items.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: gridCount,
-        crossAxisSpacing: gridCount == 2
-            ? 13
-            : gridCount == 3
-            ? 13
-            : 17,
-        mainAxisSpacing: gridCount == 2
-            ? 15
-            : gridCount == 3
-            ? 15
-            : 18,
-        childAspectRatio:
-            4 / 4.4, // as per .item: image aspect-ratio 4/3 + details
-      ),
-      itemBuilder: (ctx, i) => _GridItem(
-        item: items[i],
-        surface: surface,
-        brandColor: brandColor,
-        modelColor: modelColor,
-      ),
-    );
-  }
-}
-
-class _GridItem extends StatelessWidget {
-  final CollectionItemData item;
-  final Color surface;
-  final Color brandColor;
-  final Color modelColor;
-
-  const _GridItem({
-    required this.item,
-    required this.surface,
-    required this.brandColor,
-    required this.modelColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      label: '${item.brand}, ${item.model}',
-      child: Container(
-        decoration: BoxDecoration(
-          color: surface,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AspectRatio(
-              aspectRatio: 4 / 3,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(10),
-                ),
-                child: Image.network(
-                  item.imageUrl,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  errorBuilder: (context, error, stack) =>
-                      Container(color: Colors.grey.shade300),
-                  // Avoids unhandled exceptions
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 11),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.brand,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      height: 1.18,
-                      letterSpacing: -0.01,
-                      color: brandColor,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    item.model,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      height: 1.12,
-                      letterSpacing: -0.01,
-                      color: modelColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ----------------------
-// Dummy Target Screens for Navigation
-// ----------------------
-
-class _DummyAdicionar extends StatelessWidget {
-  const _DummyAdicionar({super.key});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text("Adicionar")),
-    body: const Center(child: Text("Adicionar Page")),
-  );
-}
-
-class _DummySettings extends StatelessWidget {
-  const _DummySettings({super.key});
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text("Configurações")),
-    body: const Center(child: Text("Configurações Page")),
-  );
-}

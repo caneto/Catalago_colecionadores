@@ -3,24 +3,45 @@ import 'package:flutter/material.dart';
 
 import 'nav_bar_item.dart';
 
-class MiniaturasNavBar extends StatelessWidget {
+class MiniaturasNavBar extends StatefulWidget {
   final List<Map<String, String>> items;
-  final int selectedIndex;
-  final void Function(int) onItemTap;
+  int selectedIndex;
   final double navHeight;
   final double iconSize;
   final double labelFontSize;
   final double navItemWidth;
 
-  const MiniaturasNavBar({super.key, 
+  MiniaturasNavBar({
+    super.key,
     required this.items,
     required this.selectedIndex,
-    required this.onItemTap,
     required this.navHeight,
     required this.iconSize,
     required this.labelFontSize,
     required this.navItemWidth,
   });
+
+  @override
+  State<MiniaturasNavBar> createState() => _MiniaturasNavBarState();
+}
+
+class _MiniaturasNavBarState extends State<MiniaturasNavBar> {
+  
+  void onNavTapped(int idx) {
+    if (idx == widget.selectedIndex) return;
+    setState(() {
+      widget.selectedIndex = idx;
+      Navigator.of(context).pushReplacementNamed(
+        idx == 0
+            ? '/home'
+            : idx == 1
+            ? '/minha_colecao'
+            : idx == 2
+            ? '/add_car'
+            : '/minha_colecao2',
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +59,23 @@ class MiniaturasNavBar extends StatelessWidget {
             ),
           ),
         ),
-        height: navHeight,
+        height: widget.navHeight,
         child: ConstrainedBox(
           constraints: BoxConstraints(maxWidth: maxNavWidth),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: items
+            children: widget.items
                 .asMap()
                 .entries
                 .map(
                   (e) => NavBarItem(
-                    isSelected: (selectedIndex == e.key) || false,
+                    isSelected: (widget.selectedIndex == e.key) || false,
                     iconLogo: e.value['iconLogo']!,
                     label: e.value['label']!,
-                    onTap: () => onItemTap(e.key),
-                    iconSize: iconSize,
-                    labelFontSize: labelFontSize,
-                    width: navItemWidth,
+                    onTap: () => onNavTapped(e.key),
+                    iconSize: widget.iconSize,
+                    labelFontSize: widget.labelFontSize,
+                    width: widget.navItemWidth,
                   ),
                 )
                 .toList(),

@@ -4,6 +4,7 @@ import 'package:catalago_colecionadores/src/pages/auth/login/login_page.dart';
 import 'package:catalago_colecionadores/src/pages/auth/registro/register_page.dart';
 import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao.dart';
+import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao_2.dart';
 import 'package:catalago_colecionadores/src/pages/pos_start/pos_start_screen.dart';
 import 'package:catalago_colecionadores/src/pages/splash/splash_screen.dart';
 import 'package:catalago_colecionadores/src/pages/start/start_screen.dart';
@@ -42,6 +43,7 @@ class ColecaoMainApp extends StatelessWidget {
         '/pos_start': (_) => PosStartScreen(),
         '/add_car': (_) => AddCarColection(),
         '/minha_colecao': (_) => MinhaColecao(),
+        '/minha_colecao2': (_) => MinhaColecao2(),
       },
     );
   }
