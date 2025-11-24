@@ -4,6 +4,7 @@ import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'widget/add_car_colection_form.dart';
 
@@ -39,7 +40,7 @@ class _AddCarColectionState extends State<AddCarColection> {
 
   final int _selectedNavIndex = 2; // Seta o select para o "Add"
 
-    void _onSave() {
+  void _onSave() {
     if (_formKey.currentState?.validate() != true) return;
     // Saving logic here...
     ScaffoldMessenger.of(context).showSnackBar(
@@ -62,7 +63,7 @@ class _AddCarColectionState extends State<AddCarColection> {
   @override
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
-    
+
     //final brightness = Theme.of(context).brightness;
     final double maxContentWidth = 390.0;
     return Scaffold(
@@ -86,6 +87,64 @@ class _AddCarColectionState extends State<AddCarColection> {
                 children: [
                   Column(
                     children: [
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.fromLTRB(
+                          20,
+                          18,
+                          20,
+                          16,
+                        ), // as per CSS
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: CatalagoColecionadorTheme.barColor,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Semantics(
+                              header: true,
+                              child: Text(
+                                'Adicionar Miniatura',
+                                style: CatalagoColecionadorTheme.titleStyle
+                                    .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                      letterSpacing: -0.01,
+                                      color:
+                                          CatalagoColecionadorTheme.whiteColor,
+                                    ),
+                              ),
+                            ),
+                            Semantics(
+                              label: 'Perfil',
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                  
+                                child: InkWell(
+                                  child: SvgPicture.asset(
+                                    'assets/images/x.svg', // Path to your SVG asset
+                                    height: 32,
+                                    width: 32,
+                                    colorFilter: ColorFilter.mode(
+                                      CatalagoColecionadorTheme
+                                          .navBarBackkgroundColor,
+                                      BlendMode.srcIn),
+                                      semanticsLabel: 'X',
+                                    ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                       // Header (não scrollável)
                       Padding(
                         padding: EdgeInsets.only(top: 36, bottom: 16),

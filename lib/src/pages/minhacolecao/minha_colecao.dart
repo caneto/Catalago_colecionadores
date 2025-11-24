@@ -1,12 +1,13 @@
 import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
+import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
+import 'package:catalago_colecionadores/src/pages/home/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'helpers/collection_item_data_model.dart';
 import 'widgets/collection_grid.dart';
-
 
 class FooterNavItemData {
   final String iconUrl;
@@ -87,8 +88,6 @@ class _MinhaColecaoState extends State<MinhaColecao> {
     FilterItemData(label: 'Categoria', hasDropdown: false),
   ];
 
-
-
   // Colors mapped to the CSS variables
   static const Color _bgMain = Color(0xFF211212);
   static const Color _surface = Color(0xFF472426);
@@ -116,15 +115,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
 
-    // Use theme data to force light mode colors
-    final baseTextTheme = Theme.of(context).textTheme.apply(
-      fontFamily: 'Plus Jakarta Sans',
-      bodyColor: _white,
-      displayColor: _white,
-    );
-
     return Scaffold(
-      //backgroundColor: _bgMain,
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: LayoutBuilder(
@@ -165,23 +156,31 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                               header: true,
                               child: Text(
                                 'Minha Coleção',
-                                style: baseTextTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18,
-                                  letterSpacing: -0.01,
-                                  color: _white,
-                                ),
+                                style: CatalagoColecionadorTheme.titleStyle
+                                    .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                      letterSpacing: -0.01,
+                                      color: _white,
+                                    ),
                               ),
                             ),
                             Semantics(
                               label: 'Perfil',
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: SvgPicture.asset(
-                                  'assets/images/estrela.svg', // Path to your SVG asset
-                                  height: 32,
-                                  width: 32,
-                                  semanticsLabel: 'X',
+                                child: InkWell(
+                                  child: SvgPicture.asset(
+                                    'assets/images/estrela.svg', // Path to your SVG asset
+                                    height: 32,
+                                    width: 32,
+                                    semanticsLabel: 'X',
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(
+                                      context,
+                                    ).pushReplacementNamed('/add_car');
+                                  },
                                 ),
                               ),
                             ),
@@ -200,15 +199,14 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                   maxWidth: 600,
                                 ),
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     // SEARCH SECTION
                                     const SizedBox(height: 20),
-                                    _SearchBar(
-                                      backgroundColor: _surface,
-                                      iconColor: _brand,
-                                      textColor: _brand,
+                                    SearchBarWidget(
+                                      backgroundColor: CatalagoColecionadorTheme.bgInput,
+                                      iconColor: CatalagoColecionadorTheme.navBarBackkgroundColor,
+                                      textColor: CatalagoColecionadorTheme.navBarBackkgroundColor,
                                       hint: "Pesquisar",
                                       onChanged: (text) =>
                                           setState(() => _searchText = text),
@@ -219,8 +217,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                       height: 47, // ensure space for scroll
                                       child: ListView.separated(
                                         scrollDirection: Axis.horizontal,
-                                        physics:
-                                            const BouncingScrollPhysics(),
+                                        physics: const BouncingScrollPhysics(),
                                         padding: EdgeInsets.zero,
                                         itemBuilder: (ctx, i) => _FilterItem(
                                           data: _filters[i],
@@ -231,9 +228,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                           onTap: () {
                                             setState(() {
                                               _selectedFilter =
-                                                  _selectedFilter == i
-                                                  ? -1
-                                                  : i;
+                                                  _selectedFilter == i ? -1 : i;
                                             });
                                           },
                                         ),
@@ -265,9 +260,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                         selectedIndex: _selectedNavIndex,
                         navHeight: constraints.maxWidth < 600 ? 67 : 80,
                         iconSize: constraints.maxWidth < 600 ? 22 : 27,
-                        labelFontSize: constraints.maxWidth < 600
-                            ? 10.6
-                            : 12.2,
+                        labelFontSize: constraints.maxWidth < 600 ? 10.6 : 12.2,
                         navItemWidth: constraints.maxWidth < 600 ? 76 : 80,
                       ),
                     ],
@@ -277,77 +270,6 @@ class _MinhaColecaoState extends State<MinhaColecao> {
             );
           },
         ),
-      ),
-    );
-  }
-}
-
-// -------------
-// SearchBar
-// -------------
-
-class _SearchBar extends StatelessWidget {
-  final Color backgroundColor;
-  final Color iconColor;
-  final Color textColor;
-  final String hint;
-  final ValueChanged<String> onChanged;
-
-  const _SearchBar({
-    required this.backgroundColor,
-    required this.iconColor,
-    required this.textColor,
-    required this.hint,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    // Mulit-row text field not required here; single-line suffices
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(9),
-      ),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      child: Row(
-        children: [
-          SizedBox(
-            height: 22,
-            width: 22,
-            child: SvgPicture.asset(
-              'assets/images/lupa.svg', // Path to your SVG asset
-              semanticsLabel: 'Search Icon',
-            ),
-          ),
-          const SizedBox(width: 9),
-          Expanded(
-            child: TextField(
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                color: Color(0xFFC99194),
-                letterSpacing: 0.01,
-                height: 1.3,
-              ),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: hint,
-                hintStyle: TextStyle(
-                  color: textColor.withOpacity(0.72),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                  letterSpacing: 0.01,
-                ),
-                isDense: true,
-                contentPadding: EdgeInsets.zero,
-              ),
-              onChanged: onChanged,
-              enableSuggestions: false,
-              autocorrect: false,
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -423,4 +345,3 @@ class _FilterItem extends StatelessWidget {
     );
   }
 }
-
