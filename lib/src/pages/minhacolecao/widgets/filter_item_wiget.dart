@@ -1,74 +1,73 @@
-// -------------
-// FilterItem
-// -------------
-import 'package:catalago_colecionadores/src/pages/minhacolecao/helpers/collection_item_data_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
-class FilterItemWiget extends StatelessWidget {
-  final FilterItemData data;
-  final bool selected;
-  final VoidCallback onTap;
+import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
+import 'package:flutter/material.dart';
+
+import '../helpers/collection_item_data_model.dart';
+import 'filter_option_widget.dart';
+
+class FilterItemWidget extends StatefulWidget {
+  final bool isMobile;
+  final List<FilterItemData> filters;
+  final int selectedFilter;
   final Color color;
   final Color textColor;
   final Color iconColor;
 
-  const FilterItemWiget({
+  const FilterItemWidget({
     super.key,
-    required this.data,
-    required this.selected,
-    required this.onTap,
+    this.isMobile = false,
+    required this.filters,
+    required this.selectedFilter,
     required this.color,
     required this.textColor,
     required this.iconColor,
   });
 
   @override
+  State<FilterItemWidget> createState() => _FilterItemWidgetState();
+}
+
+class _FilterItemWidgetState extends State<FilterItemWidget> {
+  @override
   Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      label: data.label,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        splashColor: const Color(0x11C99194),
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 140),
-          curve: Curves.ease,
-          padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
-          decoration: BoxDecoration(
-            color: selected
-                ? color.withValues(alpha: 0.94)
-                : color, // Feedback when selected
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                data.label,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: textColor,
-                  letterSpacing: -0.01,
-                ),
-              ),
-              if (data.iconUrl != null) ...[
-                const SizedBox(width: 10),
-                SizedBox(
-                  height: 18,
-                  width: 18,
-                  child: SvgPicture.asset(
-                    'assets/images/seta_filter.svg', // Path to your SVG asset
-                    semanticsLabel: 'X',
-                  ), //Image.network(data.iconUrl!, fit: BoxFit.contain),
-                ),
-              ],
-            ],
+    int selectedFilter = widget.selectedFilter;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Semantics(
+          header: true,
+          child: Text(
+            "Filters",
+            style: CatalagoColecionadorTheme.titleStyle.copyWith(
+              color: CatalagoColecionadorTheme.barColor,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Plus Jakarta Sans',
+            ),
           ),
         ),
-      ),
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          children: List.generate(widget.filters.length, (i) {
+            return FilterOptionWidget(
+              data: widget.filters[i],
+              selected: widget.isMobile,
+              onTap: () {
+                setState(() {
+                  selectedFilter = selectedFilter == i ? -1 : i;
+                });
+              },
+              color: widget.color,
+              textColor: widget.textColor,
+              iconColor: widget.iconColor,
+            );
+          }),
+        ),
+        // Use Wrap para permitir múltiplos por linha e quebra automática
+        SizedBox(height: 4),
+      ],
     );
   }
 }

@@ -26,7 +26,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   String _searchText = '';
 
   // Dummy filter state (in production, adjust later)
-  int _selectedFilter = -1;
+  final int _selectedFilter = -1;
 
   // Dummy collection items (add more for grid fill as in provided HTML)
   List<CollectionItemData> get _allItems => const [
@@ -217,7 +217,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                     ),
                                     // FILTERS
                                     const SizedBox(height: 14),
-                                    _AvailableFilters(
+                                    FilterItemWidget(
                                       isMobile: GlobalContext.isMobile(context),
                                       filters: _filters,
                                       color: CatalagoColecionadorTheme.bgInput,
@@ -226,38 +226,6 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                       iconColor: CatalagoColecionadorTheme
                                           .navBarBackkgroundColor,
                                       selectedFilter: _selectedFilter,
-                                    ),
-                                    SizedBox(
-                                      height: 47, // ensure space for scroll
-                                      child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        physics: const BouncingScrollPhysics(),
-                                        padding: EdgeInsets.zero,
-                                        itemBuilder: (ctx, i) =>
-                                            FilterItemWiget(
-                                              data: _filters[i],
-                                              color: CatalagoColecionadorTheme
-                                                  .bgInput,
-                                              textColor:
-                                                  CatalagoColecionadorTheme
-                                                      .navBarBackkgroundColor,
-                                              iconColor:
-                                                  CatalagoColecionadorTheme
-                                                      .navBarBackkgroundColor,
-                                              selected: i == _selectedFilter,
-                                              onTap: () {
-                                                setState(() {
-                                                  _selectedFilter =
-                                                      _selectedFilter == i
-                                                      ? -1
-                                                      : i;
-                                                });
-                                              },
-                                            ),
-                                        separatorBuilder: (ctx, i) =>
-                                            const SizedBox(width: 12),
-                                        itemCount: _filters.length,
-                                      ),
                                     ),
                                     // COLLECTION GRID
                                     const SizedBox(height: 16),
@@ -300,146 +268,3 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   }
 }
 
-// AVAILABLE FILTERS
-class _AvailableFilters extends StatefulWidget {
-  final bool isMobile;
-  final List<FilterItemData> filters;
-  final int selectedFilter;
-  final Color color;
-  final Color textColor;
-  final Color iconColor;
-
-  const _AvailableFilters({
-    super.key,
-    this.isMobile = false,
-    required this.filters,
-    required this.selectedFilter,
-    required this.color,
-    required this.textColor,
-    required this.iconColor,
-  });
-
-  @override
-  State<_AvailableFilters> createState() => _AvailableFiltersState();
-}
-
-class _AvailableFiltersState extends State<_AvailableFilters> {
-  @override
-  Widget build(BuildContext context) {
-    const textSecondary = Color(0xFFC99194);
-    int selectedFilter = widget.selectedFilter;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Semantics(
-          header: true,
-          child: Text(
-            "Filters",
-            style: TextStyle(
-              color: textSecondary,
-              fontSize: 16,
-              fontWeight: FontWeight.w700,
-              fontFamily: 'Plus Jakarta Sans',
-            ),
-          ),
-        ),
-        Wrap(
-          spacing: 12,
-          runSpacing: 8,
-          children: List.generate(widget.filters.length, (i) {
-            return _FilterOption(
-              data: widget.filters[i],
-              selected: widget.isMobile,
-              onTap: () {
-                setState(() {
-                  selectedFilter = selectedFilter == i ? -1 : i;
-                });
-              },
-              color: widget.color,
-              textColor: widget.textColor,
-              iconColor: widget.iconColor,
-            );
-          }),
-        ),
-        // Use Wrap para permitir múltiplos por linha e quebra automática
-        SizedBox(height: 4),
-      ],
-    );
-  }
-}
-
-class _FilterOption extends StatelessWidget {
-  final FilterItemData data;
-  final bool selected;
-  final VoidCallback onTap;
-  final Color color;
-  final Color textColor;
-  final Color iconColor;
-
-  const _FilterOption({
-    required this.data,
-    required this.selected,
-    required this.onTap,
-    required this.color,
-    required this.textColor,
-    required this.iconColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const filterBg = Color(0xFF472426);
-
-    return Semantics(
-      button: true,
-      label: data.label,
-      child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Open $data.label filter (Not implemented)"),
-            ),
-          );
-        },
-        borderRadius: BorderRadius.circular(8),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 140),
-          curve: Curves.ease,
-          padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
-          decoration: BoxDecoration(
-            color: selected
-                ? color.withValues(alpha: 0.94)
-                : color, // Feedback when selected
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            mainAxisSize:
-                MainAxisSize.min, // deixa a Row ocupar só o necessário
-            children: [
-              Text(
-                data.label,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                  letterSpacing: -0.01,
-                ),
-              ),
-              if (data.iconUrl != null) ...[
-                const SizedBox(width: 10),
-                SizedBox(
-                  height: 18,
-                  width: 18,
-                  child: SvgPicture.asset(
-                    'assets/images/seta_filter.svg', // Path to your SVG asset
-                    semanticsLabel: 'X',
-                  ), //Image.network(data.iconUrl!, fit: BoxFit.contain),
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
