@@ -1,20 +1,15 @@
+import 'package:catalago_colecionadores/src/core/global/global_context.dart';
 import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:catalago_colecionadores/src/pages/home/widgets/search_bar_widget.dart';
+import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/filter_item_wiget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'helpers/collection_item_data_model.dart';
 import 'widgets/collection_grid.dart';
-
-class FooterNavItemData {
-  final String iconUrl;
-  final String label;
-
-  const FooterNavItemData({required this.iconUrl, required this.label});
-}
 
 // ---------------------
 // Main Widget
@@ -85,16 +80,18 @@ class _MinhaColecaoState extends State<MinhaColecao> {
       hasDropdown: true,
     ),
     FilterItemData(label: 'Ano', iconUrl: 'seta_filter.svg', hasDropdown: true),
+    FilterItemData(
+      label: 'Escala',
+      iconUrl: 'seta_filter.svg',
+      hasDropdown: true,
+    ),
+    FilterItemData(
+      label: 'Condição',
+      iconUrl: 'seta_filter.svg',
+      hasDropdown: true,
+    ),
     FilterItemData(label: 'Categoria', hasDropdown: false),
   ];
-
-  // Colors mapped to the CSS variables
-  static const Color _bgMain = Color(0xFF211212);
-  static const Color _surface = Color(0xFF472426);
-  static const Color _surfaceAlt = Color(0xFF331A1C);
-  static const Color _brand = Color(0xFFC99194);
-  static const Color _divider = Color(0xFF472426);
-  static const Color _white = Colors.white;
 
   final int _selectedNavIndex = 1;
 
@@ -146,7 +143,10 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                         ), // as per CSS
                         decoration: BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(color: _divider, width: 1),
+                            bottom: BorderSide(
+                              color: CatalagoColecionadorTheme.blackClaroColor,
+                              width: 1,
+                            ),
                           ),
                         ),
                         child: Row(
@@ -161,7 +161,8 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                       fontWeight: FontWeight.w700,
                                       fontSize: 18,
                                       letterSpacing: -0.01,
-                                      color: _white,
+                                      color:
+                                          CatalagoColecionadorTheme.whiteColor,
                                     ),
                               ),
                             ),
@@ -171,7 +172,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                 borderRadius: BorderRadius.circular(12),
                                 child: InkWell(
                                   child: SvgPicture.asset(
-                                    'assets/images/estrela.svg', // Path to your SVG asset
+                                    'assets/images/estrela.svg',
                                     height: 32,
                                     width: 32,
                                     semanticsLabel: 'X',
@@ -204,34 +205,55 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                     // SEARCH SECTION
                                     const SizedBox(height: 20),
                                     SearchBarWidget(
-                                      backgroundColor: CatalagoColecionadorTheme.bgInput,
-                                      iconColor: CatalagoColecionadorTheme.navBarBackkgroundColor,
-                                      textColor: CatalagoColecionadorTheme.navBarBackkgroundColor,
+                                      backgroundColor:
+                                          CatalagoColecionadorTheme.bgInput,
+                                      iconColor: CatalagoColecionadorTheme
+                                          .navBarBackkgroundColor,
+                                      textColor: CatalagoColecionadorTheme
+                                          .navBarBackkgroundColor,
                                       hint: "Pesquisar",
                                       onChanged: (text) =>
                                           setState(() => _searchText = text),
                                     ),
                                     // FILTERS
                                     const SizedBox(height: 14),
+                                    _AvailableFilters(
+                                      isMobile: GlobalContext.isMobile(context),
+                                      filters: _filters,
+                                      color: CatalagoColecionadorTheme.bgInput,
+                                      textColor: CatalagoColecionadorTheme
+                                          .navBarBackkgroundColor,
+                                      iconColor: CatalagoColecionadorTheme
+                                          .navBarBackkgroundColor,
+                                      selectedFilter: _selectedFilter,
+                                    ),
                                     SizedBox(
                                       height: 47, // ensure space for scroll
                                       child: ListView.separated(
                                         scrollDirection: Axis.horizontal,
                                         physics: const BouncingScrollPhysics(),
                                         padding: EdgeInsets.zero,
-                                        itemBuilder: (ctx, i) => _FilterItem(
-                                          data: _filters[i],
-                                          color: _surface,
-                                          textColor: _white,
-                                          iconColor: _brand,
-                                          selected: i == _selectedFilter,
-                                          onTap: () {
-                                            setState(() {
-                                              _selectedFilter =
-                                                  _selectedFilter == i ? -1 : i;
-                                            });
-                                          },
-                                        ),
+                                        itemBuilder: (ctx, i) =>
+                                            FilterItemWiget(
+                                              data: _filters[i],
+                                              color: CatalagoColecionadorTheme
+                                                  .bgInput,
+                                              textColor:
+                                                  CatalagoColecionadorTheme
+                                                      .navBarBackkgroundColor,
+                                              iconColor:
+                                                  CatalagoColecionadorTheme
+                                                      .navBarBackkgroundColor,
+                                              selected: i == _selectedFilter,
+                                              onTap: () {
+                                                setState(() {
+                                                  _selectedFilter =
+                                                      _selectedFilter == i
+                                                      ? -1
+                                                      : i;
+                                                });
+                                              },
+                                            ),
                                         separatorBuilder: (ctx, i) =>
                                             const SizedBox(width: 12),
                                         itemCount: _filters.length,
@@ -242,9 +264,12 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                     CollectionGrid(
                                       items: _filteredItems,
                                       gridCount: gridCount,
-                                      surface: _surface,
-                                      brandColor: _white,
-                                      modelColor: _brand,
+                                      surface:
+                                          CatalagoColecionadorTheme.bgInput,
+                                      brandColor:
+                                          CatalagoColecionadorTheme.whiteColor,
+                                      modelColor: CatalagoColecionadorTheme
+                                          .navBarBackkgroundColor,
                                     ),
                                     const SizedBox(height: 24),
                                   ],
@@ -275,11 +300,76 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   }
 }
 
-// -------------
-// FilterItem
-// -------------
+// AVAILABLE FILTERS
+class _AvailableFilters extends StatefulWidget {
+  final bool isMobile;
+  final List<FilterItemData> filters;
+  final int selectedFilter;
+  final Color color;
+  final Color textColor;
+  final Color iconColor;
 
-class _FilterItem extends StatelessWidget {
+  const _AvailableFilters({
+    super.key,
+    this.isMobile = false,
+    required this.filters,
+    required this.selectedFilter,
+    required this.color,
+    required this.textColor,
+    required this.iconColor,
+  });
+
+  @override
+  State<_AvailableFilters> createState() => _AvailableFiltersState();
+}
+
+class _AvailableFiltersState extends State<_AvailableFilters> {
+  @override
+  Widget build(BuildContext context) {
+    const textSecondary = Color(0xFFC99194);
+    int selectedFilter = widget.selectedFilter;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Semantics(
+          header: true,
+          child: Text(
+            "Filters",
+            style: TextStyle(
+              color: textSecondary,
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              fontFamily: 'Plus Jakarta Sans',
+            ),
+          ),
+        ),
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          children: List.generate(widget.filters.length, (i) {
+            return _FilterOption(
+              data: widget.filters[i],
+              selected: widget.isMobile,
+              onTap: () {
+                setState(() {
+                  selectedFilter = selectedFilter == i ? -1 : i;
+                });
+              },
+              color: widget.color,
+              textColor: widget.textColor,
+              iconColor: widget.iconColor,
+            );
+          }),
+        ),
+        // Use Wrap para permitir múltiplos por linha e quebra automática
+        SizedBox(height: 4),
+      ],
+    );
+  }
+}
+
+class _FilterOption extends StatelessWidget {
   final FilterItemData data;
   final bool selected;
   final VoidCallback onTap;
@@ -287,7 +377,7 @@ class _FilterItem extends StatelessWidget {
   final Color textColor;
   final Color iconColor;
 
-  const _FilterItem({
+  const _FilterOption({
     required this.data,
     required this.selected,
     required this.onTap,
@@ -298,32 +388,40 @@ class _FilterItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const filterBg = Color(0xFF472426);
+
     return Semantics(
       button: true,
       label: data.label,
       child: InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Open $data.label filter (Not implemented)"),
+            ),
+          );
+        },
         borderRadius: BorderRadius.circular(8),
-        splashColor: const Color(0x11C99194),
-        onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 140),
           curve: Curves.ease,
           padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 16),
           decoration: BoxDecoration(
             color: selected
-                ? color.withOpacity(0.94)
+                ? color.withValues(alpha: 0.94)
                 : color, // Feedback when selected
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize:
+                MainAxisSize.min, // deixa a Row ocupar só o necessário
             children: [
               Text(
                 data.label,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: textColor,
+                  color: Colors.white,
                   letterSpacing: -0.01,
                 ),
               ),

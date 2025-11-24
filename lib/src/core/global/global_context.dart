@@ -16,6 +16,9 @@ class GlobalContext {
     return _instance!;
   }
 
+  static bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < 480;
+  static bool isTablet(BuildContext context) => MediaQuery.of(context).size.width < 700;
+
   set navigatorKey(GlobalKey<NavigatorState> navigatorKey) =>
       _navigatorKey = navigatorKey;
 
