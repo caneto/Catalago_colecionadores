@@ -5,11 +5,13 @@ import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:catalago_colecionadores/src/pages/home/widgets/search_bar_widget.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/filter_item_wiget.dart';
+import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/view_option_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'helpers/collection_item_data_model.dart';
 import 'widgets/collection_grid.dart';
+
 
 // ---------------------
 // Main Widget
@@ -107,6 +109,11 @@ class _MinhaColecaoState extends State<MinhaColecao> {
     if (maxWidth >= 600) return EdgeInsets.zero;
     return const EdgeInsets.symmetric(horizontal: 18);
   }
+
+  bool isMobile(BuildContext context) =>
+      MediaQuery.of(context).size.width < 480;
+
+  ViewMode _selectedView = ViewMode.grid;
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +217,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                       iconColor: CatalagoColecionadorTheme
                                           .navBarBackkgroundColor,
                                       textColor: CatalagoColecionadorTheme
-                                          .navBarBackkgroundColor,
+                                          .blackClaroColor,
                                       hint: "Pesquisar",
                                       onChanged: (text) =>
                                           setState(() => _searchText = text),
@@ -228,7 +235,14 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                       selectedFilter: _selectedFilter,
                                     ),
                                     // COLLECTION GRID
-                                    const SizedBox(height: 16),
+                                    const SizedBox(height: 10),
+                                    ViewOptionsWidget(
+                                      selected: _selectedView,
+                                      onSelect: (mode) =>
+                                          setState(() => _selectedView = mode),
+                                      isMobile: isMobile(context),
+                                    ),
+                                    const SizedBox(height: 10),
                                     CollectionGrid(
                                       items: _filteredItems,
                                       gridCount: gridCount,

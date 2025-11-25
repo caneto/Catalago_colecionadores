@@ -11,7 +11,7 @@ class MinhaColecao2 extends StatefulWidget {
 class _MinhaColecaoState extends State<MinhaColecao2> {
   // View modes
 
-  ViewMode _selectedView = ViewMode.grid;
+  final ViewMode _selectedView = ViewMode.grid;
 
   // For responsive design
   bool isMobile(BuildContext context) => MediaQuery.of(context).size.width < 480;
@@ -72,12 +72,6 @@ class _MinhaColecaoState extends State<MinhaColecao2> {
                           // Filters
                           _SavedFilters(isMobile: isMobile(context)),
                           SizedBox(height: 10),
-                          _ViewOptions(
-                            selected: _selectedView,
-                            onSelect: (mode) =>
-                                setState(() => _selectedView = mode),
-                            isMobile: isMobile(context),
-                          ),
                           _CollectionItems(
                             viewMode: _selectedView,
                             isMobile: isMobile(context),
@@ -253,100 +247,6 @@ class _SavedFilters extends StatelessWidget {
 
 // VIEW OPTIONS ("Grid" vs "List" Toggle)
 enum ViewMode { grid, list }
-
-class _ViewOptions extends StatelessWidget {
-  final ViewMode selected;
-  final ValueChanged<ViewMode> onSelect;
-  final bool isMobile;
-  const _ViewOptions(
-      {required this.selected, required this.onSelect, required this.isMobile});
-
-  @override
-  Widget build(BuildContext context) {
-    const primaryBg = Color(0xFF211212);
-    const textSecondary = Color(0xFFC99194);
-
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Grid
-          _ViewOptionButton(
-            text: "Grid",
-            isSelected: selected == ViewMode.grid,
-            onTap: () => onSelect(ViewMode.grid),
-            isMobile: isMobile,
-          ),
-          SizedBox(width: 14),
-          // List
-          _ViewOptionButton(
-            text: "List",
-            isSelected: selected == ViewMode.list,
-            onTap: () => onSelect(ViewMode.list),
-            isMobile: isMobile,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ViewOptionButton extends StatelessWidget {
-  final String text;
-  final bool isSelected;
-  final VoidCallback onTap;
-  final bool isMobile;
-
-  const _ViewOptionButton({
-    required this.text,
-    required this.isSelected,
-    required this.onTap,
-    required this.isMobile,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    const primaryBg = Color(0xFF211212);
-    const textSecondary = Color(0xFFC99194);
-
-    return SizedBox(
-      height: 40,
-      child: Semantics(
-        button: true,
-        label: "View as $text",
-        selected: isSelected,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            minimumSize:
-                WidgetStateProperty.all(Size(isMobile ? 70 : 120, 40)),
-            backgroundColor: WidgetStateProperty.all(
-              isSelected ? textSecondary : primaryBg,
-            ),
-            foregroundColor: WidgetStateProperty.all(
-              isSelected ? primaryBg : textSecondary,
-            ),
-            elevation: WidgetStateProperty.all(1),
-            shape: WidgetStateProperty.all(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            )),
-            overlayColor:
-                WidgetStateProperty.all(Colors.white.withOpacity(0.04)),
-          ),
-          onPressed: onTap,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              fontFamily: 'Plus Jakarta Sans',
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 // COLLECTION ITEMS, Grid or List mode toggled by [viewMode]
 class _CollectionItems extends StatelessWidget {

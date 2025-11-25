@@ -40,10 +40,9 @@ class _FilterItemWidgetState extends State<FilterItemWidget> {
           child: Text(
             "Filters",
             style: CatalagoColecionadorTheme.titleStyle.copyWith(
-              color: CatalagoColecionadorTheme.barColor,
+              color: CatalagoColecionadorTheme.textMain,
               fontSize: 16,
-              fontWeight: FontWeight.w700,
-              fontFamily: 'Plus Jakarta Sans',
+              fontWeight: FontWeight.w700,              
             ),
           ),
         ),
