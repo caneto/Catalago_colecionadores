@@ -72,4 +72,17 @@ class IsarService {
         .emailContains(query, caseSensitive: false)
         .findAll();
   }
+
+  Future<UserCollection?> loginUser(String email, String password) async {
+    final isar = await db;
+    final user = await isar.userCollections
+        .filter()
+        .emailEqualTo(email, caseSensitive: false)
+        .findFirst();
+
+    if (user != null && user.password == password) {
+      return user;
+    }
+    return null;
+  }
 }

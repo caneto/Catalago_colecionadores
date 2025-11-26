@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'nav_bar_item.dart';
 
+// ignore: must_be_immutable
 class MiniaturasNavBar extends StatefulWidget {
   final List<Map<String, String>> items;
   int selectedIndex;

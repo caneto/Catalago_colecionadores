@@ -6,8 +6,9 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textform
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
-import '../../../core/database/isar_service.dart';
+
 import '../../../core/database/isar_models/user_collection.dart';
+import '../../../core/database/isar_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -183,7 +184,7 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
       IsarService().saveUser(user).then((_) {
         if (mounted) {
           Messages.showSuccess('Usuário cadastrado com sucesso!', context);
-          Navigator.of(context).pop();
+          Navigator.of(context).pushReplacementNamed('/home');
         }
       }).catchError((e) {
         if (mounted) {

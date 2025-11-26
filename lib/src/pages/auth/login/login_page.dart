@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
+import '../../../core/database/isar_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -251,7 +252,15 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
 
     if (formValid) {
       FocusScope.of(context).unfocus();
-      //controller.login(_emailEC.text, _passwordEC.text);
+      IsarService().loginUser(_emailEC.text, _passwordEC.text).then((user) {
+        if (mounted) {
+          if (user != null) {
+            Navigator.of(context).pushReplacementNamed('/home');
+          } else {
+            Messages.showError('Email ou senha inválidos', context);
+          }
+        }
+      });
     }
   }
 }
