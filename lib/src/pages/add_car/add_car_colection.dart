@@ -7,13 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'widget/add_car_colection_form.dart';
-
-// Colors (adapted from CSS variables)
-//const Color _bgMain = Color(0xFF211212);
-//const Color _bgForm = Color(0xFF331A1C);
-//const Color _bgInput = Color(0xFF472426);
-//const Color _textPlaceholder = Color(0xFFC99194);
-//const Color _footerBg = Color(0xFF331A1C);
+import '../../core/database/isar_service.dart';
+import '../../core/database/isar_models/car_collection.dart';
 
 class AddCarColection extends StatefulWidget {
   const AddCarColection({super.key});
@@ -40,16 +35,34 @@ class _AddCarColectionState extends State<AddCarColection> {
 
   final int _selectedNavIndex = 2; // Seta o select para o "Add"
 
-  void _onSave() {
+  void _onSave() async {
     if (_formKey.currentState?.validate() != true) return;
-    // Saving logic here...
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Thumbnail saved!'),
-        backgroundColor: CatalagoColecionadorTheme.bgInputAccent,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    
+    final car = CarCollection()
+      ..nomeMiniatura = _nomeMiniaturaController.text
+      ..marca = _marcaController.text
+      ..modelo = _modeloController.text
+      ..anoFabricacao = int.tryParse(_anoFabricacaoController.text)
+      ..escala = _escalaController.text
+      ..dataAquizicao = DateTime.tryParse(_dataAquizicaoController.text) // Assuming format is parsable or handled
+      ..precoPago = double.tryParse(_precoPagoController.text.replaceAll(',', '.'))
+      ..notes = _notesController.text
+      ..condition = _condition
+      ..collectionCondition = _collectionCondition;
+
+    final isarService = IsarService();
+    await isarService.saveCar(car);
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Thumbnail saved!'),
+          backgroundColor: CatalagoColecionadorTheme.bgInputAccent,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      Navigator.pop(context);
+    }
   }
 
   EdgeInsets _mainHorizontalPadding(BuildContext context, BoxConstraints c) {

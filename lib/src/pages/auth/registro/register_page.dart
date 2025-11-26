@@ -6,6 +6,8 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textform
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:validatorless/validatorless.dart';
+import '../../../core/database/isar_service.dart';
+import '../../../core/database/isar_models/user_collection.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -37,7 +39,6 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
 
     return Scaffold(
       backgroundColor: Colors.blueGrey,
-      //appBar: ColecionadorAppbar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -173,11 +174,22 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
 
     if (formValid) {
       FocusScope.of(context).unfocus();
-      //controller.register(
-      //  name: _nameEC.text,
-      //  email: _emailEC.text,
-      //  password: _passwordEC.text,
-      //);
+      
+      final user = UserCollection()
+        ..name = _nameEC.text
+        ..email = _emailEC.text
+        ..password = _passwordEC.text; // Storing plain text as requested
+
+      IsarService().saveUser(user).then((_) {
+        if (mounted) {
+          Messages.showSuccess('Usuário cadastrado com sucesso!', context);
+          Navigator.of(context).pop();
+        }
+      }).catchError((e) {
+        if (mounted) {
+          Messages.showError('Erro ao cadastrar usuário: $e', context);
+        }
+      });
     }
   }
 }
