@@ -2,13 +2,12 @@ import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
-import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'widget/add_car_colection_form.dart';
-import '../../core/database/isar_service.dart';
 import '../../core/database/isar_models/car_collection.dart';
+import '../../core/database/isar_service.dart';
+import 'widget/add_car_colection_form.dart';
 
 class AddCarColection extends StatefulWidget {
   const AddCarColection({super.key});
@@ -31,7 +30,8 @@ class _AddCarColectionState extends State<AddCarColection> {
   final TextEditingController _precoPagoController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   String? _condition;
-  String? _collectionCondition; // <-- Nova variável
+  String? _collectionCondition; 
+  String? _imagePath;
 
   final int _selectedNavIndex = 2; // Seta o select para o "Add"
 
@@ -48,7 +48,8 @@ class _AddCarColectionState extends State<AddCarColection> {
       ..precoPago = double.tryParse(_precoPagoController.text.replaceAll(',', '.'))
       ..notes = _notesController.text
       ..condition = _condition
-      ..collectionCondition = _collectionCondition;
+      ..collectionCondition = _collectionCondition
+      ..imagePath = _imagePath;
 
     final isarService = IsarService();
     await isarService.saveCar(car);
@@ -77,7 +78,6 @@ class _AddCarColectionState extends State<AddCarColection> {
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
 
-    //final brightness = Theme.of(context).brightness;
     final double maxContentWidth = 390.0;
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -159,63 +159,7 @@ class _AddCarColectionState extends State<AddCarColection> {
                         ),
                       ),
                       // Header (não scrollável)
-                      Padding(
-                        padding: EdgeInsets.only(top: 36, bottom: 16),
-                        child: Center(
-                          child: Container(
-                            width: maxContentWidth,
-                            constraints: BoxConstraints(
-                              maxWidth: constraints.maxWidth,
-                            ),
-                            padding: horizontalPadding,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: RichText(
-                                      text: TextSpan(
-                                        style: const TextStyle(
-                                          color: CatalagoColecionadorTheme
-                                              .blackColor,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                        children: [
-                                          TextSpan(
-                                            text: 'Adicionar Miniatura  ',
-                                            style: CatalagoColecionadorTheme
-                                                .titleStyleNormal
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 20,
-                                                  color: Colors.white,
-                                                  height: 1.3,
-                                                  letterSpacing: -0.2,
-                                                ),
-                                          ),
-                                          TextSpan(
-                                            text: 'Cancelar',
-                                            style: const TextStyle(
-                                              color: CatalagoColecionadorTheme
-                                                  .orangeColor,
-                                              decoration:
-                                                  TextDecoration.underline,
-                                            ),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () {},
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      SizedBox(height: 16),
                       // Form Section (scrollável)
                       Expanded(
                         child: SingleChildScrollView(
@@ -251,6 +195,7 @@ class _AddCarColectionState extends State<AddCarColection> {
                                       setState(
                                         () => _collectionCondition = val,
                                       ),
+                                  imagePath: _imagePath,
                                   onSave: _onSave,
                                 ),
                               ),

@@ -1,4 +1,3 @@
-
 // --- FORM WIDGET ---
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -7,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'collection_condition_card.dart';
 import 'form_group.dart';
 
-class AddCarColectionForm extends StatelessWidget {
+// ignore: must_be_immutable
+class AddCarColectionForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController nomeMiniaturaController;
   final TextEditingController marcaController;
@@ -21,9 +21,11 @@ class AddCarColectionForm extends StatelessWidget {
   final String? collectionCondition;
   final ValueChanged<String?> onCollectionConditionChanged;
   final TextEditingController notesController;
+  String? imagePath;
   final VoidCallback onSave;
 
-  const AddCarColectionForm({super.key, 
+  AddCarColectionForm({
+    super.key,
     required this.formKey,
     required this.nomeMiniaturaController,
     required this.marcaController,
@@ -37,44 +39,62 @@ class AddCarColectionForm extends StatelessWidget {
     required this.collectionCondition,
     required this.onCollectionConditionChanged,
     required this.notesController,
-    required this.onSave,
+    required this.onSave, 
+    String? imagePath,
   });
 
   @override
+  State<AddCarColectionForm> createState() => _AddCarColectionFormState();
+}
+
+class _AddCarColectionFormState extends State<AddCarColectionForm> {
+  @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key: widget.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 25),
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.lightBlue.shade500, width: 0.5),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
-                SizedBox(height: 12),
-                Text(
-                  "Adicionar miniatura",
-                  style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(
-                    fontSize: 16,
+          InkWell(
+            onTap: () async {
+              final filePath = await Navigator.of(
+                context,
+              ).pushNamed('/add_car/scan');
+              if (filePath != null && filePath != '') {
+                widget.imagePath = filePath as String;
+                setState(() {});
+              }
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 25),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: Colors.lightBlue.shade500,
+                  width: 0.5,
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
+                  SizedBox(height: 12),
+                  Text(
+                    "Adicionar miniatura",
+                    style: CatalagoColecionadorTheme.subTitleSmallStyle
+                        .copyWith(fontSize: 16),
                   ),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  "Selecione o a imagem que deseja carregar",
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
-                ),
-              ],
+                  SizedBox(height: 6),
+                  Text(
+                    "Selecione o a imagem que deseja carregar",
+                    style: TextStyle(fontSize: 14, color: Colors.black54),
+                  ),
+                ],
+              ),
             ),
           ),
-          // Nome da Miniatura
           SizedBox(height: 16),
           Text(
             "Detalhes Principais",
@@ -88,7 +108,7 @@ class AddCarColectionForm extends StatelessWidget {
           FormGroup(
             label: 'Nome da Miniatura',
             child: TextFormField(
-              controller: nomeMiniaturaController,
+              controller: widget.nomeMiniaturaController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
                 color: CatalagoColecionadorTheme.blackClaroColor,
                 fontSize: 15,
@@ -111,7 +131,7 @@ class AddCarColectionForm extends StatelessWidget {
                 child: FormGroup(
                   label: 'Marca',
                   child: TextFormField(
-                    controller: marcaController,
+                    controller: widget.marcaController,
                     style: CatalagoColecionadorTheme.textBold.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
                       fontSize: 15,
@@ -132,7 +152,7 @@ class AddCarColectionForm extends StatelessWidget {
                 child: FormGroup(
                   label: 'Modelo',
                   child: TextFormField(
-                    controller: modeloController,
+                    controller: widget.modeloController,
                     style: CatalagoColecionadorTheme.textBold.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
                       fontSize: 15,
@@ -154,7 +174,7 @@ class AddCarColectionForm extends StatelessWidget {
           FormGroup(
             label: 'Ano de Fabricação',
             child: TextFormField(
-              controller: anoFabricacaoController,
+              controller: widget.anoFabricacaoController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
                 color: CatalagoColecionadorTheme.blackClaroColor,
                 fontSize: 15,
@@ -175,7 +195,7 @@ class AddCarColectionForm extends StatelessWidget {
           FormGroup(
             label: 'Escala',
             child: TextFormField(
-              controller: escalaController,
+              controller: widget.escalaController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
                 color: CatalagoColecionadorTheme.blackClaroColor,
                 fontSize: 15,
@@ -214,20 +234,20 @@ class AddCarColectionForm extends StatelessWidget {
             children: [
               CollectionConditionCard(
                 title: 'Na caixa',
-                isSelected: collectionCondition == 'Na caixa',
-                onTap: () => onCollectionConditionChanged('Na caixa'),
+                isSelected: widget.collectionCondition == 'Na caixa',
+                onTap: () => widget.onCollectionConditionChanged('Na caixa'),
               ),
               SizedBox(width: 8),
               CollectionConditionCard(
                 title: 'Novo',
-                isSelected: collectionCondition == 'Novo',
-                onTap: () => onCollectionConditionChanged('Novo'),
+                isSelected: widget.collectionCondition == 'Novo',
+                onTap: () => widget.onCollectionConditionChanged('Novo'),
               ),
               SizedBox(width: 8),
               CollectionConditionCard(
                 title: 'Usado',
-                isSelected: collectionCondition == 'Usado',
-                onTap: () => onCollectionConditionChanged('Usado'),
+                isSelected: widget.collectionCondition == 'Usado',
+                onTap: () => widget.onCollectionConditionChanged('Usado'),
               ),
             ],
           ),
@@ -259,7 +279,8 @@ class AddCarColectionForm extends StatelessWidget {
                               datePickerTheme: DatePickerThemeData(
                                 cancelButtonStyle: ButtonStyle(
                                   foregroundColor: WidgetStateProperty.all(
-                                    CatalagoColecionadorTheme.navBarBackkgroundColor,
+                                    CatalagoColecionadorTheme
+                                        .navBarBackkgroundColor,
                                   ), // Cor do botão Cancelar
                                 ),
                                 confirmButtonStyle: ButtonStyle(
@@ -274,12 +295,12 @@ class AddCarColectionForm extends StatelessWidget {
                         },
                       );
                       if (picked != null) {
-                        dataAquizicaoController.text =
+                        widget.dataAquizicaoController.text =
                             '${picked.day}/${picked.month}/${picked.year}';
                       }
                     },
                     child: TextFormField(
-                      controller: dataAquizicaoController,
+                      controller: widget.dataAquizicaoController,
                       enabled: false,
                       style: CatalagoColecionadorTheme.textBold.copyWith(
                         color: CatalagoColecionadorTheme.blackClaroColor,
@@ -306,7 +327,7 @@ class AddCarColectionForm extends StatelessWidget {
                 child: FormGroup(
                   label: 'Preço Pago',
                   child: TextFormField(
-                    controller: precoPagoController,
+                    controller: widget.precoPagoController,
                     style: CatalagoColecionadorTheme.textBold.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
                       fontSize: 15,
@@ -330,7 +351,7 @@ class AddCarColectionForm extends StatelessWidget {
           FormGroup(
             label: 'Notes',
             child: TextFormField(
-              controller: notesController,
+              controller: widget.notesController,
               minLines: 2,
               maxLines: 5,
               style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -370,7 +391,7 @@ class AddCarColectionForm extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    onPressed: onSave,
+                    onPressed: widget.onSave,
                     child: const Text('Salvar Miniatura'),
                   ),
                 ),
@@ -382,4 +403,3 @@ class AddCarColectionForm extends StatelessWidget {
     );
   }
 }
-

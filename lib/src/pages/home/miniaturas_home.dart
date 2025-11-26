@@ -31,17 +31,17 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
   static const _highlightItems = [
     {
       'image':
-          'https://app.codigma.io/api/uploads/assets/575b54c9-d5e8-4d5c-b15d-eea53b6ad92b.png',
+          'assets/images/hotwheels.png',
       'title': 'Hot Wheels',
     },
     {
       'image':
-          'https://app.codigma.io/api/uploads/assets/89618186-6249-4117-baf5-db54a3a371f4.png',
+          'assets/images/maisto.png',
       'title': 'Maisto',
     },
     {
       'image':
-          'https://app.codigma.io/api/uploads/assets/c1ff9fab-2526-4c27-a48f-ce40587f0171.png',
+          'assets/images/matchbox.png',
       'title': 'Matchbox',
     },
   ];
@@ -308,7 +308,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                 ),
                                 child: DecoratedBox(
                                   decoration: BoxDecoration(
-                                    //color: const Color(0xFF472426),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Row(

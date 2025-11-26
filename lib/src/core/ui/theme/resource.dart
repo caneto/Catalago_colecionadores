@@ -65,6 +65,10 @@ class R {
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\home.svg)
   static const String ASSETS_IMAGES_HOME_SVG = 'assets/images/home.svg';
 
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\hotwheels.png)
+  static const String ASSETS_IMAGES_HOTWHEELS_PNG =
+      'assets/images/hotwheels.png';
+
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\icon_bar.png)
   static const String ASSETS_IMAGES_ICON_BAR_PNG = 'assets/images/icon_bar.png';
 
@@ -84,6 +88,12 @@ class R {
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\lupa_icon.png)
   static const String ASSETS_IMAGES_LUPA_ICON_PNG =
       'assets/images/lupa_icon.png';
+
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\maisto.png)
+  static const String ASSETS_IMAGES_MAISTO_PNG = 'assets/images/maisto.png';
+
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\matchbox.png)
+  static const String ASSETS_IMAGES_MATCHBOX_PNG = 'assets/images/matchbox.png';
 
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\minhacolecao.svg)
   static const String ASSETS_IMAGES_MINHACOLECAO_SVG =

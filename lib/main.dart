@@ -11,7 +11,8 @@ void main() {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     _cameras = await availableCameras();
-    runApp(const ColecaoMainApp());
+    
+    runApp(ColecaoMainApp(cameras: _cameras));
   }, (error, stack) {
     log('Erro não tratado', error: error, stackTrace: stack);
     throw error;
