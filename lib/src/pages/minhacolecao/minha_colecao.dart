@@ -9,6 +9,8 @@ import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/view_opti
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../core/database/isar_models/car_collection.dart';
+import '../../core/database/isar_service.dart';
 import 'helpers/collection_item_data_model.dart';
 import 'widgets/collection_grid.dart';
 
@@ -30,41 +32,33 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   // Dummy filter state (in production, adjust later)
   final int _selectedFilter = -1;
 
-  // Dummy collection items (add more for grid fill as in provided HTML)
-  List<CollectionItemData> get _allItems => const [
-    CollectionItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/a6efef15-89ac-4614-8efc-c0285240055c.png',
-      brand: 'Hot Wheels',
-      model: 'Ford Mustang',
-    ),
-    CollectionItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/9d17151b-2f3e-40dd-a43d-a07519aa8873.png',
-      brand: 'Maisto',
-      model: 'Chevrolet Camaro',
-    ),
-    CollectionItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/a6efef15-89ac-4614-8efc-c0285240055c.png',
-      brand: 'Hot Wheels',
-      model: 'Ford Mustang',
-    ),
-    CollectionItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/9d17151b-2f3e-40dd-a43d-a07519aa8873.png',
-      brand: 'Maisto',
-      model: 'Chevrolet Camaro',
-    ),
-  ];
+  // Data state
+  final IsarService _isarService = IsarService();
+  List<CarCollection> _allItems = [];
+  bool _isLoading = true;
 
-  List<CollectionItemData> get _filteredItems {
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final cars = await _isarService.getAllCars();
+    setState(() {
+      _allItems = cars;
+      _isLoading = false;
+    });
+  }
+
+  List<CarCollection> get _filteredItems {
     if (_searchText.trim().isEmpty) return _allItems;
     return _allItems
         .where(
           (item) =>
-              item.brand.toLowerCase().contains(_searchText.toLowerCase()) ||
-              item.model.toLowerCase().contains(_searchText.toLowerCase()),
+              item.marca.toLowerCase().contains(_searchText.toLowerCase()) ||
+              item.nomeMiniatura.toLowerCase().contains(_searchText.toLowerCase()) ||
+              item.modelo.toLowerCase().contains(_searchText.toLowerCase()),
         )
         .toList();
   }
@@ -243,16 +237,22 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                       isMobile: isMobile(context),
                                     ),
                                     const SizedBox(height: 10),
-                                    CollectionGrid(
-                                      items: _filteredItems,
-                                      gridCount: gridCount,
-                                      surface:
-                                          CatalagoColecionadorTheme.bgInput,
-                                      brandColor:
-                                          CatalagoColecionadorTheme.whiteColor,
-                                      modelColor: CatalagoColecionadorTheme
-                                          .navBarBackkgroundColor,
-                                    ),
+                                    _isLoading
+                                        ? const Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : CollectionGrid(
+                                            items: _filteredItems,
+                                            gridCount: gridCount,
+                                            surface: CatalagoColecionadorTheme
+                                                .bgInput,
+                                            brandColor:
+                                                CatalagoColecionadorTheme
+                                                    .whiteColor,
+                                            modelColor:
+                                                CatalagoColecionadorTheme
+                                                    .navBarBackkgroundColor,
+                                          ),
                                     const SizedBox(height: 24),
                                   ],
                                 ),

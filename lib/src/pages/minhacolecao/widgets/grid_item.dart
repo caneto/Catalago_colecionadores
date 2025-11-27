@@ -1,10 +1,12 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-import '../helpers/collection_item_data_model.dart';
+import '../../../core/database/isar_models/car_collection.dart';
 
 class GridItem extends StatelessWidget {
-  final CollectionItemData item;
+  final CarCollection item;
   final Color surface;
   final Color brandColor;
   final Color modelColor;
@@ -19,7 +21,7 @@ class GridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '${item.brand}, ${item.model}',
+      label: '${item.marca}, ${item.nomeMiniatura}',
       child: Container(
         decoration: BoxDecoration(
           color: surface,
@@ -34,14 +36,18 @@ class GridItem extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(10),
                 ),
-                child: Image.network(
-                  item.imageUrl,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  errorBuilder: (context, error, stack) =>
-                      Container(color: Colors.grey.shade300),
-                  // Avoids unhandled exceptions
-                ),
+                child: item.imagePath != null && item.imagePath!.isNotEmpty
+                    ? Image.file(
+                        File(item.imagePath!),
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        errorBuilder: (context, error, stack) =>
+                            Container(color: Colors.grey.shade300),
+                      )
+                    : Container(
+                        color: Colors.grey.shade300,
+                        child: const Icon(Icons.image_not_supported, color: Colors.grey),
+                      ),
               ),
             ),
             Padding(
@@ -50,7 +56,7 @@ class GridItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.brand,
+                    item.marca,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -61,7 +67,7 @@ class GridItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    item.model,
+                    item.nomeMiniatura,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,

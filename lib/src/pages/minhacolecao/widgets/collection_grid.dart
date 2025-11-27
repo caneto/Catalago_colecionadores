@@ -4,11 +4,11 @@
 // -------------
 import 'package:flutter/material.dart';
 
-import '../helpers/collection_item_data_model.dart';
+import '../../../core/database/isar_models/car_collection.dart';
 import 'grid_item.dart';
 
 class CollectionGrid extends StatelessWidget {
-  final List<CollectionItemData> items;
+  final List<CarCollection> items;
   final int gridCount;
   final Color surface;
   final Color brandColor;
