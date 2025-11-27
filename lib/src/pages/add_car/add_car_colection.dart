@@ -196,6 +196,7 @@ class _AddCarColectionState extends State<AddCarColection> {
                                         () => _collectionCondition = val,
                                       ),
                                   imagePath: _imagePath,
+                                  onImageChanged: (val) => setState(() => _imagePath = val),
                                   onSave: _onSave,
                                 ),
                               ),

@@ -178,10 +178,11 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                     width: 32,
                                     semanticsLabel: 'X',
                                   ),
-                                  onTap: () {
-                                    Navigator.of(
+                                  onTap: () async {
+                                    await Navigator.of(
                                       context,
-                                    ).pushReplacementNamed('/add_car');
+                                    ).pushNamed('/add_car');
+                                    _loadData();
                                   },
                                 ),
                               ),

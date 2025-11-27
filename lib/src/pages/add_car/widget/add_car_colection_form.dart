@@ -23,6 +23,7 @@ class AddCarColectionForm extends StatefulWidget {
   final TextEditingController notesController;
   String? imagePath;
   final VoidCallback onSave;
+  final ValueChanged<String?>? onImageChanged;
 
   AddCarColectionForm({
     super.key,
@@ -40,6 +41,7 @@ class AddCarColectionForm extends StatefulWidget {
     required this.onCollectionConditionChanged,
     required this.notesController,
     required this.onSave, 
+    this.onImageChanged,
     String? imagePath,
   });
 
@@ -62,6 +64,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
               ).pushNamed('/add_car/scan');
               if (filePath != null && filePath != '') {
                 widget.imagePath = filePath as String;
+                widget.onImageChanged?.call(widget.imagePath);
                 setState(() {});
               }
             },
