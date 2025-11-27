@@ -22,37 +22,42 @@ const CarCollectionSchema = CollectionSchema(
       name: r'anoFabricacao',
       type: IsarType.long,
     ),
-    r'collectionCondition': PropertySchema(
+    r'categoria': PropertySchema(
       id: 1,
+      name: r'categoria',
+      type: IsarType.string,
+    ),
+    r'collectionCondition': PropertySchema(
+      id: 2,
       name: r'collectionCondition',
       type: IsarType.string,
     ),
     r'condition': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'condition',
       type: IsarType.string,
     ),
     r'dataAquizicao': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'dataAquizicao',
       type: IsarType.dateTime,
     ),
-    r'escala': PropertySchema(id: 4, name: r'escala', type: IsarType.string),
+    r'escala': PropertySchema(id: 5, name: r'escala', type: IsarType.string),
     r'imagePath': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'imagePath',
       type: IsarType.string,
     ),
-    r'marca': PropertySchema(id: 6, name: r'marca', type: IsarType.string),
-    r'modelo': PropertySchema(id: 7, name: r'modelo', type: IsarType.string),
+    r'marca': PropertySchema(id: 7, name: r'marca', type: IsarType.string),
+    r'modelo': PropertySchema(id: 8, name: r'modelo', type: IsarType.string),
     r'nomeMiniatura': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'nomeMiniatura',
       type: IsarType.string,
     ),
-    r'notes': PropertySchema(id: 9, name: r'notes', type: IsarType.string),
+    r'notes': PropertySchema(id: 10, name: r'notes', type: IsarType.string),
     r'precoPago': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'precoPago',
       type: IsarType.double,
     ),
@@ -79,6 +84,7 @@ int _carCollectionEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.categoria.length * 3;
   {
     final value = object.collectionCondition;
     if (value != null) {
@@ -117,16 +123,17 @@ void _carCollectionSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.anoFabricacao);
-  writer.writeString(offsets[1], object.collectionCondition);
-  writer.writeString(offsets[2], object.condition);
-  writer.writeDateTime(offsets[3], object.dataAquizicao);
-  writer.writeString(offsets[4], object.escala);
-  writer.writeString(offsets[5], object.imagePath);
-  writer.writeString(offsets[6], object.marca);
-  writer.writeString(offsets[7], object.modelo);
-  writer.writeString(offsets[8], object.nomeMiniatura);
-  writer.writeString(offsets[9], object.notes);
-  writer.writeDouble(offsets[10], object.precoPago);
+  writer.writeString(offsets[1], object.categoria);
+  writer.writeString(offsets[2], object.collectionCondition);
+  writer.writeString(offsets[3], object.condition);
+  writer.writeDateTime(offsets[4], object.dataAquizicao);
+  writer.writeString(offsets[5], object.escala);
+  writer.writeString(offsets[6], object.imagePath);
+  writer.writeString(offsets[7], object.marca);
+  writer.writeString(offsets[8], object.modelo);
+  writer.writeString(offsets[9], object.nomeMiniatura);
+  writer.writeString(offsets[10], object.notes);
+  writer.writeDouble(offsets[11], object.precoPago);
 }
 
 CarCollection _carCollectionDeserialize(
@@ -137,17 +144,18 @@ CarCollection _carCollectionDeserialize(
 ) {
   final object = CarCollection();
   object.anoFabricacao = reader.readLongOrNull(offsets[0]);
-  object.collectionCondition = reader.readStringOrNull(offsets[1]);
-  object.condition = reader.readStringOrNull(offsets[2]);
-  object.dataAquizicao = reader.readDateTimeOrNull(offsets[3]);
-  object.escala = reader.readString(offsets[4]);
+  object.categoria = reader.readString(offsets[1]);
+  object.collectionCondition = reader.readStringOrNull(offsets[2]);
+  object.condition = reader.readStringOrNull(offsets[3]);
+  object.dataAquizicao = reader.readDateTimeOrNull(offsets[4]);
+  object.escala = reader.readString(offsets[5]);
   object.id = id;
-  object.imagePath = reader.readStringOrNull(offsets[5]);
-  object.marca = reader.readString(offsets[6]);
-  object.modelo = reader.readString(offsets[7]);
-  object.nomeMiniatura = reader.readString(offsets[8]);
-  object.notes = reader.readStringOrNull(offsets[9]);
-  object.precoPago = reader.readDoubleOrNull(offsets[10]);
+  object.imagePath = reader.readStringOrNull(offsets[6]);
+  object.marca = reader.readString(offsets[7]);
+  object.modelo = reader.readString(offsets[8]);
+  object.nomeMiniatura = reader.readString(offsets[9]);
+  object.notes = reader.readStringOrNull(offsets[10]);
+  object.precoPago = reader.readDoubleOrNull(offsets[11]);
   return object;
 }
 
@@ -161,24 +169,26 @@ P _carCollectionDeserializeProp<P>(
     case 0:
       return (reader.readLongOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
       return (reader.readStringOrNull(offset)) as P;
-    case 6:
+    case 4:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 5:
       return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readString(offset)) as P;
     case 8:
       return (reader.readString(offset)) as P;
     case 9:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 10:
+      return (reader.readStringOrNull(offset)) as P;
+    case 11:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -356,6 +366,147 @@ extension CarCollectionQueryFilter
           upper: upper,
           includeUpper: includeUpper,
         ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaEqualTo(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'categoria',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'categoria',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'categoria',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'categoria',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'categoria',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'categoria',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'categoria',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'categoria',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'categoria', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  categoriaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'categoria', value: ''),
       );
     });
   }
@@ -1809,6 +1960,19 @@ extension CarCollectionQuerySortBy
     });
   }
 
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy> sortByCategoria() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoria', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  sortByCategoriaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoria', Sort.desc);
+    });
+  }
+
   QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
   sortByCollectionCondition() {
     return QueryBuilder.apply(this, (query) {
@@ -1952,6 +2116,19 @@ extension CarCollectionQuerySortThenBy
   thenByAnoFabricacaoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'anoFabricacao', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy> thenByCategoria() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoria', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  thenByCategoriaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'categoria', Sort.desc);
     });
   }
 
@@ -2106,6 +2283,14 @@ extension CarCollectionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<CarCollection, CarCollection, QDistinct> distinctByCategoria({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'categoria', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<CarCollection, CarCollection, QDistinct>
   distinctByCollectionCondition({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2199,6 +2384,12 @@ extension CarCollectionQueryProperty
   QueryBuilder<CarCollection, int?, QQueryOperations> anoFabricacaoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'anoFabricacao');
+    });
+  }
+
+  QueryBuilder<CarCollection, String, QQueryOperations> categoriaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'categoria');
     });
   }
 

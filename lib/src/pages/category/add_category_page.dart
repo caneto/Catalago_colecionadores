@@ -5,61 +5,40 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.d
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../core/database/isar_models/car_collection.dart';
+import '../../core/database/isar_models/category_collection.dart';
 import '../../core/database/isar_service.dart';
-import 'widget/add_car_colection_form.dart';
+import 'widget/add_category_form.dart';
 
-class AddCarColection extends StatefulWidget {
-  const AddCarColection({super.key});
+class AddCategoryPage extends StatefulWidget {
+  const AddCategoryPage({super.key});
 
   @override
-  State<AddCarColection> createState() => _AddCarColectionState();
+  State<AddCategoryPage> createState() => _AddCategoryPageState();
 }
 
-class _AddCarColectionState extends State<AddCarColection> {
+class _AddCategoryPageState extends State<AddCategoryPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nomeMiniaturaController =
-      TextEditingController();
-  final TextEditingController _categoriaController = TextEditingController();
-  final TextEditingController _marcaController = TextEditingController();
-  final TextEditingController _modeloController = TextEditingController();
-  final TextEditingController _anoFabricacaoController =
-      TextEditingController();
-  final TextEditingController _escalaController = TextEditingController();
-  final TextEditingController _dataAquizicaoController =
-      TextEditingController();
-  final TextEditingController _precoPagoController = TextEditingController();
-  final TextEditingController _notesController = TextEditingController();
-  String? _condition;
-  String? _collectionCondition; 
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   String? _imagePath;
 
-  final int _selectedNavIndex = 2; // Seta o select para o "Add"
+  final int _selectedNavIndex = 2; // Mantendo o index do Add
 
   void _onSave() async {
     if (_formKey.currentState?.validate() != true) return;
     
-    final car = CarCollection()
-      ..nomeMiniatura = _nomeMiniaturaController.text
-      ..categoria = _categoriaController.text
-      ..marca = _marcaController.text
-      ..modelo = _modeloController.text
-      ..anoFabricacao = int.tryParse(_anoFabricacaoController.text)
-      ..escala = _escalaController.text
-      ..dataAquizicao = DateTime.tryParse(_dataAquizicaoController.text) // Assuming format is parsable or handled
-      ..precoPago = double.tryParse(_precoPagoController.text.replaceAll(',', '.'))
-      ..notes = _notesController.text
-      ..condition = _condition
-      ..collectionCondition = _collectionCondition
+    final category = CategoryCollection()
+      ..name = _nameController.text
+      ..description = _descriptionController.text
       ..imagePath = _imagePath;
 
     final isarService = IsarService();
-    await isarService.saveCar(car);
+    await isarService.saveCategory(category);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Thumbnail saved!'),
+          content: Text('Categoria salva com sucesso!'),
           backgroundColor: CatalagoColecionadorTheme.bgInputAccent,
           behavior: SnackBarBehavior.floating,
         ),
@@ -109,7 +88,7 @@ class _AddCarColectionState extends State<AddCarColection> {
                           18,
                           20,
                           16,
-                        ), // as per CSS
+                        ),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
@@ -124,7 +103,7 @@ class _AddCarColectionState extends State<AddCarColection> {
                             Semantics(
                               header: true,
                               child: Text(
-                                'Adicionar Miniatura',
+                                'Adicionar Categoria',
                                 style: CatalagoColecionadorTheme.titleStyle
                                     .copyWith(
                                       fontWeight: FontWeight.w700,
@@ -136,13 +115,12 @@ class _AddCarColectionState extends State<AddCarColection> {
                               ),
                             ),
                             Semantics(
-                              label: 'Perfil',
+                              label: 'Fechar',
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                  
                                 child: InkWell(
                                   child: SvgPicture.asset(
-                                    'assets/images/x.svg', // Path to your SVG asset
+                                    'assets/images/x.svg',
                                     height: 32,
                                     width: 32,
                                     colorFilter: ColorFilter.mode(
@@ -155,52 +133,32 @@ class _AddCarColectionState extends State<AddCarColection> {
                                     Navigator.pop(context);
                                   },
                                 ),
-                                ),
                               ),
+                            ),
                           ],
                         ),
                       ),
-                      // Header (não scrollável)
                       SizedBox(height: 16),
-                      // Form Section (scrollável)
                       Expanded(
                         child: SingleChildScrollView(
                           child: Center(
                             child: Container(
                               margin: EdgeInsets.only(
                                 bottom: 60,
-                              ), // espaço para navbar
+                              ),
                               constraints: BoxConstraints(
                                 maxWidth: maxContentWidth,
                               ),
                               padding: EdgeInsets.only(top: 0),
                               child: Padding(
                                 padding: horizontalPadding,
-                                child: AddCarColectionForm(
+                                child: AddCategoryForm(
                                   formKey: _formKey,
-                                  nomeMiniaturaController:
-                                      _nomeMiniaturaController,
-                                  categoriaController: _categoriaController,
-                                  modeloController: _modeloController,
-                                  marcaController: _marcaController,
-                                  escalaController: _escalaController,
-                                  anoFabricacaoController:
-                                      _anoFabricacaoController,
-                                  dataAquizicaoController:
-                                      _dataAquizicaoController,
-                                  precoPagoController: _precoPagoController,
-                                  notesController: _notesController,
-                                  condition: _condition,
-                                  onConditionChanged: (val) =>
-                                      setState(() => _condition = val),
-                                  collectionCondition: _collectionCondition,
-                                  onCollectionConditionChanged: (val) =>
-                                      setState(
-                                        () => _collectionCondition = val,
-                                      ),
+                                  nameController: _nameController,
+                                  descriptionController: _descriptionController,
                                   imagePath: _imagePath,
                                   onImageChanged: (val) => setState(() => _imagePath = val),
-                                  onSave: _onSave, 
+                                  onSave: _onSave,
                                 ),
                               ),
                             ),
@@ -209,7 +167,6 @@ class _AddCarColectionState extends State<AddCarColection> {
                       ),
                     ],
                   ),
-                  // Footer Navigation (sticky)
                   Positioned(
                     bottom: 0,
                     left: 0,

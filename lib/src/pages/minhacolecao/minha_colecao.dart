@@ -14,7 +14,6 @@ import '../../core/database/isar_service.dart';
 import 'helpers/collection_item_data_model.dart';
 import 'widgets/collection_grid.dart';
 
-
 // ---------------------
 // Main Widget
 // ---------------------
@@ -57,7 +56,9 @@ class _MinhaColecaoState extends State<MinhaColecao> {
         .where(
           (item) =>
               item.marca.toLowerCase().contains(_searchText.toLowerCase()) ||
-              item.nomeMiniatura.toLowerCase().contains(_searchText.toLowerCase()) ||
+              item.nomeMiniatura.toLowerCase().contains(
+                _searchText.toLowerCase(),
+              ) ||
               item.modelo.toLowerCase().contains(_searchText.toLowerCase()),
         )
         .toList();
@@ -190,6 +191,48 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                           ],
                         ),
                       ),
+                      // SEARCH SECTION
+                      const SizedBox(height: 20),
+                      Container(
+                        padding: _mainPadding(maxWidth),
+                        constraints: const BoxConstraints(maxWidth: 600),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SearchBarWidget(
+                              backgroundColor:
+                                  CatalagoColecionadorTheme.bgInput,
+                              iconColor: CatalagoColecionadorTheme
+                                  .navBarBackkgroundColor,
+                              textColor:
+                                  CatalagoColecionadorTheme.blackClaroColor,
+                              hint: "Pesquisar",
+                              onChanged: (text) =>
+                                  setState(() => _searchText = text),
+                            ),
+                            // FILTERS
+                            const SizedBox(height: 14),
+                            FilterItemWidget(
+                              isMobile: GlobalContext.isMobile(context),
+                              filters: _filters,
+                              color: CatalagoColecionadorTheme.bgInput,
+                              textColor: CatalagoColecionadorTheme
+                                  .navBarBackkgroundColor,
+                              iconColor: CatalagoColecionadorTheme
+                                  .navBarBackkgroundColor,
+                              selectedFilter: _selectedFilter,
+                            ),
+                            const SizedBox(height: 10),
+                            ViewOptionsWidget(
+                              selected: _selectedView,
+                              onSelect: (mode) =>
+                                  setState(() => _selectedView = mode),
+                              isMobile: isMobile(context),
+                            ),
+                            const SizedBox(height: 10),
+                          ],
+                        ),
+                      ),
                       // Body Main (search, filters, grid) - scrollable
                       Expanded(
                         child: SingleChildScrollView(
@@ -204,39 +247,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    // SEARCH SECTION
-                                    const SizedBox(height: 20),
-                                    SearchBarWidget(
-                                      backgroundColor:
-                                          CatalagoColecionadorTheme.bgInput,
-                                      iconColor: CatalagoColecionadorTheme
-                                          .navBarBackkgroundColor,
-                                      textColor: CatalagoColecionadorTheme
-                                          .blackClaroColor,
-                                      hint: "Pesquisar",
-                                      onChanged: (text) =>
-                                          setState(() => _searchText = text),
-                                    ),
-                                    // FILTERS
-                                    const SizedBox(height: 14),
-                                    FilterItemWidget(
-                                      isMobile: GlobalContext.isMobile(context),
-                                      filters: _filters,
-                                      color: CatalagoColecionadorTheme.bgInput,
-                                      textColor: CatalagoColecionadorTheme
-                                          .navBarBackkgroundColor,
-                                      iconColor: CatalagoColecionadorTheme
-                                          .navBarBackkgroundColor,
-                                      selectedFilter: _selectedFilter,
-                                    ),
                                     // COLLECTION GRID
-                                    const SizedBox(height: 10),
-                                    ViewOptionsWidget(
-                                      selected: _selectedView,
-                                      onSelect: (mode) =>
-                                          setState(() => _selectedView = mode),
-                                      isMobile: isMobile(context),
-                                    ),
                                     const SizedBox(height: 10),
                                     _isLoading
                                         ? const Center(
@@ -282,4 +293,3 @@ class _MinhaColecaoState extends State<MinhaColecao> {
     );
   }
 }
-

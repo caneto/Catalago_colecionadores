@@ -2,6 +2,7 @@ import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'isar_models/car_collection.dart';
 import 'isar_models/user_collection.dart';
+import 'isar_models/category_collection.dart';
 
 class IsarService {
   late Future<Isar> db;
@@ -14,7 +15,7 @@ class IsarService {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationDocumentsDirectory();
       return await Isar.open(
-        [CarCollectionSchema, UserCollectionSchema],
+        [CarCollectionSchema, UserCollectionSchema, CategoryCollectionSchema],
         directory: dir.path,
         inspector: true,
       );
@@ -84,5 +85,16 @@ class IsarService {
       return user;
     }
     return null;
+    }
+
+  Future<void> saveCategory(CategoryCollection category) async {
+    final isar = await db;
+    isar.writeTxnSync<int>(() => isar.categoryCollections.putSync(category));
+  }
+
+  Future<List<CategoryCollection>> getAllCategories() async {
+    final isar = await db;
+    return await isar.categoryCollections.where().findAll();
   }
 }
+

@@ -7,6 +7,7 @@ class CarCollection {
   Id id = Isar.autoIncrement;
 
   late String nomeMiniatura;
+  late String categoria;
   late String marca;
   late String modelo;
   int? anoFabricacao;

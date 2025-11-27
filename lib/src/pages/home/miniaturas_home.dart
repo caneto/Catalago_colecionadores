@@ -11,7 +11,6 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'widgets/category_item.dart';
 import 'widgets/horizontal_items_list.dart';
 
-
 class MiniaturasHome extends StatefulWidget {
   const MiniaturasHome({super.key});
 
@@ -20,7 +19,6 @@ class MiniaturasHome extends StatefulWidget {
 }
 
 class _MiniaturasHomeState extends State<MiniaturasHome> {
-
   final _key = GlobalKey<ExpandableFabState>();
 
   final _searchController = TextEditingController();
@@ -29,21 +27,9 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
   int _selectedNavIndex = 0;
 
   static const _highlightItems = [
-    {
-      'image':
-          'assets/images/hotwheels.png',
-      'title': 'Hot Wheels',
-    },
-    {
-      'image':
-          'assets/images/maisto.png',
-      'title': 'Maisto',
-    },
-    {
-      'image':
-          'assets/images/matchbox.png',
-      'title': 'Matchbox',
-    },
+    {'image': 'assets/images/hotwheels.png', 'title': 'Hot Wheels'},
+    {'image': 'assets/images/maisto.png', 'title': 'Maisto'},
+    {'image': 'assets/images/matchbox.png', 'title': 'Matchbox'},
   ];
 
   static const _newArrivals = [
@@ -153,7 +139,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButton: ExpandableFab(
         key: _key,
-         margin: const EdgeInsets.only(bottom: 65),
+        margin: const EdgeInsets.only(bottom: 65),
         // duration: const Duration(milliseconds: 500),
         // distance: 200.0,
         // type: ExpandableFabType.up,
@@ -201,7 +187,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
         },
         children: [
           FloatingActionButton.small(
-            // shape: const CircleBorder(),
             heroTag: null,
             child: const Icon(Icons.add_box_rounded),
             onPressed: () {
@@ -209,29 +194,26 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                 content: Text("Cadastra carrinho"),
               );
               scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-              Navigator.of(context).pushReplacementNamed('/add_car');
+              Navigator.of(context).pushNamed('/add_car');
             },
           ),
           FloatingActionButton.small(
-           // shape: const CircleBorder(),
             heroTag: null,
             child: const Icon(Icons.add_circle_outline_rounded),
             onPressed: () {
               const SnackBar snackBar = SnackBar(
-                content: Text("Cadastra categoria"),
+                content: Text("Cadastro de categoria"),
               );
               scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-              ///Navigator.of(context).push(
-              //    MaterialPageRoute(builder: ((context) => const NextPage())));
+
+              Navigator.of(context).pushNamed('/category');
             },
           ),
         ],
       ),
-      //backgroundColor: const Color(0xFF211212),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (ctx, constraints) {
-            
             final sectionHorizontalPadding = _horizontalPadding(constraints);
             final itemCardWidth = _getItemCardWidth(constraints);
             final itemCardHeight = _getItemCardHeight(constraints);
@@ -533,4 +515,3 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
     );
   }
 }
-

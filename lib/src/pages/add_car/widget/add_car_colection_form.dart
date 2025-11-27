@@ -1,4 +1,6 @@
 // --- FORM WIDGET ---
+import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'form_group.dart';
 class AddCarColectionForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController nomeMiniaturaController;
+  final TextEditingController categoriaController;
   final TextEditingController marcaController;
   final TextEditingController modeloController;
   final TextEditingController anoFabricacaoController;
@@ -29,6 +32,7 @@ class AddCarColectionForm extends StatefulWidget {
     super.key,
     required this.formKey,
     required this.nomeMiniaturaController,
+    required this.categoriaController,
     required this.marcaController,
     required this.modeloController,
     required this.anoFabricacaoController,
@@ -50,6 +54,27 @@ class AddCarColectionForm extends StatefulWidget {
 }
 
 class _AddCarColectionFormState extends State<AddCarColectionForm> {
+  final IsarService service = IsarService();
+  List<CategoryCollection> categories = [];
+  String? _selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
+
+  Future<void> _loadCategories() async {
+    final cats = await service.getAllCategories();
+    setState(() {
+      categories = cats;
+      if (widget.categoriaController.text.isNotEmpty) {
+        if (categories.any((c) => c.name == widget.categoriaController.text)) {
+          _selectedCategory = widget.categoriaController.text;
+        }
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -126,10 +151,43 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                   : null,
             ),
           ),
-          // Marca e Modelo na mesma linha
+          // Categoria e Marca - PRIMEIRA LINHA
           SizedBox(height: 12),
           Row(
             children: [
+              Expanded(
+                child: FormGroup(
+                  label: 'Categoria',
+                  child: DropdownButtonFormField<String>(
+                    initialValue: _selectedCategory,
+                    items: categories.map((CategoryCollection category) {
+                      return DropdownMenuItem<String>(
+                        value: category.name,
+                        child: Text(category.name),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedCategory = newValue;
+                        widget.categoriaController.text = newValue ?? '';
+                      });
+                    },
+                    style: CatalagoColecionadorTheme.textBold.copyWith(
+                      color: CatalagoColecionadorTheme.blackClaroColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    decoration:
+                        CatalagoColecionadorTheme.inputDecorationAddCard(
+                          hintText: 'Selecione',
+                          colorSide: CatalagoColecionadorTheme.textMainAccent,
+                        ),
+                    validator: (v) =>
+                        (v == null || v.isEmpty) ? 'Categoria exigida' : null,
+                  ),
+                ),
+              ),
+              SizedBox(width: 10),
               Expanded(
                 child: FormGroup(
                   label: 'Marca',
@@ -142,7 +200,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                     ),
                     decoration:
                         CatalagoColecionadorTheme.inputDecorationAddCard(
-                          hintText: 'Exemplo Hot Wheels',
+                          hintText: 'Ex Hot Wheels',
                           colorSide: CatalagoColecionadorTheme.textMainAccent,
                         ),
                     validator: (v) =>
@@ -150,7 +208,12 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                   ),
                 ),
               ),
-              SizedBox(width: 12), // Espaço entre os campos
+            ],
+          ),
+          // Modelo e Ano de Fabricação - SEGUNDA LINHA
+          SizedBox(height: 12),
+          Row(
+            children: [
               Expanded(
                 child: FormGroup(
                   label: 'Modelo',
@@ -163,7 +226,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                     ),
                     decoration:
                         CatalagoColecionadorTheme.inputDecorationAddCard(
-                          hintText: 'Exemplo Ford Mustang',
+                          hintText: 'Ex Ford Mustang',
                           colorSide: CatalagoColecionadorTheme.textMainAccent,
                         ),
                     validator: (v) =>
@@ -171,26 +234,28 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                   ),
                 ),
               ),
+              SizedBox(width: 10),
+              Expanded(
+                child: FormGroup(
+                  label: 'Ano de Fabricação',
+                  child: TextFormField(
+                    controller: widget.anoFabricacaoController,
+                    style: CatalagoColecionadorTheme.textBold.copyWith(
+                      color: CatalagoColecionadorTheme.blackClaroColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
+                      hintText: 'Exemplo 2008',
+                      colorSide: CatalagoColecionadorTheme.textMainAccent,
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (v) =>
+                        (v?.trim().isEmpty ?? true) ? 'Ano exigido' : null,
+                  ),
+                ),
+              ),
             ],
-          ),
-          // Ano de Fabricação
-          FormGroup(
-            label: 'Ano de Fabricação',
-            child: TextFormField(
-              controller: widget.anoFabricacaoController,
-              style: CatalagoColecionadorTheme.textBold.copyWith(
-                color: CatalagoColecionadorTheme.blackClaroColor,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-              decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
-                hintText: 'Exemplo 2008',
-                colorSide: CatalagoColecionadorTheme.textMainAccent,
-              ),
-              keyboardType: TextInputType.number,
-              validator: (v) =>
-                  (v?.trim().isEmpty ?? true) ? 'Ano exigido' : null,
-            ),
           ),
 
           SizedBox(height: 12),
