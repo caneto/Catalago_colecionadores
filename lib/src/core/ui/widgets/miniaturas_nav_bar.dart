@@ -32,7 +32,7 @@ class _MiniaturasNavBarState extends State<MiniaturasNavBar> {
     if (idx == widget.selectedIndex) return;
     setState(() {
       widget.selectedIndex = idx;
-      Navigator.of(context).pushReplacementNamed(
+      Navigator.of(context).pushNamed(
         idx == 0
             ? '/home'
             : idx == 1
