@@ -126,8 +126,11 @@ class _HeaderSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const SizedBox(width: 8),
-        const _CircleIcon(url: 'seta_esquerda.svg', size: 28),
-        const SizedBox(width: 17),
+        InkWell(
+          child: _CircleIcon(url: 'seta_esquerda.svg', size: 28),
+          onTap: () => Navigator.of(context).pop(),
+        ),
+        SizedBox(width: 17),
         Text(
           'Configurações',
           style: CatalagoColecionadorTheme.titleStyle.copyWith(
