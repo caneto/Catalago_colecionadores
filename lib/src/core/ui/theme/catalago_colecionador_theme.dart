@@ -12,6 +12,7 @@ final class CatalagoColecionadorTheme {
   static const blueFaceBook = Color(0xFF3b5998);
   static const barColor = Color(0xFF364828);
   static const bgInput = Color(0xFF3f557a);
+  static const bgCard = Color.fromARGB(255, 95, 124, 175);
   static const borderFooter = Color(0xFF472426);
   static const bgInputAccent = Color(0xFF137fec);
   static const navBarBackkgroundColor = Color(0xFFF1D0B1);
