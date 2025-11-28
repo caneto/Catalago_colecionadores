@@ -10,7 +10,8 @@ import '../../core/database/isar_service.dart';
 import 'widget/add_category_form.dart';
 
 class AddCategoryPage extends StatefulWidget {
-  const AddCategoryPage({super.key});
+  final CategoryCollection? category;
+  const AddCategoryPage({super.key, this.category});
 
   @override
   State<AddCategoryPage> createState() => _AddCategoryPageState();
@@ -24,10 +25,26 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
 
   final int _selectedNavIndex = 2; // Mantendo o index do Add
 
+  String textAddOption = 'Adicionar Categoria';
+  String textButtonOption = 'Salvar Categoria';
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.category != null) {
+      _nameController.text = widget.category!.name;
+      _descriptionController.text = widget.category!.description ?? '';
+      _imagePath = widget.category!.imagePath;
+      textAddOption = "Editar Categoria";
+      textButtonOption = "Editar Categoria";
+    }
+  }
+
   void _onSave() async {
     if (_formKey.currentState?.validate() != true) return;
-    
-    final category = CategoryCollection()
+
+    final category = widget.category ?? CategoryCollection();
+    category
       ..name = _nameController.text
       ..description = _descriptionController.text
       ..imagePath = _imagePath;
@@ -83,12 +100,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.fromLTRB(
-                          20,
-                          18,
-                          20,
-                          16,
-                        ),
+                        padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
@@ -98,37 +110,42 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                           ),
                         ),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Semantics(
-                              header: true,
-                              child: Text(
-                                'Adicionar Categoria',
-                                style: CatalagoColecionadorTheme.titleStyle
-                                    .copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      letterSpacing: -0.01,
-                                      color:
-                                          CatalagoColecionadorTheme.whiteColor,
-                                    ),
+                            InkWell(
+                              child: SvgPicture.asset(
+                                'assets/images/seta_esquerda.svg',
+                                height: 28,
+                                width: 28,
                               ),
+                              onTap: () => Navigator.pop(context),
                             ),
-                            Semantics(
-                              label: 'Fechar',
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
+                            const SizedBox(width: 8),
+                            Text(
+                              textAddOption,
+                              style: CatalagoColecionadorTheme.titleStyle
+                                  .copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                    letterSpacing: -0.01,
+                                    color: CatalagoColecionadorTheme.whiteColor,
+                                  ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentGeometry.centerRight,
                                 child: InkWell(
                                   child: SvgPicture.asset(
                                     'assets/images/x.svg',
                                     height: 32,
                                     width: 32,
                                     colorFilter: ColorFilter.mode(
-                                      CatalagoColecionadorTheme
-                                          .navBarBackkgroundColor,
-                                      BlendMode.srcIn),
-                                      semanticsLabel: 'X',
+                                      CatalagoColecionadorTheme.whiteColor,
+                                      BlendMode.srcATop,
                                     ),
+                                    semanticsLabel: 'X',
+                                  ),
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
@@ -143,9 +160,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                         child: SingleChildScrollView(
                           child: Center(
                             child: Container(
-                              margin: EdgeInsets.only(
-                                bottom: 60,
-                              ),
+                              margin: EdgeInsets.only(bottom: 60),
                               constraints: BoxConstraints(
                                 maxWidth: maxContentWidth,
                               ),
@@ -157,7 +172,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                   nameController: _nameController,
                                   descriptionController: _descriptionController,
                                   imagePath: _imagePath,
-                                  onImageChanged: (val) => setState(() => _imagePath = val),
+                                  onImageChanged: (val) =>
+                                      setState(() => _imagePath = val),
+                                  textButtonOption: textButtonOption,
                                   onSave: _onSave,
                                 ),
                               ),

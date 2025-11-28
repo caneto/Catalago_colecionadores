@@ -1,6 +1,7 @@
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
+
 import '../../add_car/widget/form_group.dart';
 
 class AddCategoryForm extends StatefulWidget {
@@ -10,6 +11,7 @@ class AddCategoryForm extends StatefulWidget {
   final String? imagePath;
   final ValueChanged<String?>? onImageChanged;
   final VoidCallback onSave;
+  final String textButtonOption;
 
   const AddCategoryForm({
     super.key,
@@ -18,7 +20,8 @@ class AddCategoryForm extends StatefulWidget {
     required this.descriptionController,
     this.imagePath,
     this.onImageChanged,
-    required this.onSave,
+    required this.onSave, 
+    required this.textButtonOption,
   });
 
   @override
@@ -141,7 +144,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                   ),
                 ),
                 onPressed: widget.onSave,
-                child: const Text('Salvar Categoria'),
+                child: Text(widget.textButtonOption),
               ),
             ),
           ),

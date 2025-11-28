@@ -40,7 +40,6 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
 
     return Scaffold(
       body: SafeArea(
-        // For accessibility and padding on safe areas
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
             final maxWidth = constraints.maxWidth;
@@ -213,10 +212,15 @@ class _ConfigContentSection extends StatelessWidget {
               subtitle: 'Tema claro ou escuro',
             ),
             SizedBox(height: 4),
-            _ConfigDetailCard(
-              iconUrl: 'categoria.svg',
-              title: 'Administrar Categorias',
-              subtitle: 'Administração das Categorias',
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed('/list_category');
+              },
+              child: _ConfigDetailCard(
+                iconUrl: 'categoria.svg',
+                title: 'Administrar Categorias',
+                subtitle: 'Administração das Categorias',
+              ),
             ),
             SizedBox(height: 4),
             _ConfigDetailCard(
@@ -282,7 +286,6 @@ class _ConfigSection extends StatelessWidget {
             fontWeight: FontWeight.w700,
             color: CatalagoColecionadorTheme.whiteColor,
             letterSpacing: 0.02,
-            fontFamily: 'Plus Jakarta Sans',
             height: 1.15,
           ),
         ),

@@ -96,5 +96,12 @@ class IsarService {
     final isar = await db;
     return await isar.categoryCollections.where().findAll();
   }
+
+  Future<void> deleteCategory(Id id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.categoryCollections.delete(id);
+    });
+  }
 }
 

@@ -5,6 +5,7 @@ import 'package:catalago_colecionadores/src/pages/add_car/scan/add_scan_page.dar
 import 'package:catalago_colecionadores/src/pages/auth/login/login_page.dart';
 import 'package:catalago_colecionadores/src/pages/auth/registro/register_page.dart';
 import 'package:catalago_colecionadores/src/pages/category/add_category_page.dart';
+import 'package:catalago_colecionadores/src/pages/category/list_category_page.dart';
 import 'package:catalago_colecionadores/src/pages/configuration/configuracoes_page.dart';
 import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao.dart';
@@ -83,6 +84,8 @@ class _ColecaoMainAppState extends State<ColecaoMainApp> {
         '/minha_colecao2': (_) => MinhaColecao2(),
         '/category': (_) => AddCategoryPage(),
         '/configuracoes': (_) => ConfiguracoesPage(),
+        '/add_category_page': (_) => AddCategoryPage(),
+        '/list_category': (_) => ListCategoryPage(),
       },
     );
   }
