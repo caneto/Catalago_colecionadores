@@ -1,5 +1,6 @@
 // --- FORM WIDGET ---
 import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_models/marca_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -44,7 +45,7 @@ class AddCarColectionForm extends StatefulWidget {
     required this.collectionCondition,
     required this.onCollectionConditionChanged,
     required this.notesController,
-    required this.onSave, 
+    required this.onSave,
     this.onImageChanged,
     String? imagePath,
   });
@@ -56,7 +57,9 @@ class AddCarColectionForm extends StatefulWidget {
 class _AddCarColectionFormState extends State<AddCarColectionForm> {
   final IsarService service = IsarService();
   List<CategoryCollection> categories = [];
+  List<MarcaCollection> marcas = [];
   String? _selectedCategory;
+  String? _selectedMarca;
 
   @override
   void initState() {
@@ -66,15 +69,23 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
 
   Future<void> _loadCategories() async {
     final cats = await service.getAllCategories();
+    final brands = await service.getAllMarcas();
     setState(() {
       categories = cats;
+      marcas = brands;
       if (widget.categoriaController.text.isNotEmpty) {
         if (categories.any((c) => c.name == widget.categoriaController.text)) {
           _selectedCategory = widget.categoriaController.text;
         }
       }
+      if (widget.marcaController.text.isNotEmpty) {
+        if (marcas.any((m) => m.nome == widget.marcaController.text)) {
+          _selectedMarca = widget.marcaController.text;
+        }
+      }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -191,8 +202,20 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
               Expanded(
                 child: FormGroup(
                   label: 'Marca',
-                  child: TextFormField(
-                    controller: widget.marcaController,
+                  child: DropdownButtonFormField<String>(
+                    initialValue: _selectedMarca,
+                    items: marcas.map((MarcaCollection marca) {
+                      return DropdownMenuItem<String>(
+                        value: marca.nome,
+                        child: Text(marca.nome),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedMarca = newValue;
+                        widget.marcaController.text = newValue ?? '';
+                      });
+                    },
                     style: CatalagoColecionadorTheme.textBold.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
                       fontSize: 15,
@@ -200,11 +223,11 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                     ),
                     decoration:
                         CatalagoColecionadorTheme.inputDecorationAddCard(
-                          hintText: 'Ex Hot Wheels',
+                          hintText: 'Selecione',
                           colorSide: CatalagoColecionadorTheme.textMainAccent,
                         ),
                     validator: (v) =>
-                        (v?.trim().isEmpty ?? true) ? 'Marca exigida' : null,
+                        (v == null || v.isEmpty) ? 'Marca exigida' : null,
                   ),
                 ),
               ),
@@ -245,10 +268,11 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
-                    decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
-                      hintText: 'Exemplo 2008',
-                      colorSide: CatalagoColecionadorTheme.textMainAccent,
-                    ),
+                    decoration:
+                        CatalagoColecionadorTheme.inputDecorationAddCard(
+                          hintText: 'Exemplo 2008',
+                          colorSide: CatalagoColecionadorTheme.textMainAccent,
+                        ),
                     keyboardType: TextInputType.number,
                     validator: (v) =>
                         (v?.trim().isEmpty ?? true) ? 'Ano exigido' : null,

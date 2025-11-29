@@ -57,7 +57,7 @@ class _CheckPoliticsScreenState extends State<CheckPoliticsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Termos de Uso')),
+      appBar: AppBar(title: const Text('Politica e Privacidade')),
       body: Column(
         children: [
           Expanded(

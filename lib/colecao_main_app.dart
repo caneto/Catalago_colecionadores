@@ -10,6 +10,8 @@ import 'package:catalago_colecionadores/src/pages/configuration/configuracoes_pa
 import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_politics_screen.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_terms_screen.dart';
+import 'package:catalago_colecionadores/src/pages/marca/add_marca_page.dart';
+import 'package:catalago_colecionadores/src/pages/marca/list_marca_page.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao_2.dart';
 import 'package:catalago_colecionadores/src/pages/pos_start/pos_start_screen.dart';
@@ -89,7 +91,9 @@ class _ColecaoMainAppState extends State<ColecaoMainApp> {
         '/add_category_page': (_) => AddCategoryPage(),
         '/list_category': (_) => ListCategoryPage(),
         '/check_terms_screen': (_) => CheckTermsScreen(),
-        '/check_politics_screen': (_) => CheckPoliticsScreen()
+        '/check_politics_screen': (_) => CheckPoliticsScreen(),
+        '/list_marca': (_) => ListMarcaPage(),
+        '/add_marca_page': (_) => AddMarcaPage(),
       },
     );
   }

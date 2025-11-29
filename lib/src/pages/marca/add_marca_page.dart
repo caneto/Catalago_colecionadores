@@ -3,55 +3,58 @@ import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../core/database/isar_models/category_collection.dart';
+import '../../core/database/isar_models/marca_collection.dart';
 import '../../core/database/isar_service.dart';
-import 'widgets/add_category_form.dart';
+import 'widgets/add_marca_form.dart';
 
-class AddCategoryPage extends StatefulWidget {
-  final CategoryCollection? category;
-  const AddCategoryPage({super.key, this.category});
+class AddMarcaPage extends StatefulWidget {
+  final MarcaCollection? marca;
+  const AddMarcaPage({super.key, this.marca});
 
   @override
-  State<AddCategoryPage> createState() => _AddCategoryPageState();
+  State<AddMarcaPage> createState() => _AddMarcaPageState();
 }
 
-class _AddCategoryPageState extends State<AddCategoryPage> {
+class _AddMarcaPageState extends State<AddMarcaPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  String? _imagePath;
+  final TextEditingController _quantidadeController = TextEditingController();
+  String? _logoPath;
 
-  String textAddOption = 'Adicionar Categoria';
-  String textButtonOption = 'Salvar Categoria';
+  String textAddOption = 'Adicionar Marca';
+  String textButtonOption = 'Salvar Marca';
 
   @override
   void initState() {
     super.initState();
-    if (widget.category != null) {
-      _nameController.text = widget.category!.name;
-      _descriptionController.text = widget.category!.description ?? '';
-      _imagePath = widget.category!.imagePath;
-      textAddOption = "Editar Categoria";
-      textButtonOption = "Editar Categoria";
+    if (widget.marca != null) {
+      _nameController.text = widget.marca!.nome;
+      _descriptionController.text = widget.marca!.descricao ?? '';
+      _quantidadeController.text = widget.marca!.quantidade?.toString() ?? '';
+      _logoPath = widget.marca!.logo;
+      textAddOption = "Editar Marca";
+      textButtonOption = "Editar Marca";
     }
   }
 
   void _onSave() async {
     if (_formKey.currentState?.validate() != true) return;
 
-    final category = widget.category ?? CategoryCollection();
-    category
-      ..name = _nameController.text
-      ..description = _descriptionController.text
-      ..imagePath = _imagePath;
+    final marca = widget.marca ?? MarcaCollection();
+    marca
+      ..nome = _nameController.text
+      ..descricao = _descriptionController.text
+      ..quantidade = int.tryParse(_quantidadeController.text)
+      ..logo = _logoPath;
 
     final isarService = IsarService();
-    await isarService.saveCategory(category);
+    await isarService.saveMarca(marca);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Categoria salva com sucesso!'),
+          content: Text('Marca salva com sucesso!'),
           backgroundColor: CatalagoColecionadorTheme.bgInputAccent,
           behavior: SnackBarBehavior.floating,
         ),
@@ -163,13 +166,14 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                               padding: EdgeInsets.only(top: 0),
                               child: Padding(
                                 padding: horizontalPadding,
-                                child: AddCategoryForm(
+                                child: AddMarcaForm(
                                   formKey: _formKey,
                                   nameController: _nameController,
                                   descriptionController: _descriptionController,
-                                  imagePath: _imagePath,
-                                  onImageChanged: (val) =>
-                                      setState(() => _imagePath = val),
+                                  quantidadeController: _quantidadeController,
+                                  logoPath: _logoPath,
+                                  onLogoChanged: (val) =>
+                                      setState(() => _logoPath = val),
                                   textButtonOption: textButtonOption,
                                   onSave: _onSave,
                                 ),

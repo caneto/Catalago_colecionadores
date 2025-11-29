@@ -90,7 +90,9 @@ class ConfigContentSection extends StatelessWidget {
             ),
             SizedBox(height: 4),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed('/list_marca');
+              },
               child: ConfigDetailCard(
                 iconUrl: 'marca.svg',
                 title: 'Administrar Marca',

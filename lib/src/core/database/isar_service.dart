@@ -1,8 +1,10 @@
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
+
 import 'isar_models/car_collection.dart';
-import 'isar_models/user_collection.dart';
 import 'isar_models/category_collection.dart';
+import 'isar_models/marca_collection.dart';
+import 'isar_models/user_collection.dart';
 
 class IsarService {
   late Future<Isar> db;
@@ -15,7 +17,12 @@ class IsarService {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationDocumentsDirectory();
       return await Isar.open(
-        [CarCollectionSchema, UserCollectionSchema, CategoryCollectionSchema],
+        [
+          CarCollectionSchema,
+          UserCollectionSchema,
+          CategoryCollectionSchema,
+          MarcaCollectionSchema,
+        ],
         directory: dir.path,
         inspector: true,
       );
@@ -39,7 +46,7 @@ class IsarService {
     final isar = await db;
     return await isar.carCollections.where().findAll();
   }
-  
+
   Future<List<CarCollection>> searchCars(String query) async {
     final isar = await db;
     return await isar.carCollections
@@ -85,7 +92,7 @@ class IsarService {
       return user;
     }
     return null;
-    }
+  }
 
   Future<void> saveCategory(CategoryCollection category) async {
     final isar = await db;
@@ -103,5 +110,21 @@ class IsarService {
       await isar.categoryCollections.delete(id);
     });
   }
-}
 
+  Future<void> saveMarca(MarcaCollection marca) async {
+    final isar = await db;
+    isar.writeTxnSync<int>(() => isar.marcaCollections.putSync(marca));
+  }
+
+  Future<List<MarcaCollection>> getAllMarcas() async {
+    final isar = await db;
+    return await isar.marcaCollections.where().findAll();
+  }
+
+  Future<void> deleteMarca(Id id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.marcaCollections.delete(id);
+    });
+  }
+}
