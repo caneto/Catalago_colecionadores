@@ -5,7 +5,6 @@ import 'config_section.dart';
 
 // --- CONFIG CONTENT ---
 class ConfigContentSection extends StatelessWidget {
-
   const ConfigContentSection({super.key});
 
   @override
@@ -21,7 +20,7 @@ class ConfigContentSection extends StatelessWidget {
               iconUrl: 'notification_option.svg',
               title: 'Notificações de Lançamentos',
               subtitle: 'Gerenciar notificações para novos lançamentos',
-              switchActivity: true
+              switchActivity: true,
             ),
             SizedBox(height: 4),
             ConfigDetailCard(
@@ -107,7 +106,9 @@ class ConfigContentSection extends StatelessWidget {
           title: 'Legal',
           children: [
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed('/check_terms_screen');
+              },
               child: ConfigDetailCard(
                 iconUrl: 'termos_legais.svg',
                 title: 'Termos de uso',
@@ -116,7 +117,9 @@ class ConfigContentSection extends StatelessWidget {
             ),
             SizedBox(height: 4),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed('/check_politics_screen');
+              },
               child: ConfigDetailCard(
                 iconUrl: 'politica_privacidade.svg',
                 title: 'Política de privacidade',
