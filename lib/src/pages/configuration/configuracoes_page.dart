@@ -162,6 +162,7 @@ class _ConfigContentSection extends StatelessWidget {
               iconUrl: 'notification_option.svg',
               title: 'Notificações de Lançamentos',
               subtitle: 'Gerenciar notificações para novos lançamentos',
+              switchActivity: true
             ),
             SizedBox(height: 4),
             _ConfigDetailCard(
@@ -169,6 +170,7 @@ class _ConfigContentSection extends StatelessWidget {
               title: 'Notificações de mudanças de preço',
               subtitle:
                   'Receba alertas sobre novos modelos e mudanças de preço',
+              switchActivity: true,
             ),
           ],
         ),
@@ -181,19 +183,24 @@ class _ConfigContentSection extends StatelessWidget {
               iconUrl: 'visibilidade.svg',
               title: 'Visibilidade da coleção',
               subtitle: 'Torne sua coleção visível para outros usuários',
+              switchActivity: true,
             ),
           ],
         ),
         SizedBox(height: 14),
-        _ConfigSection(
-          title: 'Conta',
-          children: [
-            _ConfigDetailCard(
-              iconUrl: 'account.svg',
-              title: 'Informações da conta',
-              subtitle: 'Gerenciar informações da conta',
-            ),
-          ],
+        InkWell(
+          onTap: () {},
+          child: _ConfigSection(
+            title: 'Conta',
+            children: [
+              _ConfigDetailCard(
+                iconUrl: 'account.svg',
+                title: 'Informações da conta',
+                subtitle: 'Gerenciar informações da conta',
+                withIcon: true,
+              ),
+            ],
+          ),
         ),
         SizedBox(height: 14),
         // Preferências
@@ -220,13 +227,18 @@ class _ConfigContentSection extends StatelessWidget {
                 iconUrl: 'categoria.svg',
                 title: 'Administrar Categorias',
                 subtitle: 'Administração das Categorias',
+                withIcon: true,
               ),
             ),
             SizedBox(height: 4),
-            _ConfigDetailCard(
-              iconUrl: 'marca.svg',
-              title: 'Administrar Marca',
-              subtitle: 'Adiministração das Marcas',
+            InkWell(
+              onTap: () {},
+              child: _ConfigDetailCard(
+                iconUrl: 'marca.svg',
+                title: 'Administrar Marca',
+                subtitle: 'Adiministração das Marcas',
+                withIcon: true,
+              ),
             ),
           ],
         ),
@@ -235,15 +247,23 @@ class _ConfigContentSection extends StatelessWidget {
         _ConfigSection(
           title: 'Legal',
           children: [
-            _ConfigDetailCard(
-              iconUrl: 'termos_legais.svg',
-              title: 'Termos de uso',
+            InkWell(
+              onTap: () {},
+              child: _ConfigDetailCard(
+                iconUrl: 'termos_legais.svg',
+                title: 'Termos de uso',
+                withIcon: true,
+              ),
             ),
             SizedBox(height: 4),
-            _ConfigDetailCard(
-              iconUrl: 'politica_privacidade.svg',
-              title: 'Política de privacidade',
-              marginBottom: 0,
+            InkWell(
+              onTap: () {},
+              child: _ConfigDetailCard(
+                iconUrl: 'politica_privacidade.svg',
+                title: 'Política de privacidade',
+                marginBottom: 0,
+                withIcon: true,
+              ),
             ),
           ],
         ),
@@ -252,15 +272,23 @@ class _ConfigContentSection extends StatelessWidget {
         _ConfigSection(
           title: 'Ajuda e suporte',
           children: [
-            _ConfigDetailCard(
-              iconUrl: 'suporte.svg',
-              title: 'Perguntas frequentes',
+            InkWell(
+              onTap: () {},
+              child: _ConfigDetailCard(
+                iconUrl: 'suporte.svg',
+                title: 'Perguntas frequentes',
+                withIcon: true,
+              ),
             ),
             SizedBox(height: 4),
-            _ConfigDetailCard(
-              iconUrl: 'suporte.svg',
-              title: 'Fale conosco',
-              marginBottom: 0,
+            InkWell(
+              onTap: () {},
+              child: _ConfigDetailCard(
+                iconUrl: 'suporte.svg',
+                title: 'Fale conosco',
+                marginBottom: 0,
+                withIcon: true,
+              ),
             ),
           ],
         ),
@@ -296,23 +324,44 @@ class _ConfigSection extends StatelessWidget {
   }
 }
 
-class _ConfigDetailCard extends StatelessWidget {
+// ignore: must_be_immutable
+class _ConfigDetailCard extends StatefulWidget {
   final String iconUrl;
   final String title;
   final String? subtitle;
   final double? marginBottom;
+  final bool? withIcon;
+  final bool? switchActivity;
+  bool lightTheme;
 
-  const _ConfigDetailCard({
+  _ConfigDetailCard({
     required this.iconUrl,
     required this.title,
     this.subtitle,
     this.marginBottom = 9,
+    this.withIcon = false,
+    this.switchActivity = false,
+    this.lightTheme = true,
   });
+
+  @override
+  State<_ConfigDetailCard> createState() => _ConfigDetailCardState();
+}
+
+class _ConfigDetailCardState extends State<_ConfigDetailCard> {
+  WidgetStateProperty<Color?> trackColor = WidgetStateProperty<Color?>.fromMap(
+    <WidgetStatesConstraint, Color>{WidgetState.selected: Colors.lightBlue},
+  );
+  final WidgetStateProperty<Color?> overlayColor =
+      WidgetStateProperty<Color?>.fromMap(<WidgetState, Color>{
+        WidgetState.selected: Colors.lightBlue.withValues(alpha: 0.54),
+        WidgetState.disabled: Colors.grey.shade400,
+      });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: marginBottom ?? 9),
+      margin: EdgeInsets.only(bottom: widget.marginBottom ?? 9),
       decoration: BoxDecoration(
         color: CatalagoColecionadorTheme.bgCard,
         borderRadius: BorderRadius.circular(10),
@@ -321,39 +370,59 @@ class _ConfigDetailCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _CircleIcon(url: iconUrl, size: 37),
+          _CircleIcon(url: widget.iconUrl, size: 37),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  widget.title,
                   style: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                     color: CatalagoColecionadorTheme.whiteColor,
                     height: 20 / 15,
                   ),
-                  semanticsLabel: title,
+                  semanticsLabel: widget.title,
                 ),
-                if (subtitle != null)
+                if (widget.subtitle != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 1.5),
                     child: Text(
-                      subtitle!,
+                      widget.subtitle!,
                       style: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: CatalagoColecionadorTheme.navBarBackkgroundColor,
-                        fontFamily: 'Plus Jakarta Sans',
                       ),
-                      semanticsLabel: subtitle,
+                      semanticsLabel: widget.subtitle,
                     ),
                   ),
               ],
             ),
           ),
+          if (widget.withIcon ?? false)
+            Align(
+              alignment: AlignmentGeometry.centerRight,
+              child: SvgPicture.asset(
+                'assets/images/seta_direita.svg',
+                height: 28,
+                width: 28,
+              ),
+            ),
+          if (widget.switchActivity ?? false)
+            Switch(
+              value: widget.lightTheme,
+              overlayColor: overlayColor,
+              trackColor: trackColor,
+              thumbColor: const WidgetStatePropertyAll<Color>(Colors.black),
+              onChanged: (bool value) {
+                setState(() {
+                  widget.lightTheme = value;
+                });
+              },
+            ),
         ],
       ),
     );

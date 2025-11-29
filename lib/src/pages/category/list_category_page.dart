@@ -118,6 +118,7 @@ class _ListCategoryPageState extends State<ListCategoryPage> {
                                 await Navigator.of(
                                   context,
                                 ).pushNamed('/add_category_page');
+                                _loadCategories();
                               },
                             ),
                           ),
