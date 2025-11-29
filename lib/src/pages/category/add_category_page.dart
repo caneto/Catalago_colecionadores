@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../core/database/isar_models/category_collection.dart';
 import '../../core/database/isar_service.dart';
-import 'widget/add_category_form.dart';
+import 'widgets/add_category_form.dart';
 
 class AddCategoryPage extends StatefulWidget {
   final CategoryCollection? category;
