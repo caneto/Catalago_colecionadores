@@ -12,8 +12,8 @@ class PosStartScreen extends StatelessWidget {
     final sizeOf = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      backgroundColor:
-          Colors.blueGrey, // <-- cor de fundo preta para toda a tela
+      backgroundColor: CatalagoColecionadorTheme
+          .blackGround, // <-- cor de fundo preta para toda a tela
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -31,10 +31,10 @@ class PosStartScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: const Text(
+                child: Text(
                   'Colecionador de Miniaturas',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color:
@@ -45,11 +45,12 @@ class PosStartScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: const Text(
+                child: Text(
                   'Acompanhe, gerencie e exiba sua coleção de miniaturas com facilidade. Descubra novos modelos, conecte-se com outros colecionadores e mantenha-se atualizado sobre os últimos lançamentos.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
                     fontSize: 16,
+                    fontWeight: FontWeight.w400,
                     color: Colors.white, // descrição em branco translúcido
                   ),
                 ),
@@ -85,7 +86,7 @@ class PosStartScreen extends StatelessWidget {
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
+                      foregroundColor: CatalagoColecionadorTheme.whiteColor,
                       backgroundColor:
                           CatalagoColecionadorTheme.blackClaroColor,
                       side: const BorderSide(
@@ -115,7 +116,7 @@ class PosStartScreen extends StatelessWidget {
                       ],
                     ),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
+                      foregroundColor: CatalagoColecionadorTheme.whiteColor,
                       backgroundColor:
                           CatalagoColecionadorTheme.blackClaroColor,
                       side: const BorderSide(
@@ -132,16 +133,20 @@ class PosStartScreen extends StatelessWidget {
                         Navigator.of(context).pushReplacementNamed('/registro');
                       },
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.blueGrey,
-                        side: const BorderSide(color: Colors.blueGrey),
-                      ),
-                      child: const Text(
-                        'Criar conta',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        foregroundColor: CatalagoColecionadorTheme.whiteColor,
+                        backgroundColor: CatalagoColecionadorTheme.bgCard,
+                        side: const BorderSide(
+                          color: CatalagoColecionadorTheme.bgCard,
                         ),
+                      ),
+                      child: Text(
+                        'Criar conta',
+                        style: CatalagoColecionadorTheme.titleSmallStyle
+                            .copyWith(
+                              color: CatalagoColecionadorTheme.whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16
+                            ),
                       ),
                     ),
                   ),
@@ -152,7 +157,7 @@ class PosStartScreen extends StatelessWidget {
                     child: Center(
                       child: RichText(
                         text: TextSpan(
-                          style: const TextStyle(
+                          style: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
                             color: CatalagoColecionadorTheme.blackColor,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -161,8 +166,9 @@ class PosStartScreen extends StatelessWidget {
                             const TextSpan(text: 'Esqueceu sua senha? '),
                             TextSpan(
                               text: 'Click aqui.',
-                              style: const TextStyle(
+                              style: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
                                 color: CatalagoColecionadorTheme.whiteColor,
+                                fontSize: 14,
                                 decoration: TextDecoration.underline,
                               ),
                               recognizer: TapGestureRecognizer()

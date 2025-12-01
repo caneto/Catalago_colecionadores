@@ -12,7 +12,7 @@ class StartScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor:
-          Colors.blueGrey, // <-- cor de fundo preta para toda a tela
+          CatalagoColecionadorTheme.blackGround, // <-- cor de fundo preta para toda a tela
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -31,10 +31,10 @@ class StartScreen extends StatelessWidget {
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: const Text(
+                child: Text(
                   'Colecionador de Miniaturas',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: CatalagoColecionadorTheme.titleStyle.copyWith(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color:
@@ -45,12 +45,13 @@ class StartScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: const Text(
+                child: Text(
                   'Acompanhe, gerencie e exiba sua coleção de miniaturas com facilidade. Descubra novos modelos, conecte-se com outros colecionadores e mantenha-se atualizado sobre os últimos lançamentos.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: CatalagoColecionadorTheme.titleStyle.copyWith(
                     fontSize: 16,
-                    color: Colors.white, // descrição em branco translúcido
+                    fontWeight: FontWeight.w400,
+                    color: CatalagoColecionadorTheme.whiteColor, // descrição em branco translúcido
                   ),
                 ),
               ),
@@ -67,7 +68,7 @@ class StartScreen extends StatelessWidget {
                     height: 48,
                     widget: const Text('Começar'),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
+                      foregroundColor: CatalagoColecionadorTheme.whiteColor,
                       side: const BorderSide(
                         color: CatalagoColecionadorTheme.blueColor,
                       ), 
@@ -83,7 +84,7 @@ class StartScreen extends StatelessWidget {
                     height: 48,
                     widget: const Text('Entrar'),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
+                      foregroundColor: CatalagoColecionadorTheme.whiteColor,
                       backgroundColor:
                           CatalagoColecionadorTheme.blackClaroColor,
                       side: const BorderSide(

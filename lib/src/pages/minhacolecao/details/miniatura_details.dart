@@ -85,15 +85,6 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     final isMedium = media.size.width <= 630;
     final sizeOf = MediaQuery.sizeOf(context);
 
-    // Colors (matching the CSS scheme)
-    const backgroundColor = Color(0xFF121721); // #121721
-    const secondaryBg = Color(0xFF161C2C);
-    const borderColor = Color(0xFF232B3E);
-    const galleryBorder = Color(0xFF28396B);
-    const blueMain = Color(0xFF0D40A6);
-    const blueHighlight = Color(0xFF0172CB);
-    const starFillColor = blueMain;
-
     return Scaffold(
       extendBody: true,
       body: SafeArea(
@@ -221,10 +212,31 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                                 });
                               },
                             ),
-                            SizedBox(height: 80),
                           ],
                         ),
                       ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: sizeOf.width * .94,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: () async {},
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: CatalagoColecionadorTheme.whiteColor,
+                            backgroundColor: CatalagoColecionadorTheme.bgCard,
+                            side: const BorderSide(color: Colors.blueGrey),
+                          ),
+                          child: Text(
+                            'Remover Coleção',
+                            style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
+                              color: CatalagoColecionadorTheme.whiteColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
                     ],
                   ),
                 ],
@@ -236,4 +248,3 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     );
   }
 }
-
