@@ -1,6 +1,30 @@
-# Catalago de Colecionadores
+<h1 align="center"> Catalago de Colecionadores</h1>
 
-Projeto de Criação de um App - A principio para Android, para cadastrar e controlar coleções inicialmente de 'Carrinhos', futuramente de outros itens.
+---
+
+<h2>Tópicos 📋</h2>
+
+   <p>
+
+   - [📖 Sobre](#-sobre)
+   - [📱 Preview](#-preview)
+   - [📦 Assets](#-assets)
+   - [🛠️ Funcionalidades e Tecnologias Estudadas](#%EF%B8%8F-funcionalidades-e-tecnologias-estudadas)
+   - [🤯 Desafios e Aprendizados ao longo do caminho](#-desafios-e-aprendizados-ao-longo-do-caminho)
+   - [🤔 Como usar](#-como-usar)
+   - [💪 Como contribuir](#-como-contribuir)
+   - [📝 Licença](#-licença)
+
+   </p>
+
+---
+
+<h2>📖 Sobre</h2>
+
+<p>
+    Projeto de Criação de um App - A principio para Android, para cadastrar e controlar coleções inicialmente de 'Carrinhos', futuramente de outros itens..<br>
+    <br>
+</p>
 
 
 
