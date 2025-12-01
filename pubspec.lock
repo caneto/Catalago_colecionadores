@@ -501,6 +501,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  loading_animation_widget:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "2775606ef36e69dab27a122d58fe4c5c346fb3e2"
+      url: "https://github.com/caneto/loading_animation_widget.git"
+    source: git
+    version: "1.2.0+5"
   logger:
     dependency: "direct main"
     description:
@@ -701,14 +710,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.2"
-  preact_signals:
-    dependency: transitive
-    description:
-      name: preact_signals
-      sha256: "8bf3cec7fe784d224f1a1132ae7b2f9f3852609046ccb71c4f450a13dd811abf"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.9.3"
   pub_semver:
     dependency: transitive
     description:
@@ -801,18 +802,18 @@ packages:
     dependency: transitive
     description:
       name: signals_core
-      sha256: "10e527cda3c400703e4156da16aeaea274644ecb7db11abeec7dc7cc9bec9abd"
+      sha256: "79ca5a5ebca67eba54f6b271f8ac7adf1250717fb5d947295e77dd34610cabac"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "3.0.0"
   signals_flutter:
     dependency: "direct main"
     description:
       name: signals_flutter
-      sha256: d04c973e3feeaddd7d8428f3a8af911297febb3c083091217e1a1fc0c4d6504f
+      sha256: "85b15c10a042da332d11ca989b8b038802fe2effe2c6dc29ecbd02becec1bba5"
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
+
 import '../../../core/database/isar_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,17 +21,12 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
-  //final controller = Injector.get<LoginController>();
-  //late final EffectCleanup effectCleanup;
+  
+  late bool _passwordVisible;
 
   @override
   void initState() {
-    //  messageListener(controller);
-    //  effectCleanup = effect(() {
-    //    if (controller.logged) {
-    //      Navigator.of(context).pushReplacementNamed('/home');
-    //    }
-    //  });
+     _passwordVisible = false;
     super.initState();
   }
 
@@ -38,7 +34,6 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
   void dispose() {
     _emailEC.dispose();
     _passwordEC.dispose();
-    //effectCleanup();
     super.dispose();
   }
 
@@ -91,14 +86,16 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                           title: 'Password',
                           obscureControll:
                               true, // habilita o obscure e seus funcões
-                          //obscureText: controller.obscurePassword,
+                          obscureText: !_passwordVisible,
                           controller: _passwordEC,
                           validator: Validatorless.required(
                             'Senha obrigatória',
                           ),
                           hintText: 'Digite uma senha valida',
                           passwordToggle: () {
-                            //controller.passwordToggle();
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
                           },
                         );
                       }),

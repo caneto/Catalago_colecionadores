@@ -28,7 +28,6 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   // Search state
   String _searchText = '';
 
-  // Dummy filter state (in production, adjust later)
   final int _selectedFilter = -1;
 
   // Data state

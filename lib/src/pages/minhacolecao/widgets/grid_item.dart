@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -11,7 +10,8 @@ class GridItem extends StatelessWidget {
   final Color brandColor;
   final Color modelColor;
 
-  const GridItem({super.key, 
+  const GridItem({
+    super.key,
     required this.item,
     required this.surface,
     required this.brandColor,
@@ -20,66 +20,74 @@ class GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Semantics(
-      label: '${item.marca}, ${item.nomeMiniatura}',
-      child: Container(
-        decoration: BoxDecoration(
-          color: surface,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AspectRatio(
-              aspectRatio: 4 / 3,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(10),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).pushNamed('/miniatura_details');
+      },
+      child: Semantics(
+        label: '${item.marca}, ${item.nomeMiniatura}',
+        child: Container(
+          decoration: BoxDecoration(
+            color: surface,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AspectRatio(
+                aspectRatio: 4 / 3,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(10),
+                  ),
+                  child: item.imagePath != null && item.imagePath!.isNotEmpty
+                      ? Image.file(
+                          File(item.imagePath!),
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          errorBuilder: (context, error, stack) =>
+                              Container(color: Colors.grey.shade300),
+                        )
+                      : Container(
+                          color: Colors.grey.shade300,
+                          child: const Icon(
+                            Icons.image_not_supported,
+                            color: Colors.grey,
+                          ),
+                        ),
                 ),
-                child: item.imagePath != null && item.imagePath!.isNotEmpty
-                    ? Image.file(
-                        File(item.imagePath!),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        errorBuilder: (context, error, stack) =>
-                            Container(color: Colors.grey.shade300),
-                      )
-                    : Container(
-                        color: Colors.grey.shade300,
-                        child: const Icon(Icons.image_not_supported, color: Colors.grey),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 11),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.marca,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        height: 1.18,
+                        letterSpacing: -0.01,
+                        color: brandColor,
                       ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 10, 12, 11),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.marca,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      height: 1.18,
-                      letterSpacing: -0.01,
-                      color: brandColor,
                     ),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    item.nomeMiniatura,
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      height: 1.12,
-                      letterSpacing: -0.01,
-                      color: modelColor,
+                    const SizedBox(height: 2),
+                    Text(
+                      item.nomeMiniatura,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        height: 1.12,
+                        letterSpacing: -0.01,
+                        color: modelColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

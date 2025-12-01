@@ -137,10 +137,12 @@ class _AddScanPageState extends State<AddScanPage> {
                               foto = imageFile?.path;
                             });
                             if (mounted) {
+                              // ignore: use_build_context_synchronously
                               Navigator.of(context).pop(foto);
                             }
                           } catch (e) {
                             if (mounted) {
+                              // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('Erro ao tirar foto: $e')),
                               );

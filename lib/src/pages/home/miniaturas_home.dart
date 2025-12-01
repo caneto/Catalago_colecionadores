@@ -1,4 +1,6 @@
 import 'package:catalago_colecionadores/global.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -85,20 +87,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
       return 105;
     }
     return 120;
-  }
-
-  double _getSectionTitleFontSize(BoxConstraints constraints) {
-    if (constraints.maxWidth < 600) {
-      return 18;
-    }
-    return 22;
-  }
-
-  double _headerTitleFontSize(BoxConstraints constraints) {
-    if (constraints.maxWidth < 600) {
-      return 18;
-    }
-    return 20;
   }
 
   EdgeInsets _searchBarMargin(BoxConstraints constraints) {
@@ -218,8 +206,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
             final itemCardWidth = _getItemCardWidth(constraints);
             final itemCardHeight = _getItemCardHeight(constraints);
             final itemImageHeight = _getItemImageHeight(constraints);
-            final sectionTitleFontSize = _getSectionTitleFontSize(constraints);
-            final headerTitleFontSize = _headerTitleFontSize(constraints);
             final searchBarMargin = _searchBarMargin(constraints);
             final searchBarMaxWidth = _searchBarMaxWidth(constraints);
             final searchBarMinWidth = _searchBarMinWidth(constraints);
@@ -274,7 +260,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                         .titleStyleNormal
                                         .copyWith(
                                           fontWeight: FontWeight.w700,
-                                          fontSize: headerTitleFontSize,
+                                          fontSize: 18,
                                           color: Colors.white,
                                           letterSpacing: -0.5,
                                         ),
@@ -381,7 +367,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                 style: CatalagoColecionadorTheme.textBold
                                     .copyWith(
                                       color: Colors.white,
-                                      fontSize: sectionTitleFontSize,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: -0.25,
                                     ),
@@ -413,7 +399,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                 style: CatalagoColecionadorTheme.textBold
                                     .copyWith(
                                       color: Colors.white,
-                                      fontSize: sectionTitleFontSize,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: -0.25,
                                     ),
@@ -445,7 +431,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                 style: CatalagoColecionadorTheme.textBold
                                     .copyWith(
                                       color: Colors.white,
-                                      fontSize: sectionTitleFontSize,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w700,
                                       letterSpacing: -0.25,
                                     ),
@@ -455,33 +441,66 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                               margin: EdgeInsets.only(
                                 top: constraints.maxWidth < 600 ? 2 : 6,
                               ),
-                              child: Wrap(
-                                spacing: constraints.maxWidth < 600 ? 10 : 16,
-                                runSpacing: 8,
-                                alignment: WrapAlignment.start,
-                                children: GlobalItens.categoriesItens
-                                    .map(
-                                      (cat) => CategoryItem(
-                                        label: cat,
-                                        fontSize: constraints.maxWidth < 600
-                                            ? 13
-                                            : 15,
-                                        padding: constraints.maxWidth < 600
-                                            ? const EdgeInsets.symmetric(
-                                                horizontal: 14,
-                                                vertical: 7,
-                                              )
-                                            : const EdgeInsets.symmetric(
-                                                horizontal: 24,
-                                                vertical: 8,
-                                              ),
-                                        minWidth: constraints.maxWidth < 600
-                                            ? 50
-                                            : 70,
-                                        onTap: onItemCardTap,
+                              child: FutureBuilder<List<CategoryCollection>>(
+                                future: IsarService().getAllCategories(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+
+                                  if (snapshot.hasError) {
+                                    return const Center(
+                                      child: Text(
+                                        'Erro ao carregar categorias',
                                       ),
-                                    )
-                                    .toList(),
+                                    );
+                                  }
+
+                                  if (!snapshot.hasData ||
+                                      snapshot.data!.isEmpty) {
+                                    return const Center(
+                                      child: Text(
+                                        'Nenhuma categoria encontrada',
+                                      ),
+                                    );
+                                  }
+
+                                  final categories = snapshot.data!;
+
+                                  return Wrap(
+                                    spacing: constraints.maxWidth < 600
+                                        ? 10
+                                        : 16,
+                                    runSpacing: 8,
+                                    alignment: WrapAlignment.start,
+                                    children: categories
+                                        .map(
+                                          (cat) => CategoryItem(
+                                            label: cat.name,
+                                            fontSize: constraints.maxWidth < 600
+                                                ? 13
+                                                : 15,
+                                            padding: constraints.maxWidth < 600
+                                                ? const EdgeInsets.symmetric(
+                                                    horizontal: 14,
+                                                    vertical: 7,
+                                                  )
+                                                : const EdgeInsets.symmetric(
+                                                    horizontal: 24,
+                                                    vertical: 8,
+                                                  ),
+                                            minWidth: constraints.maxWidth < 600
+                                                ? 50
+                                                : 70,
+                                            onTap: onItemCardTap,
+                                          ),
+                                        )
+                                        .toList(),
+                                  );
+                                },
                               ),
                             ),
                           ],

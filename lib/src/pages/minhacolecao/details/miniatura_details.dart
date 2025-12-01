@@ -1,8 +1,10 @@
-// File: MiniatureDetails.dart
-
+import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
+import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
-// Main entry point for the Miniature Details page
+import 'widgets/miniature_gallery.dart.dart';
+
 class MiniatureDetails extends StatefulWidget {
   const MiniatureDetails({super.key});
 
@@ -35,9 +37,9 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
 
   // Gallery image list
   final List<String> galleryImages = [
-    "https://app.codigma.io/api/uploads/assets/bd7e40e4-e070-4638-bd63-bd463ddf176e.png",
-    "https://app.codigma.io/api/uploads/assets/c4368da1-e685-46e0-8880-d8f8d90857da.png",
-    "https://app.codigma.io/api/uploads/assets/d5554b9b-c9b6-4ee6-bd7f-f808df6ed78a.png",
+    "assets/images/carro_ford_mustang.png",
+    "assets/images/carro_ford_mustang.png",
+    "assets/images/carro_ford_mustang.png",
   ];
 
   final String mainImage =
@@ -83,6 +85,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     final media = MediaQuery.of(context);
     final isSmall = media.size.width <= 430;
     final isMedium = media.size.width <= 630;
+    final sizeOf = MediaQuery.sizeOf(context);
 
     // Colors (matching the CSS scheme)
     const backgroundColor = Color(0xFF121721); // #121721
@@ -93,277 +96,161 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     const blueHighlight = Color(0xFF0172CB);
     const starFillColor = blueMain;
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: backgroundColor,
-        fontFamily: 'Plus Jakarta Sans',
-        useMaterial3: true,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: backgroundColor,
-          elevation: 0,
-        ),
-        textTheme: const TextTheme(
-          titleLarge: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
+    return Scaffold(
+      extendBody: true,
+      body: SafeArea(
+        child: Container(
+          constraints: BoxConstraints(minHeight: sizeOf.height),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
+              fit: BoxFit.cover,
+            ),
           ),
-          headlineSmall: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: FontWeight.w800,
-            fontSize: 24,
-          ),
-          titleMedium: TextStyle(
-            color: Color(0xFFBAC8EB),
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: FontWeight.w400,
-            fontSize: 15,
-          ),
-          bodyMedium: TextStyle(
-            color: Color(0xFFBAC8EB),
-            fontFamily: 'Plus Jakarta Sans',
-            fontWeight: FontWeight.w400,
-            fontSize: 15,
-          ),
-        ),
-      ),
-      home: Scaffold(
-        backgroundColor: backgroundColor,
-        extendBody: true,
-        body: SafeArea(
-          child: Container(
-            color: backgroundColor,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Column(
-                  children: [
-                    _MiniatureHeader(isMedium: isMedium),
-                    Expanded(
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          _MiniatureGallery(
-                            images: galleryImages,
-                            selectedIndex: selectedGalleryIndex,
-                            onTap: (i) =>
-                                setState(() => selectedGalleryIndex = i),
-                            isSmall: isSmall,
-                            isMedium: isMedium,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.fromLTRB(
+                      20,
+                      18,
+                      20,
+                      16,
+                    ), // as per CSS
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: CatalagoColecionadorTheme.barColor,
+                          width: 1,
+                        ),
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          child: SvgPicture.asset(
+                            'assets/images/seta_esquerda.svg',
+                            height: 28,
+                            width: 28,
                           ),
-                          _MiniatureInfoSection(isMedium: isMedium),
-                          _MiniatureReviewsSection(),
-                          _UserReviewsSection(
-                            reviews: userReviews,
-                            interactions: reviewInteractions,
-                            onLike: (i) {
-                              setState(() {
-                                // Simple toggle logic; update counts accordingly
-                                if (!reviewInteractions[i].userLiked) {
-                                  reviewInteractions[i].likes++;
-                                  if (reviewInteractions[i].userDisliked) {
-                                    reviewInteractions[i].dislikes--;
-                                    reviewInteractions[i].userDisliked = false;
-                                  }
-                                  reviewInteractions[i].userLiked = true;
-                                } else {
-                                  reviewInteractions[i].likes--;
-                                  reviewInteractions[i].userLiked = false;
-                                }
-                              });
-                            },
-                            onDislike: (i) {
-                              setState(() {
-                                if (!reviewInteractions[i].userDisliked) {
-                                  reviewInteractions[i].dislikes++;
-                                  if (reviewInteractions[i].userLiked) {
-                                    reviewInteractions[i].likes--;
-                                    reviewInteractions[i].userLiked = false;
-                                  }
-                                  reviewInteractions[i].userDisliked = true;
-                                } else {
+                          onTap: () => Navigator.pop(context),
+                        ),
+                        const SizedBox(width: 8),
+                        Semantics(
+                          header: true,
+                          child: Text(
+                            'Detalhes da Miniatura',
+                            style: CatalagoColecionadorTheme.titleStyle
+                                .copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18,
+                                  letterSpacing: -0.01,
+                                  color: CatalagoColecionadorTheme.whiteColor,
+                                ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: AlignmentGeometry.centerRight,
+                            child: InkWell(
+                              child: SvgPicture.asset(
+                                'assets/images/x.svg',
+                                height: 32,
+                                width: 32,
+                                colorFilter: ColorFilter.mode(
+                                  CatalagoColecionadorTheme.whiteColor,
+                                  BlendMode.srcATop,
+                                ),
+                                semanticsLabel: 'X',
+                              ),
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Expanded(
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        MiniatureGallery(images: galleryImages),
+                        _MiniatureInfoSection(isMedium: isMedium),
+                        _MiniatureReviewsSection(),
+                        _UserReviewsSection(
+                          reviews: userReviews,
+                          interactions: reviewInteractions,
+                          onLike: (i) {
+                            setState(() {
+                              // Simple toggle logic; update counts accordingly
+                              if (!reviewInteractions[i].userLiked) {
+                                reviewInteractions[i].likes++;
+                                if (reviewInteractions[i].userDisliked) {
                                   reviewInteractions[i].dislikes--;
                                   reviewInteractions[i].userDisliked = false;
                                 }
-                              });
-                            },
-                          ),
-                          SizedBox(height: 80),
-                        ],
-                      ),
+                                reviewInteractions[i].userLiked = true;
+                              } else {
+                                reviewInteractions[i].likes--;
+                                reviewInteractions[i].userLiked = false;
+                              }
+                            });
+                          },
+                          onDislike: (i) {
+                            setState(() {
+                              if (!reviewInteractions[i].userDisliked) {
+                                reviewInteractions[i].dislikes++;
+                                if (reviewInteractions[i].userLiked) {
+                                  reviewInteractions[i].likes--;
+                                  reviewInteractions[i].userLiked = false;
+                                }
+                                reviewInteractions[i].userDisliked = true;
+                              } else {
+                                reviewInteractions[i].dislikes--;
+                                reviewInteractions[i].userDisliked = false;
+                              }
+                            });
+                          },
+                        ),
+                        SizedBox(height: 80),
+                      ],
                     ),
-                  ],
-                );
-              },
-            ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
-        bottomNavigationBar: _MiniatureFooterNavBar(
-          onRemove: () {},
-          index: footerIndex,
-          onItemSelected: (i) {
-            setState(() => footerIndex = i);
-            // Simple navigation using Navigator 1.0 (push replacement with dummy routes)
-            switch (i) {
-              case 0:
-                // Simulate navigation
-                break;
-              case 1:
-              case 2:
-              case 3:
-                // Add navigation logic as needed
-                break;
-            }
-          },
-        ),
+      ),
+      bottomNavigationBar: _MiniatureFooterNavBar(
+        onRemove: () {},
+        index: footerIndex,
+        onItemSelected: (i) {
+          setState(() => footerIndex = i);
+          // Simple navigation using Navigator 1.0 (push replacement with dummy routes)
+          switch (i) {
+            case 0:
+              // Simulate navigation
+              break;
+            case 1:
+            case 2:
+            case 3:
+              // Add navigation logic as needed
+              break;
+          }
+        },
       ),
     );
   }
 }
 
-// Header Widget
-class _MiniatureHeader extends StatelessWidget {
-  final bool isMedium;
-  const _MiniatureHeader({required this.isMedium});
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      header: true,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: isMedium ? 12.0 : 24.0),
-        height: 64,
-        decoration: const BoxDecoration(
-          color: Color(0xFF121721),
-          border: Border(bottom: BorderSide(color: Color(0xFF232B3E))),
-        ),
-        child: Row(
-          children: [
-            // Logo
-            Container(
-              width: 40,
-              height: 40,
-              alignment: Alignment.center,
-              child: Image.network(
-                "https://app.codigma.io/api/uploads/assets/4eefb8f2-e4e9-471e-9bf4-1d8ff5c4b1f1.svg",
-                width: 40,
-                height: 40,
-                fit: BoxFit.contain,
-                semanticLabel: "Logo",
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: Text(
-                  "Miniature Details",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.02,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-            // Action Icon
-            Container(
-              width: 40,
-              alignment: Alignment.centerRight,
-              child: Image.network(
-                "https://app.codigma.io/api/uploads/assets/bd675cd4-d416-42e2-a0f5-8edb85e8425f.svg",
-                width: 24,
-                height: 24,
-                fit: BoxFit.contain,
-                semanticLabel: "Action Icon",
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Image gallery with selectable image
-class _MiniatureGallery extends StatelessWidget {
-  final List<String> images;
-  final int selectedIndex;
-  final ValueChanged<int> onTap;
-  final bool isSmall;
-  final bool isMedium;
-
-  const _MiniatureGallery({
-    super.key,
-    required this.images,
-    required this.selectedIndex,
-    required this.onTap,
-    required this.isSmall,
-    required this.isMedium,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final imgWidth = isSmall ? 75.0 : 86.0;
-    final imgHeight = isSmall ? 58.0 : 64.0;
-    final horizontalPadding = isMedium ? 13.0 : 24.0;
-    final gap = isSmall ? 8.0 : 14.0;
-
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(
-        horizontalPadding,
-        24,
-        horizontalPadding,
-        12,
-      ),
-      decoration: const BoxDecoration(
-        color: Color(0xFF161C2C),
-        border: Border(bottom: BorderSide(color: Color(0xFF252D44))),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(images.length, (i) {
-          final isSelected = selectedIndex == i;
-          return Padding(
-            padding: EdgeInsets.only(right: i != images.length - 1 ? gap : 0),
-            child: GestureDetector(
-              onTap: () => onTap(i),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 120),
-                curve: Curves.easeIn,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.09),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                  border: Border.all(
-                    color: isSelected ? Color(0xFF0D40A6) : Color(0xFF28396B),
-                    width: 1.5,
-                  ),
-                ),
-                child: Image.network(
-                  images[i],
-                  width: imgWidth,
-                  height: imgHeight,
-                  fit: BoxFit.cover,
-                  color: isSelected ? null : null,
-                  semanticLabel: "Miniature Image ${i + 1}",
-                ),
-              ),
-            ),
-          );
-        }),
-      ),
-    );
-  }
-}
 
 // Info section under the gallery
 class _MiniatureInfoSection extends StatelessWidget {
