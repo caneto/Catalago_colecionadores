@@ -3,7 +3,8 @@ import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'widgets/miniature_gallery.dart.dart';
+import 'widgets/miniature_Info_section.dart';
+import 'widgets/miniature_gallery.dart';
 
 class MiniatureDetails extends StatefulWidget {
   const MiniatureDetails({super.key});
@@ -99,217 +100,146 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     return Scaffold(
       extendBody: true,
       body: SafeArea(
-        child: Container(
-          constraints: BoxConstraints(minHeight: sizeOf.height),
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return Column(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Container(
+              constraints: BoxConstraints(minHeight: sizeOf.height),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Stack(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.fromLTRB(
-                      20,
-                      18,
-                      20,
-                      16,
-                    ), // as per CSS
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: CatalagoColecionadorTheme.barColor,
-                          width: 1,
-                        ),
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          child: SvgPicture.asset(
-                            'assets/images/seta_esquerda.svg',
-                            height: 28,
-                            width: 28,
-                          ),
-                          onTap: () => Navigator.pop(context),
-                        ),
-                        const SizedBox(width: 8),
-                        Semantics(
-                          header: true,
-                          child: Text(
-                            'Detalhes da Miniatura',
-                            style: CatalagoColecionadorTheme.titleStyle
-                                .copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18,
-                                  letterSpacing: -0.01,
-                                  color: CatalagoColecionadorTheme.whiteColor,
-                                ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Align(
-                            alignment: AlignmentGeometry.centerRight,
-                            child: InkWell(
-                              child: SvgPicture.asset(
-                                'assets/images/x.svg',
-                                height: 32,
-                                width: 32,
-                                colorFilter: ColorFilter.mode(
-                                  CatalagoColecionadorTheme.whiteColor,
-                                  BlendMode.srcATop,
-                                ),
-                                semanticsLabel: 'X',
-                              ),
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
+                  Column(
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.fromLTRB(
+                          20,
+                          18,
+                          20,
+                          16,
+                        ), // as per CSS
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: CatalagoColecionadorTheme.barColor,
+                              width: 1,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-
-                  Expanded(
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      physics: const BouncingScrollPhysics(),
-                      children: [
-                        MiniatureGallery(images: galleryImages),
-                        _MiniatureInfoSection(isMedium: isMedium),
-                        _MiniatureReviewsSection(),
-                        _UserReviewsSection(
-                          reviews: userReviews,
-                          interactions: reviewInteractions,
-                          onLike: (i) {
-                            setState(() {
-                              // Simple toggle logic; update counts accordingly
-                              if (!reviewInteractions[i].userLiked) {
-                                reviewInteractions[i].likes++;
-                                if (reviewInteractions[i].userDisliked) {
-                                  reviewInteractions[i].dislikes--;
-                                  reviewInteractions[i].userDisliked = false;
-                                }
-                                reviewInteractions[i].userLiked = true;
-                              } else {
-                                reviewInteractions[i].likes--;
-                                reviewInteractions[i].userLiked = false;
-                              }
-                            });
-                          },
-                          onDislike: (i) {
-                            setState(() {
-                              if (!reviewInteractions[i].userDisliked) {
-                                reviewInteractions[i].dislikes++;
-                                if (reviewInteractions[i].userLiked) {
-                                  reviewInteractions[i].likes--;
-                                  reviewInteractions[i].userLiked = false;
-                                }
-                                reviewInteractions[i].userDisliked = true;
-                              } else {
-                                reviewInteractions[i].dislikes--;
-                                reviewInteractions[i].userDisliked = false;
-                              }
-                            });
-                          },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              child: SvgPicture.asset(
+                                'assets/images/seta_esquerda.svg',
+                                height: 28,
+                                width: 28,
+                              ),
+                              onTap: () => Navigator.pop(context),
+                            ),
+                            const SizedBox(width: 8),
+                            Semantics(
+                              header: true,
+                              child: Text(
+                                'Detalhes da Miniatura',
+                                style: CatalagoColecionadorTheme.titleStyle
+                                    .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                      letterSpacing: -0.01,
+                                      color:
+                                          CatalagoColecionadorTheme.whiteColor,
+                                    ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: AlignmentGeometry.centerRight,
+                                child: InkWell(
+                                  child: SvgPicture.asset(
+                                    'assets/images/x.svg',
+                                    height: 32,
+                                    width: 32,
+                                    colorFilter: ColorFilter.mode(
+                                      CatalagoColecionadorTheme.whiteColor,
+                                      BlendMode.srcATop,
+                                    ),
+                                    semanticsLabel: 'X',
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 80),
-                      ],
-                    ),
+                      ),
+
+                      Expanded(
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            MiniatureGallery(images: galleryImages),
+                            MiniatureInfoSection(),
+                            _MiniatureReviewsSection(),
+                            // _UserReviewsSection(
+                            //   reviews: userReviews,
+                            //   interactions: reviewInteractions,
+                            //   onLike: (i) {
+                            //     setState(() {
+                            //       // Simple toggle logic; update counts accordingly
+                            //       if (!reviewInteractions[i].userLiked) {
+                            //         reviewInteractions[i].likes++;
+                            //         if (reviewInteractions[i].userDisliked) {
+                            //           reviewInteractions[i].dislikes--;
+                            //           reviewInteractions[i].userDisliked = false;
+                            //         }
+                            //         reviewInteractions[i].userLiked = true;
+                            //       } else {
+                            //         reviewInteractions[i].likes--;
+                            //         reviewInteractions[i].userLiked = false;
+                            //       }
+                            //     });
+                            //   },
+                            //   onDislike: (i) {
+                            //     setState(() {
+                            //       if (!reviewInteractions[i].userDisliked) {
+                            //         reviewInteractions[i].dislikes++;
+                            //         if (reviewInteractions[i].userLiked) {
+                            //           reviewInteractions[i].likes--;
+                            //           reviewInteractions[i].userLiked = false;
+                            //         }
+                            //         reviewInteractions[i].userDisliked = true;
+                            //       } else {
+                            //         reviewInteractions[i].dislikes--;
+                            //         reviewInteractions[i].userDisliked = false;
+                            //       }
+                            //     });
+                            //   },
+                            // ),
+                            SizedBox(height: 80),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ],
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
-      bottomNavigationBar: _MiniatureFooterNavBar(
-        onRemove: () {},
-        index: footerIndex,
-        onItemSelected: (i) {
-          setState(() => footerIndex = i);
-          // Simple navigation using Navigator 1.0 (push replacement with dummy routes)
-          switch (i) {
-            case 0:
-              // Simulate navigation
-              break;
-            case 1:
-            case 2:
-            case 3:
-              // Add navigation logic as needed
-              break;
-          }
-        },
-      ),
     );
   }
 }
-
 
 // Info section under the gallery
-class _MiniatureInfoSection extends StatelessWidget {
-  final bool isMedium;
-
-  const _MiniatureInfoSection({super.key, required this.isMedium});
-
-  @override
-  Widget build(BuildContext context) {
-    final horizontalPadding = isMedium ? 13.0 : 24.0;
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.fromLTRB(
-        horizontalPadding,
-        20,
-        horizontalPadding,
-        18,
-      ),
-      decoration: const BoxDecoration(
-        color: Color(0xFF121721),
-        border: Border(bottom: BorderSide(color: Color(0xFF252D44))),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Ford Mustang",
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.5,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Semantics(
-            label: "Brand: Hot Wheels",
-            child: Text(
-              "Brand: Hot Wheels",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          Text(
-            "Model: Ford Mustang",
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          Text("Year: 1967", style: Theme.of(context).textTheme.bodyMedium),
-          Text("Scale: 1:64", style: Theme.of(context).textTheme.bodyMedium),
-          Text(
-            "Condition: Excellent",
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          Text(
-            "Notes: Limited edition, original paint",
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 // Reviews Section
 class _MiniatureReviewsSection extends StatelessWidget {
@@ -321,13 +251,13 @@ class _MiniatureReviewsSection extends StatelessWidget {
         ? 13.0
         : 24.0;
 
-    // Dummy star images (mimic .svg in PNG if needed for real app)
+    // Imagens de estrelas fictícias (imite .svg em PNG, se necessário para o aplicativo real)
     final stars = [
-      "https://app.codigma.io/api/uploads/assets/2eb894a8-9295-4cb0-83de-c65d33a87278.svg",
-      "https://app.codigma.io/api/uploads/assets/e3f0af07-3e49-431e-90c6-bce083d9c593.svg",
-      "https://app.codigma.io/api/uploads/assets/b45a405f-d980-4611-b935-6323ca6aa9fe.svg",
-      "https://app.codigma.io/api/uploads/assets/45f02d59-aaf7-4e8d-9d45-2831af5f6b91.svg",
-      "https://app.codigma.io/api/uploads/assets/a0860ddd-d430-40f1-9d7e-4dd5ae2ed38e.svg",
+      "star_full.svg",
+      "star_full.svg",
+      "star_full.svg",
+      "star_full.svg",
+      "star_out.svg",
     ];
 
     final detailedRatings = [
@@ -338,74 +268,87 @@ class _MiniatureReviewsSection extends StatelessWidget {
       _DetailedRating(rating: 1, percent: 5),
     ];
 
-    return Container(
-      padding: EdgeInsets.fromLTRB(horizontalPadding, 22, horizontalPadding, 0),
-      decoration: const BoxDecoration(color: Color(0xFF121721)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Reviews and Comments",
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontSize: 19,
-              fontWeight: FontWeight.w700,
-              letterSpacing: -0.5,
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(24, 20, 24, 18),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          border: Border(
+            bottom: BorderSide(
+              color: CatalagoColecionadorTheme.cardItemAndImageColor,
             ),
           ),
-          const SizedBox(height: 18),
-          Row(
-            children: [
-              Text(
-                "4.5",
-                style: TextStyle(
-                  color: Color(0xFF0D40A6),
-                  fontSize: 40,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -2,
-                  height: 1.05,
-                ),
-                semanticsLabel: "Average Rating 4.5",
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Avaliações e comentários",
+              style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
+                color: CatalagoColecionadorTheme.blackClaroColor,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                letterSpacing: -0.5,
               ),
-              const SizedBox(width: 13),
-              Row(
-                children: stars
-                    .map(
-                      (star) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 1.5),
-                        child: Image.network(
-                          star,
-                          width: 18,
-                          height: 18,
-                          semanticLabel: "Star",
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(width: 14),
-              Text(
-                "123 reviews",
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Color(0xFF91A3C9),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Column(
-            children: detailedRatings
-                .map(
-                  (r) => Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: _RatingBar(rating: r.rating, percent: r.percent),
+            ),
+            const SizedBox(height: 18),
+            Row(
+              children: [
+                Text(
+                  "4.5",
+                  style: CatalagoColecionadorTheme.textBold.copyWith(
+                    color: CatalagoColecionadorTheme.blueColor,
+                    fontSize: 32,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -2,
+                    height: 1.05,
                   ),
-                )
-                .toList(),
-          ),
-          const SizedBox(height: 4),
-        ],
+                  semanticsLabel: "Classificação média 4.5",
+                ),
+                const SizedBox(width: 13),
+                Row(
+                  children: stars
+                      .map(
+                        (star) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 1.5),
+                          child: SvgPicture.asset(
+                            'assets/images/$star',
+                            height: 18,
+                            width: 18,
+                            semanticsLabel: 'Estrelas',
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+                const SizedBox(width: 14),
+                Text(
+                  "123 avaliações",
+                  style: CatalagoColecionadorTheme.textTextButtonLabel.copyWith(
+                    color: CatalagoColecionadorTheme.bgCard,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Column(
+              children: detailedRatings
+                  .map(
+                    (r) => Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: _RatingBar(rating: r.rating, percent: r.percent),
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(height: 4),
+          ],
+        ),
       ),
     );
   }
@@ -419,8 +362,8 @@ class _RatingBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color fillColor1 = const Color(0xFF0172CB);
-    final Color fillColor2 = const Color(0xFF0D40A6);
+    final Color fillColor1 = CatalagoColecionadorTheme.blueColor;
+    final Color fillColor2 = CatalagoColecionadorTheme.cardCategyColor;
     final double maxBarWidth = 210.0;
     final double minBarWidth = 50.0;
 
@@ -432,8 +375,8 @@ class _RatingBar extends StatelessWidget {
             rating.toString(),
             textAlign: TextAlign.right,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
+              color: CatalagoColecionadorTheme.blackClaroColor,
+              fontWeight: FontWeight.w600,
               fontSize: 15,
             ),
           ),
@@ -479,9 +422,9 @@ class _RatingBar extends StatelessWidget {
           child: Text(
             "$percent%",
             textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: const Color(0xFF91A3C9),
-              fontSize: 13,
+            style: CatalagoColecionadorTheme.textBold.copyWith(
+              color: CatalagoColecionadorTheme.blueFaceBook,
+              fontSize: 14,
               fontWeight: FontWeight.w400,
               fontFeatures: [FontFeature.tabularFigures()],
             ),
