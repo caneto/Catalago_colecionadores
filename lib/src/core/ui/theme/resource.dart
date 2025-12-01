@@ -38,6 +38,13 @@ class R {
   static const String ASSETS_IMAGES_CHECK_ICON_PNG =
       'assets/images/check_icon.png';
 
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\curtido.svg)
+  static const String ASSETS_IMAGES_CURTIDO_SVG = 'assets/images/curtido.svg';
+
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\descurtido.svg)
+  static const String ASSETS_IMAGES_DESCURTIDO_SVG =
+      'assets/images/descurtido.svg';
+
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\document.png)
   static const String ASSETS_IMAGES_DOCUMENT_PNG = 'assets/images/document.png';
 
@@ -147,6 +154,13 @@ class R {
   static const String ASSETS_IMAGES_SETA_FILTER_SVG =
       'assets/images/seta_filter.svg';
 
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\star_full.svg)
+  static const String ASSETS_IMAGES_STAR_FULL_SVG =
+      'assets/images/star_full.svg';
+
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\star_out.svg)
+  static const String ASSETS_IMAGES_STAR_OUT_SVG = 'assets/images/star_out.svg';
+
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\stroke_check.png)
   static const String ASSETS_IMAGES_STROKE_CHECK_PNG =
       'assets/images/stroke_check.png';
@@ -163,6 +177,12 @@ class R {
 
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\thema.svg)
   static const String ASSETS_IMAGES_THEMA_SVG = 'assets/images/thema.svg';
+
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\user1.png)
+  static const String ASSETS_IMAGES_USER1_PNG = 'assets/images/user1.png';
+
+  /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\user2.png)
+  static const String ASSETS_IMAGES_USER2_PNG = 'assets/images/user2.png';
 
   /// ![preview](file://E:\GitHub\Catalago_colecionadores\assets\images\visibilidade.svg)
   static const String ASSETS_IMAGES_VISIBILIDADE_SVG =
