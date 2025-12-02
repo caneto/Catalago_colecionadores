@@ -22,7 +22,9 @@ class GridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed('/miniatura_details');
+        Navigator.of(
+          context,
+        ).pushNamed('/miniatura_details', arguments: item.id);
       },
       child: Semantics(
         label: '${item.marca}, ${item.nomeMiniatura}',

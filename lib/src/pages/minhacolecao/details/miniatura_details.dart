@@ -1,7 +1,10 @@
+import 'package:catalago_colecionadores/src/core/database/isar_models/car_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:isar_community/isar.dart';
 
 import 'widgets/miniature_Info_section.dart';
 import 'widgets/miniature_gallery.dart';
@@ -18,6 +21,32 @@ class MiniatureDetails extends StatefulWidget {
 class _MiniatureDetailsState extends State<MiniatureDetails> {
   // Initial Gallery Index
   int selectedGalleryIndex = 0;
+  final IsarService _isarService = IsarService();
+  CarCollection? _car;
+  bool _isLoading = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is Id) {
+      _loadCar(args);
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _loadCar(Id id) async {
+    final car = await _isarService.getCarById(id);
+    if (mounted) {
+      setState(() {
+        _car = car;
+        _isLoading = false;
+      });
+    }
+  }
 
   // For like/dislike simulation per review
   List<ReviewInteraction> reviewInteractions = [
@@ -77,12 +106,15 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     ),
   ];
 
+  void _onEditPressed() {
+    if (_car == null) return;
+    Navigator.of(context).pushNamed('/edit_miniatura', arguments: _car!.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     // Responsive constraints
     final media = MediaQuery.of(context);
-    final isSmall = media.size.width <= 430;
-    final isMedium = media.size.width <= 630;
     final sizeOf = MediaQuery.sizeOf(context);
 
     return Scaffold(
@@ -133,7 +165,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                             Semantics(
                               header: true,
                               child: Text(
-                                'Detalhes da Miniatura',
+                                _car?.nomeMiniatura ?? 'Detalhes da Miniatura',
                                 style: CatalagoColecionadorTheme.titleStyle
                                     .copyWith(
                                       fontWeight: FontWeight.w700,
@@ -144,23 +176,50 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                                     ),
                               ),
                             ),
+                            SizedBox(width: 4),
                             Expanded(
                               child: Align(
-                                alignment: AlignmentGeometry.centerRight,
+                                alignment: Alignment.centerRight,
                                 child: InkWell(
-                                  child: SvgPicture.asset(
-                                    'assets/images/x.svg',
-                                    height: 32,
-                                    width: 32,
-                                    colorFilter: ColorFilter.mode(
-                                      CatalagoColecionadorTheme.whiteColor,
-                                      BlendMode.srcATop,
+                                  borderRadius: BorderRadius.circular(8),
+                                  onTap: _car != null ? _onEditPressed : null,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: SvgPicture.asset(
+                                      'assets/images/edit-button.svg',
+                                      height: 32,
+                                      width: 32,
+                                      semanticsLabel: 'X',
+                                      colorFilter: ColorFilter.mode(
+                                        CatalagoColecionadorTheme.whiteColor,
+                                        BlendMode
+                                            .srcIn, // Common blend mode for single-color icons
+                                      ),
                                     ),
-                                    semanticsLabel: 'X',
                                   ),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                  },
+                                ),
+                              ),
+                            ),
+                            Semantics(
+                              label: 'Editar',
+                              child: InkWell(
+                                onTap: _car != null ? _onEditPressed : null,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6.0,
+                                    vertical: 4.0,
+                                  ),
+                                  child: Text(
+                                    'Editar',
+                                    style: CatalagoColecionadorTheme
+                                        .titleStyleNormal
+                                        .copyWith(
+                                          color: CatalagoColecionadorTheme
+                                              .whiteColor,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 17,
+                                        ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -174,7 +233,15 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                           physics: const BouncingScrollPhysics(),
                           children: [
                             MiniatureGallery(images: galleryImages),
-                            MiniatureInfoSection(),
+                            _isLoading
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : _car != null
+                                ? MiniatureInfoSection(car: _car!)
+                                : const Center(
+                                    child: Text("Carro não encontrado"),
+                                  ),
                             MiniatureReviewsSection(),
                             UserReviewsSection(
                               reviews: userReviews,
@@ -222,17 +289,19 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                         child: ElevatedButton(
                           onPressed: () async {},
                           style: ElevatedButton.styleFrom(
-                            foregroundColor: CatalagoColecionadorTheme.whiteColor,
+                            foregroundColor:
+                                CatalagoColecionadorTheme.whiteColor,
                             backgroundColor: CatalagoColecionadorTheme.bgCard,
                             side: const BorderSide(color: Colors.blueGrey),
                           ),
                           child: Text(
                             'Remover Coleção',
-                            style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
-                              color: CatalagoColecionadorTheme.whiteColor,
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: CatalagoColecionadorTheme.titleStyleNormal
+                                .copyWith(
+                                  color: CatalagoColecionadorTheme.whiteColor,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ),
                       ),

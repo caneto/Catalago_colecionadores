@@ -59,6 +59,11 @@ class IsarService {
         .findAll();
   }
 
+  Future<CarCollection?> getCarById(Id id) async {
+    final isar = await db;
+    return await isar.carCollections.get(id);
+  }
+
   Future<void> saveUser(UserCollection user) async {
     final isar = await db;
     isar.writeTxnSync<int>(() => isar.userCollections.putSync(user));
