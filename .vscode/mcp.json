@@ -1,0 +1,19 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "back4app-account-key",
+      "description": "Back4App personal access token",
+      "password": true
+    }
+  ],
+  "servers": {
+    "back4app": {
+      "command": "npx.cmd",
+      "args": ["-y", "@back4app/mcp-server-back4app@latest"],
+      "env": {
+        "BACK4APP_ACCOUNT_KEY": "${input:back4app-account-key}"
+      }
+    }
+  }
+}
