@@ -9,6 +9,11 @@ class MiniatureInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    String nomeMiniatura = car.nomeMiniatura.length <= 32
+        ? car.nomeMiniatura
+        : '${car.nomeMiniatura.substring(0, 30)}...';
+
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
@@ -29,7 +34,7 @@ class MiniatureInfoSection extends StatelessWidget {
             Semantics(
               label: "Titulo",
               child: Text(
-                car.nomeMiniatura,
+                nomeMiniatura,
                 style: CatalagoColecionadorTheme.textExtraBold.copyWith(
                   fontSize: 18,
                   letterSpacing: -0.5,

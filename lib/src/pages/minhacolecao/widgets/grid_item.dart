@@ -20,6 +20,11 @@ class GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    String nomeMiniatura = item.nomeMiniatura.length <= 32
+        ? item.nomeMiniatura
+        : '${item.nomeMiniatura.substring(0, 30)}...';
+
     return InkWell(
       onTap: () {
         Navigator.of(
@@ -68,7 +73,7 @@ class GridItem extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 11),
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 6),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -84,11 +89,11 @@ class GridItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      item.nomeMiniatura,
+                      nomeMiniatura,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        height: 1.12,
+                        height: 1.13,
                         letterSpacing: -0.01,
                         color: modelColor,
                       ),

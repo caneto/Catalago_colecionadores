@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:isar_community/isar.dart';
 
-import 'widgets/miniature_Info_section.dart';
 import 'widgets/miniature_gallery.dart';
+import 'widgets/miniature_info_section.dart';
 import 'widgets/miniature_reviews_section.dart';
 import 'widgets/user_reviews_section.dart';
 
@@ -164,7 +164,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                             Semantics(
                               header: true,
                               child: Text(
-                                _car?.nomeMiniatura ?? 'Detalhes da Miniatura',
+                                'Detalhes da Miniatura',
                                 style: CatalagoColecionadorTheme.titleStyle
                                     .copyWith(
                                       fontWeight: FontWeight.w700,
