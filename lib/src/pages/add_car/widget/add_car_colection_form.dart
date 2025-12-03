@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'collection_condition_card.dart';
 import 'form_group.dart';
+import 'image_gallery.dart';
 
 // ignore: must_be_immutable
 class AddCarColectionForm extends StatefulWidget {
@@ -25,11 +26,11 @@ class AddCarColectionForm extends StatefulWidget {
   final String? collectionCondition;
   final ValueChanged<String?> onCollectionConditionChanged;
   final TextEditingController notesController;
-  String? imagePath;
+  final List<String> images;
   final VoidCallback onSave;
-  final ValueChanged<String?>? onImageChanged;
+  final ValueChanged<String> onImageAdded;
 
-  AddCarColectionForm({
+  const AddCarColectionForm({
     super.key,
     required this.formKey,
     required this.nomeMiniaturaController,
@@ -45,9 +46,9 @@ class AddCarColectionForm extends StatefulWidget {
     required this.collectionCondition,
     required this.onCollectionConditionChanged,
     required this.notesController,
+    required this.images,
     required this.onSave,
-    this.onImageChanged,
-    String? imagePath,
+    required this.onImageAdded,
   });
 
   @override
@@ -88,6 +89,8 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
 
   @override
   Widget build(BuildContext context) {
+    //Temporaria para demostração
+
     return Form(
       key: widget.formKey,
       child: Column(
@@ -95,13 +98,21 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
         children: [
           InkWell(
             onTap: () async {
+              if (widget.images.length >= 5) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Limite de images atingida'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+                return;
+              }
+
               final filePath = await Navigator.of(
                 context,
               ).pushNamed('/add_car/scan');
               if (filePath != null && filePath != '') {
-                widget.imagePath = filePath as String;
-                widget.onImageChanged?.call(widget.imagePath);
-                setState(() {});
+                widget.onImageAdded(filePath as String);
               }
             },
             child: Container(
@@ -134,7 +145,18 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
               ),
             ),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 8),
+          Text(
+            "Quantidade de Imagens: ${widget.images.length}",
+            style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(
+              color: CatalagoColecionadorTheme.whiteColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+            ),
+          ),
+          SizedBox(height: 8),
+          ImageGallery(images: widget.images),
+          SizedBox(height: 8),
           Text(
             "Detalhes Principais",
             style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(

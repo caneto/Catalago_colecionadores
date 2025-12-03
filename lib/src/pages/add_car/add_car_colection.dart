@@ -31,14 +31,14 @@ class _AddCarColectionState extends State<AddCarColection> {
   final TextEditingController _precoPagoController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   String? _condition;
-  String? _collectionCondition; 
-  String? _imagePath;
+  String? _collectionCondition;
+  final List<String> _images = [];
 
   final int _selectedNavIndex = 2; // Seta o select para o "Add"
 
   void _onSave() async {
     if (_formKey.currentState?.validate() != true) return;
-    
+
     final car = CarCollection()
       ..nomeMiniatura = _nomeMiniaturaController.text
       ..categoria = _categoriaController.text
@@ -46,12 +46,17 @@ class _AddCarColectionState extends State<AddCarColection> {
       ..modelo = _modeloController.text
       ..anoFabricacao = int.tryParse(_anoFabricacaoController.text)
       ..escala = _escalaController.text
-      ..dataAquizicao = DateTime.tryParse(_dataAquizicaoController.text) // Assuming format is parsable or handled
-      ..precoPago = double.tryParse(_precoPagoController.text.replaceAll(',', '.'))
+      ..dataAquizicao =
+          DateTime.tryParse(
+            _dataAquizicaoController.text,
+          ) // Assuming format is parsable or handled
+      ..precoPago = double.tryParse(
+        _precoPagoController.text.replaceAll(',', '.'),
+      )
       ..notes = _notesController.text
       ..condition = _condition
       ..collectionCondition = _collectionCondition
-      ..imagePath = _imagePath;
+      ..images = _images;
 
     final isarService = IsarService();
     await isarService.saveCar(car);
@@ -75,6 +80,8 @@ class _AddCarColectionState extends State<AddCarColection> {
     if (w <= 480) return const EdgeInsets.symmetric(horizontal: 10);
     return EdgeInsets.zero;
   }
+
+  // Gallery image list
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +146,7 @@ class _AddCarColectionState extends State<AddCarColection> {
                               label: 'Perfil',
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                  
+
                                 child: InkWell(
                                   child: SvgPicture.asset(
                                     'assets/images/x.svg', // Path to your SVG asset
@@ -148,15 +155,16 @@ class _AddCarColectionState extends State<AddCarColection> {
                                     colorFilter: ColorFilter.mode(
                                       CatalagoColecionadorTheme
                                           .navBarBackkgroundColor,
-                                      BlendMode.srcIn),
-                                      semanticsLabel: 'X',
+                                      BlendMode.srcIn,
                                     ),
+                                    semanticsLabel: 'X',
+                                  ),
                                   onTap: () {
                                     Navigator.pop(context);
                                   },
                                 ),
-                                ),
                               ),
+                            ),
                           ],
                         ),
                       ),
@@ -198,9 +206,10 @@ class _AddCarColectionState extends State<AddCarColection> {
                                       setState(
                                         () => _collectionCondition = val,
                                       ),
-                                  imagePath: _imagePath,
-                                  onImageChanged: (val) => setState(() => _imagePath = val),
-                                  onSave: _onSave, 
+                                  images: _images,
+                                  onImageAdded: (val) =>
+                                      setState(() => _images.add(val)),
+                                  onSave: _onSave,
                                 ),
                               ),
                             ),

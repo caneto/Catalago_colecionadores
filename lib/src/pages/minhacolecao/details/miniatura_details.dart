@@ -113,8 +113,6 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
 
   @override
   Widget build(BuildContext context) {
-    // Responsive constraints
-    final media = MediaQuery.of(context);
     final sizeOf = MediaQuery.sizeOf(context);
 
     return Scaffold(

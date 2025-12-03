@@ -18,4 +18,5 @@ class CarCollection {
   String? condition;
   String? collectionCondition;
   String? imagePath;
+  List<String>? images;
 }
