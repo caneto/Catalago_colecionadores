@@ -34,10 +34,66 @@ class _AddCarColectionState extends State<AddCarColection> {
   String? _collectionCondition;
   final List<String> _images = [];
 
+  int? _carId;
+  bool _isDataLoaded = false;
+
   final int _selectedNavIndex = 2; // Seta o select para o "Add"
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isDataLoaded) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args != null && args is int) {
+        _carId = args;
+        _loadCarData(_carId!);
+      }
+      _isDataLoaded = true;
+    }
+  }
+
+  Future<void> _loadCarData(int id) async {
+    final isarService = IsarService();
+    final car = await isarService.getCarById(id);
+    if (car != null) {
+      setState(() {
+        _nomeMiniaturaController.text = car.nomeMiniatura;
+        _categoriaController.text = car.categoria;
+        _marcaController.text = car.marca;
+        _modeloController.text = car.modelo;
+        _anoFabricacaoController.text = car.anoFabricacao?.toString() ?? '';
+        _escalaController.text = car.escala;
+        _dataAquizicaoController.text = car.dataAquizicao != null
+            ? '${car.dataAquizicao!.day.toString().padLeft(2, '0')}/${car.dataAquizicao!.month.toString().padLeft(2, '0')}/${car.dataAquizicao!.year}'
+            : '';
+        _precoPagoController.text =
+            car.precoPago?.toStringAsFixed(2).replaceAll('.', ',') ?? '';
+        _notesController.text = car.notes ?? '';
+        _condition = car.condition;
+        _collectionCondition = car.collectionCondition;
+        if (car.images != null) {
+          _images.addAll(car.images!);
+        } else if (car.imagePath != null) {
+          _images.add(car.imagePath!);
+        }
+      });
+    }
+  }
 
   void _onSave() async {
     if (_formKey.currentState?.validate() != true) return;
+
+    DateTime? dataAquizicao;
+    if (_dataAquizicaoController.text.isNotEmpty) {
+      final parts = _dataAquizicaoController.text.split('/');
+      if (parts.length == 3) {
+        dataAquizicao = DateTime(
+          int.parse(parts[2]),
+          int.parse(parts[1]),
+          int.parse(parts[0]),
+        );
+      }
+    }
 
     final car = CarCollection()
       ..nomeMiniatura = _nomeMiniaturaController.text
@@ -46,10 +102,7 @@ class _AddCarColectionState extends State<AddCarColection> {
       ..modelo = _modeloController.text
       ..anoFabricacao = int.tryParse(_anoFabricacaoController.text)
       ..escala = _escalaController.text
-      ..dataAquizicao =
-          DateTime.tryParse(
-            _dataAquizicaoController.text,
-          ) // Assuming format is parsable or handled
+      ..dataAquizicao = dataAquizicao
       ..precoPago = double.tryParse(
         _precoPagoController.text.replaceAll(',', '.'),
       )
@@ -57,6 +110,10 @@ class _AddCarColectionState extends State<AddCarColection> {
       ..condition = _condition
       ..collectionCondition = _collectionCondition
       ..images = _images;
+
+    if (_carId != null) {
+      car.id = _carId!;
+    }
 
     final isarService = IsarService();
     await isarService.saveCar(car);
@@ -131,7 +188,9 @@ class _AddCarColectionState extends State<AddCarColection> {
                             Semantics(
                               header: true,
                               child: Text(
-                                'Adicionar Miniatura',
+                                _carId != null
+                                    ? 'Editar Miniatura'
+                                    : 'Adicionar Miniatura',
                                 style: CatalagoColecionadorTheme.titleStyle
                                     .copyWith(
                                       fontWeight: FontWeight.w700,

@@ -106,9 +106,10 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     ),
   ];
 
-  void _onEditPressed() {
+  void _onEditPressed() async {
     if (_car == null) return;
-    Navigator.of(context).pushNamed('/edit_miniatura', arguments: _car!.id);
+    await Navigator.of(context).pushNamed('/add_car', arguments: _car!.id);
+    _loadCar(_car!.id);
   }
 
   @override

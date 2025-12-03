@@ -5,8 +5,10 @@ import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'collection_condition_card.dart';
+import 'decimal_input_formatter.dart';
 import 'form_group.dart';
 import 'image_gallery.dart';
 
@@ -61,11 +63,40 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
   List<MarcaCollection> marcas = [];
   String? _selectedCategory;
   String? _selectedMarca;
+  int? _selectedImageIndex;
 
   @override
   void initState() {
     super.initState();
     _loadCategories();
+  }
+
+  void _deleteSelectedImage() {
+    if (_selectedImageIndex != null) {
+      setState(() {
+        widget.images.removeAt(_selectedImageIndex!);
+        _selectedImageIndex = null;
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AddCarColectionForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.categoriaController.text != oldWidget.categoriaController.text) {
+      if (categories.any((c) => c.name == widget.categoriaController.text)) {
+        setState(() {
+          _selectedCategory = widget.categoriaController.text;
+        });
+      }
+    }
+    if (widget.marcaController.text != oldWidget.marcaController.text) {
+      if (marcas.any((m) => m.nome == widget.marcaController.text)) {
+        setState(() {
+          _selectedMarca = widget.marcaController.text;
+        });
+      }
+    }
   }
 
   Future<void> _loadCategories() async {
@@ -155,7 +186,31 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
             ),
           ),
           SizedBox(height: 8),
-          ImageGallery(images: widget.images),
+          SizedBox(height: 8),
+          ImageGallery(
+            images: widget.images,
+            selectedIndex: _selectedImageIndex,
+            onImageSelected: (index) {
+              setState(() {
+                _selectedImageIndex = index;
+              });
+            },
+          ),
+          if (_selectedImageIndex != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  onPressed: _deleteSelectedImage,
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  label: const Text(
+                    'Excluir Imagem',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+            ),
           SizedBox(height: 8),
           Text(
             "Detalhes Principais",
@@ -372,7 +427,9 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
               Expanded(
                 child: FormGroup(
                   label: 'Data da Aquisição',
-                  child: GestureDetector(
+                  child: TextFormField(
+                    controller: widget.dataAquizicaoController,
+                    readOnly: true,
                     onTap: () async {
                       final DateTime? picked = await showDatePicker(
                         context: context,
@@ -410,29 +467,25 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                       );
                       if (picked != null) {
                         widget.dataAquizicaoController.text =
-                            '${picked.day}/${picked.month}/${picked.year}';
+                            '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
                       }
                     },
-                    child: TextFormField(
-                      controller: widget.dataAquizicaoController,
-                      enabled: false,
-                      style: CatalagoColecionadorTheme.textBold.copyWith(
-                        color: CatalagoColecionadorTheme.blackClaroColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      decoration:
-                          CatalagoColecionadorTheme.inputDecorationAddCard(
-                            hintText: 'dd/MM/aaaa',
-                          ).copyWith(
-                            suffixIcon: const Icon(
-                              Icons.calendar_today,
-                              color: CatalagoColecionadorTheme.bgInput,
-                            ),
-                          ),
-                      validator: (v) =>
-                          (v?.trim().isEmpty ?? true) ? 'Data exigida' : null,
+                    style: CatalagoColecionadorTheme.textBold.copyWith(
+                      color: CatalagoColecionadorTheme.blackClaroColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
                     ),
+                    decoration:
+                        CatalagoColecionadorTheme.inputDecorationAddCard(
+                          hintText: 'dd/MM/aaaa',
+                        ).copyWith(
+                          suffixIcon: const Icon(
+                            Icons.calendar_today,
+                            color: CatalagoColecionadorTheme.bgInput,
+                          ),
+                        ),
+                    validator: (v) =>
+                        (v?.trim().isEmpty ?? true) ? 'Data exigida' : null,
                   ),
                 ),
               ),
@@ -452,7 +505,13 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                           hintText: 'Exemplo R\$ 19,99',
                           colorSide: CatalagoColecionadorTheme.textMainAccent,
                         ),
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9,]')),
+                      DecimalInputFormatter(),
+                    ],
                     validator: (v) =>
                         (v?.trim().isEmpty ?? true) ? 'Ano exigido' : null,
                   ),

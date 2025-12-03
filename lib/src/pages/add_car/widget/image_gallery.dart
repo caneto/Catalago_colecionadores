@@ -5,8 +5,15 @@ import 'package:flutter/material.dart';
 // Image gallery with selectable image
 class ImageGallery extends StatelessWidget {
   final List<String> images;
+  final int? selectedIndex;
+  final ValueChanged<int>? onImageSelected;
 
-  const ImageGallery({super.key, required this.images});
+  const ImageGallery({
+    super.key,
+    required this.images,
+    this.selectedIndex,
+    this.onImageSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,62 +31,67 @@ class ImageGallery extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: List.generate(images.length, (i) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                    right: i == images.length - 1 ? 0 : 12,
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      width: itemSize,
-                      height: itemSize,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: const Color(0xFF0D40A6),
-                          width: 1.5,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(
-                              alpha: 0.09,
-                            ), // corrigido
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
+                return GestureDetector(
+                  onTap: () => onImageSelected?.call(i),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      right: i == images.length - 1 ? 0 : 12,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        width: itemSize,
+                        height: itemSize,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: selectedIndex == i
+                                ? Colors.red
+                                : const Color(0xFF0D40A6),
+                            width: selectedIndex == i ? 4.0 : 1.5,
                           ),
-                        ],
-                      ),
-                      child: images[i].startsWith('assets/')
-                          ? Image.asset(
-                              images[i],
-                              width: itemSize,
-                              height: itemSize,
-                              fit: BoxFit.cover,
-                              errorBuilder: (ctx, _, __) => Container(
-                                color: const Color(0xFF332022),
-                                alignment: Alignment.center,
-                                child: Icon(
-                                  Icons.broken_image_outlined,
-                                  color: Colors.white24,
-                                  size: 38,
-                                ),
-                              ),
-                            )
-                          : Image.file(
-                              File(images[i]),
-                              width: itemSize,
-                              height: itemSize,
-                              fit: BoxFit.cover,
-                              errorBuilder: (ctx, _, __) => Container(
-                                color: const Color(0xFF332022),
-                                alignment: Alignment.center,
-                                child: Icon(
-                                  Icons.broken_image_outlined,
-                                  color: Colors.white24,
-                                  size: 38,
-                                ),
-                              ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(
+                                alpha: 0.09,
+                              ), // corrigido
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
                             ),
+                          ],
+                        ),
+                        child: images[i].startsWith('assets/')
+                            ? Image.asset(
+                                images[i],
+                                width: itemSize,
+                                height: itemSize,
+                                fit: BoxFit.cover,
+                                errorBuilder: (ctx, _, __) => Container(
+                                  color: const Color(0xFF332022),
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.broken_image_outlined,
+                                    color: Colors.white24,
+                                    size: 38,
+                                  ),
+                                ),
+                              )
+                            : Image.file(
+                                File(images[i]),
+                                width: itemSize,
+                                height: itemSize,
+                                fit: BoxFit.cover,
+                                errorBuilder: (ctx, _, __) => Container(
+                                  color: const Color(0xFF332022),
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.broken_image_outlined,
+                                    color: Colors.white24,
+                                    size: 38,
+                                  ),
+                                ),
+                              ),
+                      ),
                     ),
                   ),
                 );
