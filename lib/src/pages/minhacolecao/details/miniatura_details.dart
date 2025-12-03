@@ -64,13 +64,6 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     ),
   ];
 
-  // Gallery image list
-  final List<String> galleryImages = [
-    "assets/images/carro_ford_mustang.png",
-    "assets/images/carro_ford_mustang.png",
-    "assets/images/carro_ford_mustang.png",
-  ];
-
   final String mainImage =
       "https://app.codigma.io/api/uploads/assets/bd7e40e4-e070-4638-bd63-bd463ddf176e.png";
 
@@ -231,7 +224,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                           padding: EdgeInsets.zero,
                           physics: const BouncingScrollPhysics(),
                           children: [
-                            MiniatureGallery(images: galleryImages),
+                            MiniatureGallery(images: _car?.images ?? []),
                             _isLoading
                                 ? const Center(
                                     child: CircularProgressIndicator(),

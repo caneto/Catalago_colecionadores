@@ -1,5 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-    
+
 // Image gallery with selectable image
 class MiniatureGallery extends StatelessWidget {
   final List<String> images;
@@ -47,21 +49,37 @@ class MiniatureGallery extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Image.asset(
-                        images[i],
-                        width: itemSize,
-                        height: itemSize,
-                        fit: BoxFit.cover,
-                        errorBuilder: (ctx, _, __) => Container(
-                          color: const Color(0xFF332022),
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.broken_image_outlined,
-                            color: Colors.white24,
-                            size: 38,
-                          ),
-                        ),
-                      ),
+                      child: images[i].startsWith('assets/')
+                          ? Image.asset(
+                              images[i],
+                              width: itemSize,
+                              height: itemSize,
+                              fit: BoxFit.cover,
+                              errorBuilder: (ctx, _, __) => Container(
+                                color: const Color(0xFF332022),
+                                alignment: Alignment.center,
+                                child: Icon(
+                                  Icons.broken_image_outlined,
+                                  color: Colors.white24,
+                                  size: 38,
+                                ),
+                              ),
+                            )
+                          : Image.file(
+                              File(images[i]),
+                              width: itemSize,
+                              height: itemSize,
+                              fit: BoxFit.cover,
+                              errorBuilder: (ctx, _, __) => Container(
+                                color: const Color(0xFF332022),
+                                alignment: Alignment.center,
+                                child: Icon(
+                                  Icons.broken_image_outlined,
+                                  color: Colors.white24,
+                                  size: 38,
+                                ),
+                              ),
+                            ),
                     ),
                   ),
                 );

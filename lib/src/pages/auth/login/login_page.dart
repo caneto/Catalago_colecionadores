@@ -189,10 +189,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      // launchUrl(
-                                      //   Uri.parse('https://www.openai.com'),
-                                      //   mode: LaunchMode.externalApplication,
-                                      // );
+                                      Navigator.of(context).pushNamed('/password_recovery');
                                     },
                                 ),
                               ],

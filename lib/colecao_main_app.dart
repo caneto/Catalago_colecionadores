@@ -3,6 +3,7 @@ import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_
 import 'package:catalago_colecionadores/src/pages/add_car/add_car_colection.dart';
 import 'package:catalago_colecionadores/src/pages/add_car/scan/add_scan_page.dart';
 import 'package:catalago_colecionadores/src/pages/auth/login/login_page.dart';
+import 'package:catalago_colecionadores/src/pages/auth/password_recovery/password_recovery.dart';
 import 'package:catalago_colecionadores/src/pages/auth/registro/register_page.dart';
 import 'package:catalago_colecionadores/src/pages/category/add_category_page.dart';
 import 'package:catalago_colecionadores/src/pages/category/list_category_page.dart';
@@ -80,6 +81,7 @@ class _ColecaoMainAppState extends State<ColecaoMainApp> {
         '/': (_) => SplashPage(),
         '/login': (_) => LoginPage(),
         '/registro': (_) => RegisterPage(),
+        '/password_recovery': (_) => PasswordRecovery(),
         '/home': (_) => MiniaturasHome(),
         '/start': (_) => StartScreen(),
         '/pos_start': (_) => PosStartScreen(),
