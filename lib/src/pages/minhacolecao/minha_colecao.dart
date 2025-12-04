@@ -3,10 +3,11 @@ import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
-import 'package:catalago_colecionadores/src/pages/home/widgets/search_bar_widget.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/filter_item_wiget.dart';
+import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/search_bar_widget.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/view_option_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../core/database/isar_models/car_collection.dart';
@@ -26,14 +27,12 @@ class MinhaColecao extends StatefulWidget {
 }
 
 class _MinhaColecaoState extends State<MinhaColecao> {
-  // Search state
-  String _searchText = '';
-
-  final int _selectedFilter = -1;
+  int _selectedFilter = -1;
 
   // Data state
   final IsarService _isarService = IsarService();
   List<CarCollection> _allItems = [];
+  List<CarCollection> _displayedItems = [];
   bool _isLoading = true;
 
   @override
@@ -46,22 +45,113 @@ class _MinhaColecaoState extends State<MinhaColecao> {
     final cars = await _isarService.getAllCars();
     setState(() {
       _allItems = cars;
+      _displayedItems = cars;
       _isLoading = false;
     });
   }
 
-  List<CarCollection> get _filteredItems {
-    if (_searchText.trim().isEmpty) return _allItems;
-    return _allItems
-        .where(
-          (item) =>
-              item.marca.toLowerCase().contains(_searchText.toLowerCase()) ||
-              item.nomeMiniatura.toLowerCase().contains(
-                _searchText.toLowerCase(),
-              ) ||
-              item.modelo.toLowerCase().contains(_searchText.toLowerCase()),
-        )
+  Future<void> _performSearch(String query) async {
+    if (query.length < 3) {
+      setState(() {
+        _displayedItems = _allItems;
+      });
+      return;
+    }
+
+    final results = await _isarService.searchCars(query);
+    if (results.isEmpty) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Atenção'),
+            content: const Text(
+              'Dados não encontrados, favor refazer a pesquisa',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+      // Keep previous state (do not update _displayedItems to empty)
+    } else {
+      setState(() {
+        _displayedItems = results;
+      });
+    }
+  }
+
+  Future<void> _showMarcaPopup() async {
+    final marcas = await _isarService.getAllMarcas();
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Selecione uma Marca'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: marcas.length,
+              itemBuilder: (context, index) {
+                final marca = marcas[index];
+                return ListTile(
+                  title: Text(marca.nome),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _filterByMarca(marca.nome);
+                  },
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _displayedItems = _allItems;
+                  _selectedFilter = -1;
+                });
+              },
+              child: const Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _filterByMarca(String marcaName) {
+    final filtered = _allItems
+        .where((item) => item.marca.toLowerCase() == marcaName.toLowerCase())
         .toList();
+    setState(() {
+      _displayedItems = filtered;
+    });
+  }
+
+  void _handleFilterSelection(int index) {
+    setState(() {
+      _selectedFilter = index;
+    });
+
+    if (index >= 0 && index < _filters.length) {
+      if (_filters[index].label == 'Marca') {
+        _showMarcaPopup();
+      }
+    } else {
+      // Reset filter if deselected (index == -1)
+      setState(() {
+        _displayedItems = _allItems;
+      });
+    }
   }
 
   // Filter options
@@ -207,8 +297,14 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                               textColor:
                                   CatalagoColecionadorTheme.blackClaroColor,
                               hint: "Pesquisar",
-                              onChanged: (text) =>
-                                  setState(() => _searchText = text),
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                  RegExp(r'[a-zA-Z0-9]'),
+                                ),
+                              ],
+                              onChanged: (text) {
+                                _performSearch(text);
+                              },
                             ),
                             // FILTERS
                             const SizedBox(height: 14),
@@ -224,6 +320,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                               selectedView: _selectedView,
                               onViewModeChanged: (mode) =>
                                   setState(() => _selectedView = mode),
+                              onFilterSelected: _handleFilterSelection,
                             ),
                             const SizedBox(height: 10),
                           ],
@@ -251,7 +348,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                           )
                                         : _selectedView == ViewMode.grid
                                         ? CollectionGrid(
-                                            items: _filteredItems,
+                                            items: _displayedItems,
                                             gridCount: gridCount,
                                             surface: CatalagoColecionadorTheme
                                                 .bgInput,
@@ -263,7 +360,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                                     .navBarBackkgroundColor,
                                           )
                                         : CollectionList(
-                                            items: _filteredItems,
+                                            items: _displayedItems,
                                             surface: CatalagoColecionadorTheme
                                                 .bgInput,
                                             brandColor:

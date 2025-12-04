@@ -20,6 +20,8 @@ class MiniatureDetails extends StatefulWidget {
 
 class _MiniatureDetailsState extends State<MiniatureDetails> {
   // Initial Gallery Index
+
+  bool rating_ative = false;
   int selectedGalleryIndex = 0;
   final IsarService _isarService = IsarService();
   CarCollection? _car;
@@ -63,7 +65,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
       userDisliked: false,
     ),
   ];
-  
+
   // Reviews Data (English only, as per instruction; originals are in PT)
   final List<UserReviewData> userReviews = [
     UserReviewData(
@@ -231,43 +233,45 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                                 : const Center(
                                     child: Text("Carro não encontrado"),
                                   ),
-                            MiniatureReviewsSection(),
-                            UserReviewsSection(
-                              reviews: userReviews,
-                              interactions: reviewInteractions,
-                              onLike: (i) {
-                                setState(() {
-                                  //       // Simple toggle logic; update counts accordingly
-                                  if (!reviewInteractions[i].userLiked) {
-                                    reviewInteractions[i].likes++;
-                                    if (reviewInteractions[i].userDisliked) {
+                            if (rating_ative) MiniatureReviewsSection(),
+                            if (rating_ative)
+                              UserReviewsSection(
+                                reviews: userReviews,
+                                interactions: reviewInteractions,
+                                onLike: (i) {
+                                  setState(() {
+                                    //       // Simple toggle logic; update counts accordingly
+                                    if (!reviewInteractions[i].userLiked) {
+                                      reviewInteractions[i].likes++;
+                                      if (reviewInteractions[i].userDisliked) {
+                                        reviewInteractions[i].dislikes--;
+                                        reviewInteractions[i].userDisliked =
+                                            false;
+                                      }
+                                      reviewInteractions[i].userLiked = true;
+                                    } else {
+                                      reviewInteractions[i].likes--;
+                                      reviewInteractions[i].userLiked = false;
+                                    }
+                                  });
+                                },
+                                onDislike: (i) {
+                                  setState(() {
+                                    if (!reviewInteractions[i].userDisliked) {
+                                      reviewInteractions[i].dislikes++;
+                                      if (reviewInteractions[i].userLiked) {
+                                        reviewInteractions[i].likes--;
+                                        reviewInteractions[i].userLiked = false;
+                                      }
+                                      reviewInteractions[i].userDisliked = true;
+                                    } else {
                                       reviewInteractions[i].dislikes--;
                                       reviewInteractions[i].userDisliked =
                                           false;
                                     }
-                                    reviewInteractions[i].userLiked = true;
-                                  } else {
-                                    reviewInteractions[i].likes--;
-                                    reviewInteractions[i].userLiked = false;
-                                  }
-                                });
-                              },
-                              onDislike: (i) {
-                                setState(() {
-                                  if (!reviewInteractions[i].userDisliked) {
-                                    reviewInteractions[i].dislikes++;
-                                    if (reviewInteractions[i].userLiked) {
-                                      reviewInteractions[i].likes--;
-                                      reviewInteractions[i].userLiked = false;
-                                    }
-                                    reviewInteractions[i].userDisliked = true;
-                                  } else {
-                                    reviewInteractions[i].dislikes--;
-                                    reviewInteractions[i].userDisliked = false;
-                                  }
-                                });
-                              },
-                            ),
+                                  });
+                                },
+                              ),
                           ],
                         ),
                       ),

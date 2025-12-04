@@ -363,7 +363,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                 bottom: constraints.maxWidth < 600 ? 11 : 16,
                               ),
                               child: Text(
-                                'Destaques',
+                                'Destaque na Coleçao',
                                 style: CatalagoColecionadorTheme.textBold
                                     .copyWith(
                                       color: Colors.white,
@@ -395,7 +395,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                 bottom: constraints.maxWidth < 600 ? 11 : 16,
                               ),
                               child: Text(
-                                'Novidades',
+                                'Novidades cadastradas/adquiridas',
                                 style: CatalagoColecionadorTheme.textBold
                                     .copyWith(
                                       color: Colors.white,

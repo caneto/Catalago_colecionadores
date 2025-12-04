@@ -9,7 +9,6 @@ class MiniatureInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     String nomeMiniatura = car.nomeMiniatura.length <= 32
         ? car.nomeMiniatura
         : '${car.nomeMiniatura.substring(0, 30)}...';
@@ -36,7 +35,7 @@ class MiniatureInfoSection extends StatelessWidget {
               child: Text(
                 nomeMiniatura,
                 style: CatalagoColecionadorTheme.textExtraBold.copyWith(
-                  fontSize: 18,
+                  fontSize: 19,
                   letterSpacing: -0.5,
                 ),
               ),
@@ -51,14 +50,14 @@ class MiniatureInfoSection extends StatelessWidget {
                     style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                      fontSize: 17,
                     ),
                   ),
                   Text(
                     car.categoria,
                     style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
-                      fontSize: 15,
+                      fontSize: 16,
                     ),
                   ),
                 ],
@@ -73,14 +72,14 @@ class MiniatureInfoSection extends StatelessWidget {
                     style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
                       fontWeight: FontWeight.w500,
-                      fontSize: 16,
+                      fontSize: 17,
                     ),
                   ),
                   Text(
                     car.marca,
                     style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
-                      fontSize: 14,
+                      fontSize: 16,
                     ),
                   ),
                 ],
@@ -95,14 +94,14 @@ class MiniatureInfoSection extends StatelessWidget {
                     style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
                       fontWeight: FontWeight.w500,
-                      fontSize: 16,
+                      fontSize: 17,
                     ),
                   ),
                   Text(
                     car.modelo,
                     style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
-                      fontSize: 14,
+                      fontSize: 16,
                     ),
                   ),
                 ],
@@ -119,7 +118,7 @@ class MiniatureInfoSection extends StatelessWidget {
                           .copyWith(
                             color: CatalagoColecionadorTheme.blackClaroColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                            fontSize: 17,
                           ),
                     ),
                     Text(
@@ -127,7 +126,7 @@ class MiniatureInfoSection extends StatelessWidget {
                       style: CatalagoColecionadorTheme.titleStyleNormal
                           .copyWith(
                             color: CatalagoColecionadorTheme.blackClaroColor,
-                            fontSize: 14,
+                            fontSize: 16,
                           ),
                     ),
                   ],
@@ -142,14 +141,14 @@ class MiniatureInfoSection extends StatelessWidget {
                     style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
                       fontWeight: FontWeight.w500,
-                      fontSize: 16,
+                      fontSize: 17,
                     ),
                   ),
                   Text(
                     car.escala,
                     style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                       color: CatalagoColecionadorTheme.blackClaroColor,
-                      fontSize: 14,
+                      fontSize: 16,
                     ),
                   ),
                 ],
@@ -166,7 +165,7 @@ class MiniatureInfoSection extends StatelessWidget {
                           .copyWith(
                             color: CatalagoColecionadorTheme.blackClaroColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                            fontSize: 17,
                           ),
                     ),
                     Text(
@@ -174,7 +173,7 @@ class MiniatureInfoSection extends StatelessWidget {
                       style: CatalagoColecionadorTheme.titleStyleNormal
                           .copyWith(
                             color: CatalagoColecionadorTheme.blackClaroColor,
-                            fontSize: 14,
+                            fontSize: 16,
                           ),
                     ),
                   ],
@@ -191,7 +190,7 @@ class MiniatureInfoSection extends StatelessWidget {
                           .copyWith(
                             color: CatalagoColecionadorTheme.blackClaroColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                            fontSize: 17,
                           ),
                     ),
                     Expanded(
@@ -200,7 +199,7 @@ class MiniatureInfoSection extends StatelessWidget {
                         style: CatalagoColecionadorTheme.titleStyleNormal
                             .copyWith(
                               color: CatalagoColecionadorTheme.blackClaroColor,
-                              fontSize: 14,
+                              fontSize: 16,
                             ),
                         overflow: TextOverflow.ellipsis,
                       ),

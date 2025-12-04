@@ -1,6 +1,7 @@
 // SearchBar
 // -------------
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SearchBarWidget extends StatelessWidget {
@@ -9,6 +10,7 @@ class SearchBarWidget extends StatelessWidget {
   final Color textColor;
   final String hint;
   final ValueChanged<String> onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   const SearchBarWidget({
     super.key,
@@ -17,6 +19,7 @@ class SearchBarWidget extends StatelessWidget {
     required this.textColor,
     required this.hint,
     required this.onChanged,
+    this.inputFormatters,
   });
 
   @override
@@ -42,6 +45,7 @@ class SearchBarWidget extends StatelessWidget {
           const SizedBox(width: 9),
           Expanded(
             child: TextField(
+              inputFormatters: inputFormatters,
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,

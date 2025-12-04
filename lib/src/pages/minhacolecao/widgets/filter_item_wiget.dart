@@ -14,6 +14,7 @@ class FilterItemWidget extends StatefulWidget {
   final Color iconColor;
   final ViewMode selectedView;
   final ValueChanged<ViewMode> onViewModeChanged;
+  final ValueChanged<int>? onFilterSelected;
 
   const FilterItemWidget({
     super.key,
@@ -25,6 +26,7 @@ class FilterItemWidget extends StatefulWidget {
     required this.iconColor,
     required this.selectedView,
     required this.onViewModeChanged,
+    this.onFilterSelected,
   });
 
   @override
@@ -61,6 +63,7 @@ class _FilterItemWidgetState extends State<FilterItemWidget> {
                 setState(() {
                   selectedFilter = selectedFilter == i ? -1 : i;
                 });
+                widget.onFilterSelected?.call(i);
               },
               color: widget.color,
               textColor: widget.textColor,

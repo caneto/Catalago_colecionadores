@@ -27,13 +27,7 @@ class FilterOptionWidget extends StatelessWidget {
       button: true,
       label: data.label,
       child: InkWell(
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Open $data.label filter (Not implemented)"),
-            ),
-          );
-        },
+        onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 140),

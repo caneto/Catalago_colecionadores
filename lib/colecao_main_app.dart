@@ -15,7 +15,6 @@ import 'package:catalago_colecionadores/src/pages/marca/add_marca_page.dart';
 import 'package:catalago_colecionadores/src/pages/marca/list_marca_page.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/details/miniatura_details.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao.dart';
-import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao_2.dart';
 import 'package:catalago_colecionadores/src/pages/pos_start/pos_start_screen.dart';
 import 'package:catalago_colecionadores/src/pages/splash/splash_screen.dart';
 import 'package:catalago_colecionadores/src/pages/start/start_screen.dart';
@@ -89,7 +88,6 @@ class _ColecaoMainAppState extends State<ColecaoMainApp> {
         '/add_car/scan': (_) => AddScanPage(cameras: widget.cameras),
         '/minha_colecao': (_) => MinhaColecao(),
         '/miniatura_details': (_) => MiniatureDetails(),
-        '/minha_colecao2': (_) => MinhaColecao2(),
         '/category': (_) => AddCategoryPage(),
         '/configuracoes': (_) => ConfiguracoesPage(),
         '/add_category_page': (_) => AddCategoryPage(),

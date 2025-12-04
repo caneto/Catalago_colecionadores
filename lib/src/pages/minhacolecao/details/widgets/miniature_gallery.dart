@@ -10,7 +10,7 @@ class MiniatureGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double itemSize = 180.0;
+    final double itemSize = 240.0;
 
     return Column(
       children: [
