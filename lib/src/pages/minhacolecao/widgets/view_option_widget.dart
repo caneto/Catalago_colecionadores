@@ -8,12 +8,10 @@ enum ViewMode { grid, list }
 class ViewOptionsWidget extends StatelessWidget {
   final ViewMode selected;
   final ValueChanged<ViewMode> onSelect;
-  final bool isMobile;
   const ViewOptionsWidget({
     super.key,
     required this.selected,
     required this.onSelect,
-    required this.isMobile,
   });
 
   @override
@@ -29,7 +27,6 @@ class ViewOptionsWidget extends StatelessWidget {
             iconPath: R.ASSETS_IMAGES_GRID_50_PNG,
             isSelected: selected == ViewMode.grid,
             onTap: () => onSelect(ViewMode.grid),
-            isMobile: isMobile,
           ),
           SizedBox(width: 14),
           // List
@@ -38,7 +35,6 @@ class ViewOptionsWidget extends StatelessWidget {
             iconPath: R.ASSETS_IMAGES_BULLETED_LIST_50_PNG,
             isSelected: selected == ViewMode.list,
             onTap: () => onSelect(ViewMode.list),
-            isMobile: isMobile,
           ),
         ],
       ),
@@ -51,14 +47,12 @@ class _ViewOptionButton extends StatelessWidget {
   final bool isSelected;
   final String iconPath;
   final VoidCallback onTap;
-  final bool isMobile;
 
   const _ViewOptionButton({
     required this.text,
     required this.isSelected,
     required this.iconPath,
     required this.onTap,
-    required this.isMobile,
   });
 
   @override
@@ -80,7 +74,7 @@ class _ViewOptionButton extends StatelessWidget {
                 color: Colors.blueGrey, // Border color
               ),
             ),
-            minimumSize: WidgetStateProperty.all(Size(isMobile ? 70 : 120, 40)),
+            minimumSize: WidgetStateProperty.all(Size(70, 40)),
             backgroundColor: WidgetStateProperty.all(
               isSelected ? textSecondary : primaryBg,
             ),
@@ -99,7 +93,7 @@ class _ViewOptionButton extends StatelessWidget {
           child: Row(
             children: [
               Image.asset(iconPath, width: 16, height: 16, color: Colors.white),
-              SizedBox(width: isMobile ? 12 : 8),
+              SizedBox(width: 12 ),
               Text(
                 text,
                 style: CatalagoColecionadorTheme.titleStyle.copyWith(

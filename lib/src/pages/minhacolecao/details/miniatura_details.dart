@@ -63,10 +63,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
       userDisliked: false,
     ),
   ];
-
-  final String mainImage =
-      "https://app.codigma.io/api/uploads/assets/bd7e40e4-e070-4638-bd63-bd463ddf176e.png";
-
+  
   // Reviews Data (English only, as per instruction; originals are in PT)
   final List<UserReviewData> userReviews = [
     UserReviewData(
