@@ -1,9 +1,9 @@
-
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/collection_item_data_model.dart';
 import 'filter_option_widget.dart';
+import 'view_option_widget.dart';
 
 class FilterItemWidget extends StatefulWidget {
   final bool isMobile;
@@ -12,6 +12,8 @@ class FilterItemWidget extends StatefulWidget {
   final Color color;
   final Color textColor;
   final Color iconColor;
+  final ViewMode selectedView;
+  final ValueChanged<ViewMode> onViewModeChanged;
 
   const FilterItemWidget({
     super.key,
@@ -21,6 +23,8 @@ class FilterItemWidget extends StatefulWidget {
     required this.color,
     required this.textColor,
     required this.iconColor,
+    required this.selectedView,
+    required this.onViewModeChanged,
   });
 
   @override
@@ -42,7 +46,7 @@ class _FilterItemWidgetState extends State<FilterItemWidget> {
             style: CatalagoColecionadorTheme.titleStyle.copyWith(
               color: CatalagoColecionadorTheme.textMain,
               fontSize: 16,
-              fontWeight: FontWeight.w700,              
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),
@@ -65,7 +69,12 @@ class _FilterItemWidgetState extends State<FilterItemWidget> {
           }),
         ),
         // Use Wrap para permitir múltiplos por linha e quebra automática
-        SizedBox(height: 4),
+        const SizedBox(height: 10),
+        ViewOptionsWidget(
+          selected: widget.selectedView,
+          onSelect: widget.onViewModeChanged,
+        ),
+        const SizedBox(height: 4),
       ],
     );
   }
