@@ -80,6 +80,8 @@ class _AddCarColectionState extends State<AddCarColection> {
   void _onSave() async {
     if (_formKey.currentState?.validate() != true) return;
 
+    FocusScope.of(context).unfocus();
+
     DateTime? dataAquizicao;
     if (_dataAquizicaoController.text.isNotEmpty) {
       final parts = _dataAquizicaoController.text.split('/');
@@ -118,7 +120,7 @@ class _AddCarColectionState extends State<AddCarColection> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Thumbnail saved!'),
+          content: Text('Item gravado com Sucesso!'),
           backgroundColor: CatalagoColecionadorTheme.bgInputAccent,
           behavior: SnackBarBehavior.floating,
         ),
@@ -141,7 +143,7 @@ class _AddCarColectionState extends State<AddCarColection> {
   Widget build(BuildContext context) {
     final sizeOf = MediaQuery.sizeOf(context);
 
-    final double maxContentWidth = 390.0;
+    final double maxContentWidth = 420.0;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: SafeArea(

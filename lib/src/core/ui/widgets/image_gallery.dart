@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
 
 // Image gallery with selectable image
@@ -38,7 +39,7 @@ class ImageGallery extends StatelessWidget {
                       right: i == images.length - 1 ? 0 : 12,
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(18),
                       child: Container(
                         width: itemSize,
                         height: itemSize,
@@ -46,8 +47,8 @@ class ImageGallery extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
                             color: selectedIndex == i
-                                ? Colors.red
-                                : const Color(0xFF0D40A6),
+                                ? CatalagoColecionadorTheme.orangeColor
+                                : CatalagoColecionadorTheme.bgInputAccent,
                             width: selectedIndex == i ? 4.0 : 1.5,
                           ),
                           boxShadow: [

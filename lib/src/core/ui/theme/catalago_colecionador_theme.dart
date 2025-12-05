@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 final class CatalagoColecionadorTheme {
   static const orangeColor = Color(0xFFFFAE45);
+  static const yellowColor = Color.fromARGB(255, 240, 235, 168);
   static const blackGround = Color.fromARGB(255, 96, 123, 173);
+  static const blackLightGround = Color.fromARGB(255, 131, 143, 165);
   static const headerBlackGround = Color.fromARGB(255, 24, 44, 29);
   static const textDescriptColor = Color(0xFFFFEFE9);
   static const blueColor = Color(0xFF0D40A6);
@@ -33,7 +35,6 @@ final class CatalagoColecionadorTheme {
   static String get font => 'Montserrat';
 
   static final lightTheme = ThemeData(
-    useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(seedColor: textDescriptColor),
     fontFamily: font,
     scaffoldBackgroundColor: textDescriptColor,
@@ -53,7 +54,12 @@ final class CatalagoColecionadorTheme {
       enabledBorder: _defaultInputBorder,
       focusedBorder: _defaultInputBorder,
       errorBorder: _defaultInputBorder.copyWith(
-        borderSide: const BorderSide(color: Colors.red),
+        borderSide: const BorderSide(color: blueColor),
+      ),
+      errorStyle: TextStyle(
+        color:
+            yellowColor, // Garante que o TextStyle padrão use a cor do esquema
+        fontWeight: FontWeight.bold,
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
@@ -83,7 +89,7 @@ final class CatalagoColecionadorTheme {
     ),
   );
 
-   static InputDecoration inputDecorationAddCard({
+  static InputDecoration inputDecorationAddCard({
     String? hintText,
     Color colorSide = CatalagoColecionadorTheme.blueColor,
     bool isTextArea = false,
@@ -112,6 +118,11 @@ final class CatalagoColecionadorTheme {
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide.none,
+      ),
+      errorStyle: TextStyle(
+        color:
+            yellowColor, // Garante que o TextStyle padrão use a cor do esquema
+        fontWeight: FontWeight.bold,
       ),
     );
   }
