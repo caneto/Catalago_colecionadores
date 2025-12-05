@@ -1,6 +1,7 @@
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../add_car/widget/form_group.dart';
 
@@ -20,7 +21,7 @@ class AddCategoryForm extends StatefulWidget {
     required this.descriptionController,
     this.imagePath,
     this.onImageChanged,
-    required this.onSave, 
+    required this.onSave,
     required this.textButtonOption,
   });
 
@@ -39,9 +40,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
           InkWell(
             onTap: () async {
               // Reusing the scan page from add_car flow
-              final filePath = await Navigator.of(
-                context,
-              ).pushNamed('/add_car/scan');
+              final filePath = await context.push('/add_car/scan');
               if (filePath != null && filePath != '') {
                 widget.onImageChanged?.call(filePath as String);
               }
@@ -60,8 +59,10 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   widget.imagePath != null
-                      ? Image.asset(R.ASSETS_IMAGES_FOLDER_PNG) // Placeholder, ideally show the image
+                  widget.imagePath != null
+                      ? Image.asset(
+                          R.ASSETS_IMAGES_FOLDER_PNG,
+                        ) // Placeholder, ideally show the image
                       : Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
                   SizedBox(height: 12),
                   Text(
@@ -71,7 +72,9 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                   ),
                   SizedBox(height: 6),
                   Text(
-                    widget.imagePath != null ? "Imagem selecionada" : "Selecione a imagem",
+                    widget.imagePath != null
+                        ? "Imagem selecionada"
+                        : "Selecione a imagem",
                     style: TextStyle(fontSize: 14, color: Colors.black54),
                   ),
                 ],

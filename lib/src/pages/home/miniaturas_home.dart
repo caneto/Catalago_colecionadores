@@ -1,6 +1,6 @@
-import 'package:catalago_colecionadores/global.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
+import 'package:catalago_colecionadores/src/core/global/global.dart';
 import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -9,6 +9,7 @@ import 'package:catalago_colecionadores/src/pages/home/widgets/section_widget.da
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:go_router/go_router.dart';
 
 import 'widgets/category_item.dart';
 import 'widgets/horizontal_items_list.dart';
@@ -182,7 +183,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                 content: Text("Cadastra carrinho"),
               );
               scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
-              Navigator.of(context).pushNamed('/add_car');
+              context.push('/add_car');
             },
           ),
           FloatingActionButton.small(
@@ -194,7 +195,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
               );
               scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
 
-              Navigator.of(context).pushNamed('/category');
+              context.push('/category');
             },
           ),
         ],

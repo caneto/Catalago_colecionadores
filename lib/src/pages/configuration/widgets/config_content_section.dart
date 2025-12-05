@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'config_detail_card.dart';
 import 'config_section.dart';
@@ -79,7 +80,7 @@ class ConfigContentSection extends StatelessWidget {
             SizedBox(height: 4),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed('/list_category');
+                context.push('/list_category');
               },
               child: ConfigDetailCard(
                 iconUrl: 'categoria.svg',
@@ -91,7 +92,7 @@ class ConfigContentSection extends StatelessWidget {
             SizedBox(height: 4),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed('/list_marca');
+                context.push('/list_marca');
               },
               child: ConfigDetailCard(
                 iconUrl: 'marca.svg',
@@ -109,7 +110,7 @@ class ConfigContentSection extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed('/check_terms_screen');
+                context.push('/check_terms_screen');
               },
               child: ConfigDetailCard(
                 iconUrl: 'termos_legais.svg',
@@ -120,7 +121,7 @@ class ConfigContentSection extends StatelessWidget {
             SizedBox(height: 4),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed('/check_politics_screen');
+                context.push('/check_politics_screen');
               },
               child: ConfigDetailCard(
                 iconUrl: 'politica_privacidade.svg',

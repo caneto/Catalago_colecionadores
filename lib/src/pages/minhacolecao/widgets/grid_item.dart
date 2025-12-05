@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/database/isar_models/car_collection.dart';
 
@@ -20,16 +21,13 @@ class GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     String nomeMiniatura = item.nomeMiniatura.length <= 32
         ? item.nomeMiniatura
         : '${item.nomeMiniatura.substring(0, 30)}...';
 
     return InkWell(
       onTap: () {
-        Navigator.of(
-          context,
-        ).pushNamed('/miniatura_details', arguments: item.id);
+        context.push('/miniatura_details', extra: item.id);
       },
       child: Semantics(
         label: '${item.marca}, ${item.nomeMiniatura}',

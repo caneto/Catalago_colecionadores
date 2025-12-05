@@ -3,6 +3,7 @@ import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_
 import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_especial_button.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AddScanPage extends StatefulWidget {
@@ -29,7 +30,7 @@ class _AddScanPageState extends State<AddScanPage> {
   Future<void> _initializeCamera() async {
     // Solicitar permissão de câmera
     final status = await Permission.camera.request();
-    
+
     if (!status.isGranted) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -44,9 +45,9 @@ class _AddScanPageState extends State<AddScanPage> {
         widget.cameras[0],
         ResolutionPreset.high,
       );
-      
+
       await cameraController.initialize();
-      
+
       if (mounted) {
         setState(() {
           _isCameraInitialized = true;
@@ -91,9 +92,7 @@ class _AddScanPageState extends State<AddScanPage> {
               children: [
                 // Mostrar câmera ou loading
                 if (!_isCameraInitialized)
-                  const Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  )
+                  const Center(child: CircularProgressIndicator.adaptive())
                 else if (cameraController.value.isInitialized)
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
@@ -117,9 +116,7 @@ class _AddScanPageState extends State<AddScanPage> {
                     ),
                   )
                 else
-                  const Center(
-                    child: Text('Erro ao carregar câmera'),
-                  ),
+                  const Center(child: Text('Erro ao carregar câmera')),
                 const SizedBox(height: 30),
                 AppDefaultEspecialButton(
                   sizeBoxOn: true,
@@ -138,13 +135,15 @@ class _AddScanPageState extends State<AddScanPage> {
                             });
                             if (mounted) {
                               // ignore: use_build_context_synchronously
-                              Navigator.of(context).pop(foto);
+                              context.pop(foto);
                             }
                           } catch (e) {
                             if (mounted) {
                               // ignore: use_build_context_synchronously
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Erro ao tirar foto: $e')),
+                                SnackBar(
+                                  content: Text('Erro ao tirar foto: $e'),
+                                ),
                               );
                             }
                           }

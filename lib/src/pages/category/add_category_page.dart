@@ -6,6 +6,7 @@ import 'package:catalago_colecionadores/src/pages/category/bloc/category_state.d
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/database/isar_models/category_collection.dart';
 import '../../core/database/isar_service.dart';
@@ -88,7 +89,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                 behavior: SnackBarBehavior.floating,
               ),
             );
-            Navigator.pop(context);
+            context.pop();
           } else if (state is CategoryError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -140,7 +141,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                     height: 28,
                                     width: 28,
                                   ),
-                                  onTap: () => Navigator.pop(context),
+                                  onTap: () => context.pop(),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
@@ -170,7 +171,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                         semanticsLabel: 'X',
                                       ),
                                       onTap: () {
-                                        Navigator.pop(context);
+                                        context.pop();
                                       },
                                     ),
                                   ),

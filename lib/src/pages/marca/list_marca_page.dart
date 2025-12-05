@@ -4,7 +4,6 @@ import 'package:catalago_colecionadores/src/core/database/isar_models/marca_coll
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
-import 'package:catalago_colecionadores/src/pages/marca/add_marca_page.dart';
 import 'package:catalago_colecionadores/src/pages/marca/bloc/marca_bloc.dart';
 import 'package:catalago_colecionadores/src/pages/marca/bloc/marca_event.dart';
 import 'package:catalago_colecionadores/src/pages/marca/bloc/marca_state.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class ListMarcaPage extends StatefulWidget {
   const ListMarcaPage({super.key});
@@ -40,10 +40,7 @@ class _ListMarcaPageState extends State<ListMarcaPage> {
   }
 
   void _editMarca(MarcaCollection marca) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AddMarcaPage(marca: marca)),
-    );
+    await context.push('/add_marca_page', extra: marca);
     _bloc.add(LoadMarcas());
   }
 
@@ -84,7 +81,7 @@ class _ListMarcaPageState extends State<ListMarcaPage> {
                           height: 28,
                           width: 28,
                         ),
-                        onTap: () => Navigator.pop(context),
+                        onTap: () => context.pop(),
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -116,9 +113,7 @@ class _ListMarcaPageState extends State<ListMarcaPage> {
                                   semanticsLabel: 'X',
                                 ),
                                 onTap: () async {
-                                  await Navigator.of(
-                                    context,
-                                  ).pushNamed('/add_marca_page');
+                                  await context.push('/add_marca_page');
                                   _bloc.add(LoadMarcas());
                                 },
                               ),

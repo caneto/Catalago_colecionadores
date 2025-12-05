@@ -1,9 +1,10 @@
 // File: ConfiguracaoAvancada.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 // Main entry widget for the ConfiguracaoAvancada screen
 class ConfiguracaoAvancada extends StatefulWidget {
-  const ConfiguracaoAvancada({Key? key}) : super(key: key);
+  const ConfiguracaoAvancada({super.key});
 
   @override
   State<ConfiguracaoAvancada> createState() => _ConfiguracaoAvancadaState();
@@ -29,11 +30,20 @@ class _ConfiguracaoAvancadaState extends State<ConfiguracaoAvancada> {
   Widget build(BuildContext context) {
     // Responsive breakpoints
     final width = MediaQuery.of(context).size.width;
-    final maxFeatureDescWidth =
-        width < 390 ? 140.0 : width < 400 ? 170.0 : width < 480 ? 226.0 : 226.0;
+    final maxFeatureDescWidth = width < 390
+        ? 140.0
+        : width < 400
+        ? 170.0
+        : width < 480
+        ? 226.0
+        : 226.0;
     final headerFontSize = width < 375 ? 16.0 : 18.0;
     final featureTitleFontSize = width < 375 ? 14.0 : 16.0;
-    final featureDescFontSize = width < 375 ? 12.0 : width < 400 ? 13.2 : 13.2;
+    final featureDescFontSize = width < 375
+        ? 12.0
+        : width < 400
+        ? 13.2
+        : 13.2;
 
     return Material(
       color: const Color(0xFF121A21),
@@ -46,10 +56,10 @@ class _ConfiguracaoAvancadaState extends State<ConfiguracaoAvancada> {
             // Responsive paddings
             final horizontalContentPadding = isSmall
                 ? (width < 400
-                    ? 10.0
-                    : width < 480
-                        ? 16.0
-                        : 24.0)
+                      ? 10.0
+                      : width < 480
+                      ? 16.0
+                      : 24.0)
                 : 24.0;
             final maxContainerWidth = isMediumScreen ? 430.0 : double.infinity;
 
@@ -63,14 +73,15 @@ class _ConfiguracaoAvancadaState extends State<ConfiguracaoAvancada> {
                       width: double.infinity,
                       child: _Header(
                         fontSize: headerFontSize,
-                        onBackTap: () => Navigator.of(context).maybePop(),
+                        onBackTap: () => context.pop(),
                       ),
                     ),
                     Expanded(
                       child: Container(
                         width: double.infinity,
-                        constraints:
-                            BoxConstraints(maxWidth: maxContainerWidth),
+                        constraints: BoxConstraints(
+                          maxWidth: maxContainerWidth,
+                        ),
                         decoration: const BoxDecoration(
                           color: Color(0xFF1A2633),
                           border: Border(
@@ -123,11 +134,7 @@ class _Header extends StatelessWidget {
   final double fontSize;
   final VoidCallback onBackTap;
 
-  const _Header({
-    Key? key,
-    required this.fontSize,
-    required this.onBackTap,
-  }) : super(key: key);
+  const _Header({super.key, required this.fontSize, required this.onBackTap});
 
   @override
   Widget build(BuildContext context) {
@@ -135,9 +142,7 @@ class _Header extends StatelessWidget {
       height: 64,
       decoration: const BoxDecoration(
         color: Color(0xFF121A21),
-        border: Border(
-          bottom: BorderSide(color: Color(0xFF18202E)),
-        ),
+        border: Border(bottom: BorderSide(color: Color(0xFF18202E))),
       ),
       padding: const EdgeInsetsDirectional.only(start: 8),
       child: Row(
@@ -149,7 +154,8 @@ class _Header extends StatelessWidget {
               onPressed: onBackTap,
               icon: const Image(
                 image: NetworkImage(
-                    'https://app.codigma.io/api/uploads/assets/4fe6a902-bb6e-44b7-9ffa-33be31e882fa.svg'),
+                  'https://app.codigma.io/api/uploads/assets/4fe6a902-bb6e-44b7-9ffa-33be31e882fa.svg',
+                ),
                 width: 24,
                 height: 24,
               ),
@@ -187,11 +193,11 @@ class _DataManagementSection extends StatelessWidget {
   final double maxFeatureDescWidth;
 
   const _DataManagementSection({
-    Key? key,
+    super.key,
     required this.featureTitleFontSize,
     required this.featureDescFontSize,
     required this.maxFeatureDescWidth,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -235,8 +241,7 @@ class _DataManagementSection extends StatelessWidget {
             iconUrl:
                 'https://app.codigma.io/api/uploads/assets/aeac9ba5-8e72-47a6-bda2-fccdd247e667.svg',
             title: "Setup Local Backup",
-            description:
-                "Configure local backup to save on device or SD card",
+            description: "Configure local backup to save on device or SD card",
             titleFontSize: featureTitleFontSize,
             descFontSize: featureDescFontSize,
             maxDescWidth: maxFeatureDescWidth,
@@ -259,7 +264,7 @@ class _FeatureTile extends StatelessWidget {
   final bool isLast;
 
   const _FeatureTile({
-    Key? key,
+    super.key,
     required this.iconUrl,
     required this.title,
     required this.description,
@@ -267,7 +272,7 @@ class _FeatureTile extends StatelessWidget {
     required this.descFontSize,
     required this.maxDescWidth,
     this.isLast = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -277,8 +282,10 @@ class _FeatureTile extends StatelessWidget {
       label: title,
       child: Container(
         margin: EdgeInsets.only(bottom: isLast ? 0 : 14),
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16)
-            .copyWith(left: 12),
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 16,
+        ).copyWith(left: 12),
         decoration: BoxDecoration(
           color: const Color(0xFF243647),
           borderRadius: BorderRadius.circular(16),
@@ -343,10 +350,10 @@ class FooterNavigation extends StatelessWidget {
   final Function(int) onTap;
 
   const FooterNavigation({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   static const _navItems = [
     _NavItemData(
@@ -379,12 +386,11 @@ class FooterNavigation extends StatelessWidget {
       elevation: 8,
       child: Container(
         decoration: const BoxDecoration(
-          border: Border(
-            top: BorderSide(color: Color(0xFF243647), width: 1),
-          ),
+          border: Border(top: BorderSide(color: Color(0xFF243647), width: 1)),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 8)
-            .copyWith(left: 20, right: 4),
+        padding: const EdgeInsets.symmetric(
+          vertical: 8,
+        ).copyWith(left: 20, right: 4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(_navItems.length, (index) {

@@ -21,7 +21,7 @@ class GlobalContext {
 
   set navigatorKey(GlobalKey<NavigatorState> navigatorKey) =>
       _navigatorKey = navigatorKey;
-
+  
   Future<void> loginExpire() async {
     final sp = await SharedPreferences.getInstance();
     await sp.clear();

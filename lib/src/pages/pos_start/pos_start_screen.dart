@@ -3,6 +3,7 @@ import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_especial_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PosStartScreen extends StatelessWidget {
   const PosStartScreen({super.key});
@@ -60,7 +61,7 @@ class PosStartScreen extends StatelessWidget {
                 children: [
                   AppDefaultEspecialButton(
                     onPressed: () async {
-                      Navigator.of(context).pushReplacementNamed('/login');
+                      context.go('/login');
                     },
                     label: "Entrar",
                     width: sizeOf.width * .84,
@@ -97,7 +98,7 @@ class PosStartScreen extends StatelessWidget {
                   const SizedBox(height: 12),
                   AppDefaultEspecialButton(
                     onPressed: () async {
-                      Navigator.of(context).pushReplacementNamed('/login');
+                      context.go('/login');
                     },
                     label: "",
                     width: sizeOf.width * .84,
@@ -130,7 +131,7 @@ class PosStartScreen extends StatelessWidget {
                     height: 48,
                     child: ElevatedButton(
                       onPressed: () async {
-                        Navigator.of(context).pushReplacementNamed('/registro');
+                        context.go('/registro');
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: CatalagoColecionadorTheme.whiteColor,
@@ -145,7 +146,7 @@ class PosStartScreen extends StatelessWidget {
                             .copyWith(
                               color: CatalagoColecionadorTheme.whiteColor,
                               fontWeight: FontWeight.bold,
-                              fontSize: 16
+                              fontSize: 16,
                             ),
                       ),
                     ),
@@ -157,20 +158,22 @@ class PosStartScreen extends StatelessWidget {
                     child: Center(
                       child: RichText(
                         text: TextSpan(
-                          style: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
-                            color: CatalagoColecionadorTheme.blackColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: CatalagoColecionadorTheme.titleSmallStyle
+                              .copyWith(
+                                color: CatalagoColecionadorTheme.blackColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                           children: [
                             const TextSpan(text: 'Esqueceu sua senha? '),
                             TextSpan(
                               text: 'Click aqui.',
-                              style: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
-                                color: CatalagoColecionadorTheme.whiteColor,
-                                fontSize: 14,
-                                decoration: TextDecoration.underline,
-                              ),
+                              style: CatalagoColecionadorTheme.titleSmallStyle
+                                  .copyWith(
+                                    color: CatalagoColecionadorTheme.whiteColor,
+                                    fontSize: 14,
+                                    decoration: TextDecoration.underline,
+                                  ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   // launchUrl(

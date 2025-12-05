@@ -2,6 +2,7 @@ import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_especial_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -11,8 +12,8 @@ class StartScreen extends StatelessWidget {
     final sizeOf = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      backgroundColor:
-          CatalagoColecionadorTheme.blackGround, // <-- cor de fundo preta para toda a tela
+      backgroundColor: CatalagoColecionadorTheme
+          .blackGround, // <-- cor de fundo preta para toda a tela
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -51,7 +52,8 @@ class StartScreen extends StatelessWidget {
                   style: CatalagoColecionadorTheme.titleStyle.copyWith(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color: CatalagoColecionadorTheme.whiteColor, // descrição em branco translúcido
+                    color: CatalagoColecionadorTheme
+                        .whiteColor, // descrição em branco translúcido
                   ),
                 ),
               ),
@@ -61,7 +63,7 @@ class StartScreen extends StatelessWidget {
                 children: [
                   AppDefaultEspecialButton(
                     onPressed: () async {
-                      Navigator.of(context).pushReplacementNamed('/pos_start');
+                      context.go('/pos_start');
                     },
                     label: "Entrar",
                     width: sizeOf.width * .84,
@@ -71,13 +73,13 @@ class StartScreen extends StatelessWidget {
                       foregroundColor: CatalagoColecionadorTheme.whiteColor,
                       side: const BorderSide(
                         color: CatalagoColecionadorTheme.blueColor,
-                      ), 
+                      ),
                     ),
                   ),
                   const SizedBox(height: 12),
                   AppDefaultEspecialButton(
                     onPressed: () async {
-                      Navigator.of(context).pushReplacementNamed('/login');
+                      context.go('/login');
                     },
                     label: "Entrar",
                     width: sizeOf.width * .84,

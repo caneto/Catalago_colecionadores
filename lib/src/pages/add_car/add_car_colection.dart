@@ -4,13 +4,15 @@ import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/database/isar_models/car_collection.dart';
 import '../../core/database/isar_service.dart';
 import 'widget/add_car_colection_form.dart';
 
 class AddCarColection extends StatefulWidget {
-  const AddCarColection({super.key});
+  final int? id;
+  const AddCarColection({super.key, this.id});
 
   @override
   State<AddCarColection> createState() => _AddCarColectionState();
@@ -35,20 +37,15 @@ class _AddCarColectionState extends State<AddCarColection> {
   final List<String> _images = [];
 
   int? _carId;
-  bool _isDataLoaded = false;
 
   final int _selectedNavIndex = 2; // Seta o select para o "Add"
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_isDataLoaded) {
-      final args = ModalRoute.of(context)?.settings.arguments;
-      if (args != null && args is int) {
-        _carId = args;
-        _loadCarData(_carId!);
-      }
-      _isDataLoaded = true;
+  void initState() {
+    super.initState();
+    if (widget.id != null) {
+      _carId = widget.id;
+      _loadCarData(_carId!);
     }
   }
 
@@ -126,7 +123,7 @@ class _AddCarColectionState extends State<AddCarColection> {
           behavior: SnackBarBehavior.floating,
         ),
       );
-      Navigator.pop(context);
+      context.pop();
     }
   }
 
@@ -219,7 +216,7 @@ class _AddCarColectionState extends State<AddCarColection> {
                                     semanticsLabel: 'X',
                                   ),
                                   onTap: () {
-                                    Navigator.pop(context);
+                                    context.pop();
                                   },
                                 ),
                               ),

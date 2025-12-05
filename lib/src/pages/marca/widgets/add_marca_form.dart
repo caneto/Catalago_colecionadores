@@ -1,6 +1,7 @@
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../add_car/widget/form_group.dart';
 
@@ -41,9 +42,7 @@ class _AddMarcaFormState extends State<AddMarcaForm> {
           InkWell(
             onTap: () async {
               // Reusing the scan page from add_car flow
-              final filePath = await Navigator.of(
-                context,
-              ).pushNamed('/add_car/scan');
+              final filePath = await context.push('/add_car/scan');
               if (filePath != null && filePath != '') {
                 widget.onLogoChanged?.call(filePath as String);
               }

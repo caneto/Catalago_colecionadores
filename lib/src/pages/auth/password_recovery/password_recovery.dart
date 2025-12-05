@@ -6,6 +6,7 @@ import 'package:catalago_colecionadores/src/pages/auth/password_recovery/widgets
 import 'package:catalago_colecionadores/src/pages/auth/password_recovery/widgets/header_widget.dart';
 import 'package:catalago_colecionadores/src/pages/auth/password_recovery/widgets/title_and_instructions_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'widgets/send_button.dart';
 
@@ -50,7 +51,7 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
   }
 
   void _navigateBack(BuildContext context) {
-    Navigator.of(context).maybePop();
+    context.pop();
   }
 
   @override
@@ -126,11 +127,7 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                       ),
                       FooterWidget(
                         isNarrow: isNarrow,
-                        onBackToLogin: () => {
-                          Navigator.of(
-                            context,
-                          ).popUntil((route) => route.isFirst),
-                        },
+                        onBackToLogin: () => {context.go('/login')},
                       ),
                     ],
                   ),

@@ -5,6 +5,7 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_especial
 import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textformfield.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -21,12 +22,12 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
   final _formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
-  
+
   late bool _passwordVisible;
 
   @override
   void initState() {
-     _passwordVisible = false;
+    _passwordVisible = false;
     super.initState();
   }
 
@@ -110,7 +111,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                       const SizedBox(height: 12),
                       AppDefaultEspecialButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacementNamed('/home');
+                          context.go('/home');
                         },
                         label: "",
                         width: sizeOf.width * .84,
@@ -140,7 +141,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                       const SizedBox(height: 8),
                       AppDefaultEspecialButton(
                         onPressed: () async {
-                          Navigator.of(context).pushReplacementNamed('/login');
+                          context.go('/login');
                         },
                         label: "",
                         width: sizeOf.width * .84,
@@ -189,7 +190,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.of(context).pushNamed('/password_recovery');
+                                      context.push('/password_recovery');
                                     },
                                 ),
                               ],
@@ -219,9 +220,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      Navigator.of(
-                                        context,
-                                      ).pushReplacementNamed('/registro');
+                                      context.go('/registro');
                                     },
                                 ),
                               ],
@@ -249,7 +248,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
       IsarService().loginUser(_emailEC.text, _passwordEC.text).then((user) {
         if (mounted) {
           if (user != null) {
-            Navigator.of(context).pushReplacementNamed('/home');
+            context.go('/home');
           } else {
             Messages.showError('Email ou senha inválidos', context);
           }

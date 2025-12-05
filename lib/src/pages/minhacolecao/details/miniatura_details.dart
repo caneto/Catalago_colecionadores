@@ -4,6 +4,7 @@ import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:isar_community/isar.dart';
 
 import 'widgets/miniature_gallery.dart';
@@ -12,7 +13,8 @@ import 'widgets/miniature_reviews_section.dart';
 import 'widgets/user_reviews_section.dart';
 
 class MiniatureDetails extends StatefulWidget {
-  const MiniatureDetails({super.key});
+  final Id? id;
+  const MiniatureDetails({super.key, this.id});
 
   @override
   State<MiniatureDetails> createState() => _MiniatureDetailsState();
@@ -28,11 +30,10 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
   bool _isLoading = true;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final args = ModalRoute.of(context)?.settings.arguments;
-    if (args is Id) {
-      _loadCar(args);
+  void initState() {
+    super.initState();
+    if (widget.id != null) {
+      _loadCar(widget.id!);
     } else {
       setState(() {
         _isLoading = false;
@@ -100,7 +101,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
 
   void _onEditPressed() async {
     if (_car == null) return;
-    await Navigator.of(context).pushNamed('/add_car', arguments: _car!.id);
+    await context.push('/add_car', extra: _car!.id);
     _loadCar(_car!.id);
   }
 
@@ -150,7 +151,7 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                                 height: 28,
                                 width: 28,
                               ),
-                              onTap: () => Navigator.pop(context),
+                              onTap: () => context.pop(),
                             ),
                             const SizedBox(width: 8),
                             Semantics(

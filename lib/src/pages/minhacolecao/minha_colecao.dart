@@ -9,6 +9,7 @@ import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/view_opti
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/database/isar_models/car_collection.dart';
 import '../../core/database/isar_service.dart';
@@ -70,7 +71,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
             ),
             actions: [
               TextButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('OK'),
               ),
             ],
@@ -104,7 +105,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                 return ListTile(
                   title: Text(marca.nome),
                   onTap: () {
-                    Navigator.pop(context);
+                    context.pop();
                     _filterByMarca(marca.nome);
                   },
                 );
@@ -114,7 +115,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                context.pop();
                 setState(() {
                   _displayedItems = _allItems;
                   _selectedFilter = -1;
@@ -270,9 +271,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                     semanticsLabel: 'X',
                                   ),
                                   onTap: () async {
-                                    await Navigator.of(
-                                      context,
-                                    ).pushNamed('/add_car');
+                                    await context.push('/add_car');
                                     _loadData();
                                   },
                                 ),

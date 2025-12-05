@@ -1,5 +1,6 @@
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ItemCard extends StatelessWidget {
   final String imageUrl;
@@ -8,7 +9,8 @@ class ItemCard extends StatelessWidget {
   final double height;
   final double imageHeight;
 
-  const ItemCard({super.key, 
+  const ItemCard({
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.width,
@@ -19,7 +21,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed('/minha_colecao2'),
+      onTap: () => context.push('/minha_colecao'),
       child: Semantics(
         label: title,
         child: Container(

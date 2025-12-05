@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckTermsScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _CheckTermsScreenState extends State<CheckTermsScreen> {
       await prefs.setBool('termsAccepted', true);
 
       if (mounted) {
-        Navigator.of(context).pop();
+        context.pop();
       }
     } catch (e) {
       if (mounted) {

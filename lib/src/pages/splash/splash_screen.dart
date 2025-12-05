@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -20,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
     final seconds = 3 + Random().nextInt(6);
     _timer = Timer(Duration(seconds: seconds), () {
       if (!mounted) return;
-      Navigator.of(context).pushReplacementNamed('/start');
+      context.go('/start');
     });
   }
 

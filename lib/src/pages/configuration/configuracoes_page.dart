@@ -2,6 +2,7 @@ import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/global/global_itens.dart';
 import 'widgets/circle_icon.dart';
@@ -128,7 +129,7 @@ class _HeaderSection extends StatelessWidget {
         const SizedBox(width: 8),
         InkWell(
           child: CircleIcon(url: 'seta_esquerda.svg', size: 28),
-          onTap: () => Navigator.of(context).pop(),
+          onTap: () => context.pop(),
         ),
         SizedBox(width: 17),
         Text(

@@ -1,5 +1,6 @@
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'nav_bar_item.dart';
 
@@ -27,12 +28,11 @@ class MiniaturasNavBar extends StatefulWidget {
 }
 
 class _MiniaturasNavBarState extends State<MiniaturasNavBar> {
-  
   void onNavTapped(int idx) {
     if (idx == widget.selectedIndex) return;
     setState(() {
       widget.selectedIndex = idx;
-      Navigator.of(context).pushNamed(
+      context.go(
         idx == 0
             ? '/home'
             : idx == 1

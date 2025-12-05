@@ -6,6 +6,7 @@ import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 import 'collection_condition_card.dart';
 import 'decimal_input_formatter.dart';
@@ -139,9 +140,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 return;
               }
 
-              final filePath = await Navigator.of(
-                context,
-              ).pushNamed('/add_car/scan');
+              final filePath = await context.push('/add_car/scan');
               if (filePath != null && filePath != '') {
                 widget.onImageAdded(filePath as String);
               }

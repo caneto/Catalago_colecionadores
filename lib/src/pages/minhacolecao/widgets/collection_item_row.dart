@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:catalago_colecionadores/src/core/database/isar_models/car_collection.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CollectionItemRow extends StatelessWidget {
   final CarCollection item;
@@ -33,9 +34,7 @@ class CollectionItemRow extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
           onTap: () {
-            Navigator.of(
-              context,
-            ).pushNamed('/miniatura_details', arguments: item.id);
+            context.push('/miniatura_details', extra: item.id);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),

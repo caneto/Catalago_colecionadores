@@ -6,6 +6,7 @@ import 'package:catalago_colecionadores/src/pages/marca/bloc/marca_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/database/isar_models/marca_collection.dart';
 import '../../core/database/isar_service.dart';
@@ -92,7 +93,7 @@ class _AddMarcaPageState extends State<AddMarcaPage> {
                 behavior: SnackBarBehavior.floating,
               ),
             );
-            Navigator.pop(context);
+            context.pop();
           } else if (state is MarcaError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -144,7 +145,7 @@ class _AddMarcaPageState extends State<AddMarcaPage> {
                                     height: 28,
                                     width: 28,
                                   ),
-                                  onTap: () => Navigator.pop(context),
+                                  onTap: () => context.pop(),
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
@@ -174,7 +175,7 @@ class _AddMarcaPageState extends State<AddMarcaPage> {
                                         semanticsLabel: 'X',
                                       ),
                                       onTap: () {
-                                        Navigator.pop(context);
+                                        context.pop();
                                       },
                                     ),
                                   ),
