@@ -22,10 +22,15 @@ const MarcaCollectionSchema = CollectionSchema(
       name: r'descricao',
       type: IsarType.string,
     ),
-    r'logo': PropertySchema(id: 1, name: r'logo', type: IsarType.string),
-    r'nome': PropertySchema(id: 2, name: r'nome', type: IsarType.string),
+    r'images': PropertySchema(
+      id: 1,
+      name: r'images',
+      type: IsarType.stringList,
+    ),
+    r'logo': PropertySchema(id: 2, name: r'logo', type: IsarType.string),
+    r'nome': PropertySchema(id: 3, name: r'nome', type: IsarType.string),
     r'quantidade': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'quantidade',
       type: IsarType.long,
     ),
@@ -59,6 +64,18 @@ int _marcaCollectionEstimateSize(
     }
   }
   {
+    final list = object.images;
+    if (list != null) {
+      bytesCount += 3 + list.length * 3;
+      {
+        for (var i = 0; i < list.length; i++) {
+          final value = list[i];
+          bytesCount += value.length * 3;
+        }
+      }
+    }
+  }
+  {
     final value = object.logo;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -75,9 +92,10 @@ void _marcaCollectionSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.descricao);
-  writer.writeString(offsets[1], object.logo);
-  writer.writeString(offsets[2], object.nome);
-  writer.writeLong(offsets[3], object.quantidade);
+  writer.writeStringList(offsets[1], object.images);
+  writer.writeString(offsets[2], object.logo);
+  writer.writeString(offsets[3], object.nome);
+  writer.writeLong(offsets[4], object.quantidade);
 }
 
 MarcaCollection _marcaCollectionDeserialize(
@@ -89,9 +107,10 @@ MarcaCollection _marcaCollectionDeserialize(
   final object = MarcaCollection();
   object.descricao = reader.readStringOrNull(offsets[0]);
   object.id = id;
-  object.logo = reader.readStringOrNull(offsets[1]);
-  object.nome = reader.readString(offsets[2]);
-  object.quantidade = reader.readLongOrNull(offsets[3]);
+  object.images = reader.readStringList(offsets[1]);
+  object.logo = reader.readStringOrNull(offsets[2]);
+  object.nome = reader.readString(offsets[3]);
+  object.quantidade = reader.readLongOrNull(offsets[4]);
   return object;
 }
 
@@ -105,10 +124,12 @@ P _marcaCollectionDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readStringList(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -424,6 +445,218 @@ extension MarcaCollectionQueryFilter
           upper: upper,
           includeUpper: includeUpper,
         ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'images'),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'images'),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementEqualTo(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'images',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'images',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'images',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'images',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'images',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'images',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'images',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'images',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'images', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'images', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'images', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'images', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'images', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesLengthLessThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'images', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(r'images', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<MarcaCollection, MarcaCollection, QAfterFilterCondition>
+  imagesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'images',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
       );
     });
   }
@@ -943,6 +1176,12 @@ extension MarcaCollectionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<MarcaCollection, MarcaCollection, QDistinct> distinctByImages() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'images');
+    });
+  }
+
   QueryBuilder<MarcaCollection, MarcaCollection, QDistinct> distinctByLogo({
     bool caseSensitive = true,
   }) {
@@ -978,6 +1217,13 @@ extension MarcaCollectionQueryProperty
   QueryBuilder<MarcaCollection, String?, QQueryOperations> descricaoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'descricao');
+    });
+  }
+
+  QueryBuilder<MarcaCollection, List<String>?, QQueryOperations>
+  imagesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'images');
     });
   }
 

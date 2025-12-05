@@ -1,7 +1,7 @@
+import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
 
-import '../helpers/collection_item_data_model.dart';
 import 'filter_option_widget.dart';
 import 'view_option_widget.dart';
 

@@ -12,11 +12,11 @@ void main() {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      _cameras = await availableCameras();
+      //_cameras = await availableCameras();
 
       runApp(
         DevicePreview(
-          builder: (_) => ColecaoMainApp(cameras: _cameras),
+          builder: (_) => ColecaoMainApp(),//cameras: _cameras),
           enabled: false,  // Para ativsar o preview, troque para true.
         ),
       );

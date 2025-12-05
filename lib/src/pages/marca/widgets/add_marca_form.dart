@@ -1,5 +1,6 @@
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
+import 'package:catalago_colecionadores/src/core/ui/widgets/image_gallery.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,10 +11,10 @@ class AddMarcaForm extends StatefulWidget {
   final TextEditingController nameController;
   final TextEditingController descriptionController;
   final TextEditingController quantidadeController;
-  final String? logoPath;
-  final ValueChanged<String?>? onLogoChanged;
+  final ValueChanged<String>? onImageAdded;
   final VoidCallback onSave;
   final String textButtonOption;
+  final List<String> images;
 
   const AddMarcaForm({
     super.key,
@@ -21,8 +22,8 @@ class AddMarcaForm extends StatefulWidget {
     required this.nameController,
     required this.descriptionController,
     required this.quantidadeController,
-    this.logoPath,
-    this.onLogoChanged,
+    this.onImageAdded,
+    required this.images,
     required this.onSave,
     required this.textButtonOption,
   });
@@ -32,6 +33,26 @@ class AddMarcaForm extends StatefulWidget {
 }
 
 class _AddMarcaFormState extends State<AddMarcaForm> {
+  int? _selectedImageIndex;
+
+  void _deleteSelectedImage() {
+    if (_selectedImageIndex != null) {
+      if (widget.images.length <= 1) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('É necessário ter pelo menos uma imagem.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+      setState(() {
+        widget.images.removeAt(_selectedImageIndex!);
+        _selectedImageIndex = null;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -44,7 +65,7 @@ class _AddMarcaFormState extends State<AddMarcaForm> {
               // Reusing the scan page from add_car flow
               final filePath = await context.push('/add_car/scan');
               if (filePath != null && filePath != '') {
-                widget.onLogoChanged?.call(filePath as String);
+                widget.onImageAdded?.call(filePath as String);
               }
             },
             child: Container(
@@ -61,29 +82,57 @@ class _AddMarcaFormState extends State<AddMarcaForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  widget.logoPath != null
-                      ? Image.asset(
-                          R.ASSETS_IMAGES_FOLDER_PNG,
-                        ) // Placeholder, ideally show the image
-                      : Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
+                  Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
                   SizedBox(height: 12),
                   Text(
-                    "Adicionar Logo da Marca",
+                    "Adicionar Imagem da Marca",
                     style: CatalagoColecionadorTheme.subTitleSmallStyle
                         .copyWith(fontSize: 16),
                   ),
                   SizedBox(height: 6),
                   Text(
-                    widget.logoPath != null
-                        ? "Logo selecionada"
-                        : "Selecione a logo",
+                    "Adicione fotos da marca",
                     style: TextStyle(fontSize: 14, color: Colors.black54),
                   ),
                 ],
               ),
             ),
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 8),
+          Text(
+            "Quantidade de Imagens: ${widget.images.length}",
+            style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(
+              color: CatalagoColecionadorTheme.whiteColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+            ),
+          ),
+          SizedBox(height: 12),
+          ImageGallery(
+            images: widget.images,
+            selectedIndex: _selectedImageIndex,
+            onImageSelected: (index) {
+              setState(() {
+                _selectedImageIndex = index;
+              });
+            },
+          ),
+          if (_selectedImageIndex != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  onPressed: _deleteSelectedImage,
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  label: const Text(
+                    'Excluir Imagem',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+            ),
+          SizedBox(height: 8),
           Text(
             "Detalhes da Marca",
             style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(

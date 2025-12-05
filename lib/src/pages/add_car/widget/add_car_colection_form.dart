@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/ui/widgets/image_gallery.dart';
 import 'collection_condition_card.dart';
 import 'decimal_input_formatter.dart';
 import 'form_group.dart';
-import 'image_gallery.dart';
 
 // ignore: must_be_immutable
 class AddCarColectionForm extends StatefulWidget {
@@ -184,8 +184,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
               fontSize: 14,
             ),
           ),
-          SizedBox(height: 8),
-          SizedBox(height: 8),
+          SizedBox(height: 12),
           ImageGallery(
             images: widget.images,
             selectedIndex: _selectedImageIndex,

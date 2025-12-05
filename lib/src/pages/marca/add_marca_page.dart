@@ -25,7 +25,7 @@ class _AddMarcaPageState extends State<AddMarcaPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _quantidadeController = TextEditingController();
-  String? _logoPath;
+  final List<String> _images = [];
 
   String textAddOption = 'Adicionar Marca';
   String textButtonOption = 'Salvar Marca';
@@ -40,7 +40,11 @@ class _AddMarcaPageState extends State<AddMarcaPage> {
       _nameController.text = widget.marca!.nome;
       _descriptionController.text = widget.marca!.descricao ?? '';
       _quantidadeController.text = widget.marca!.quantidade?.toString() ?? '';
-      _logoPath = widget.marca!.logo;
+      if (widget.marca!.images != null) {
+        _images.addAll(widget.marca!.images!);
+      } else if (widget.marca!.logo != null) {
+        _images.add(widget.marca!.logo!);
+      }
       textAddOption = "Editar Marca";
       textButtonOption = "Editar Marca";
     }
@@ -63,7 +67,8 @@ class _AddMarcaPageState extends State<AddMarcaPage> {
       ..nome = _nameController.text
       ..descricao = _descriptionController.text
       ..quantidade = int.tryParse(_quantidadeController.text)
-      ..logo = _logoPath;
+      ..logo = _images.isNotEmpty ? _images.first : null
+      ..images = _images;
 
     _bloc.add(AddMarca(marca));
   }
@@ -209,9 +214,9 @@ class _AddMarcaPageState extends State<AddMarcaPage> {
                                               _descriptionController,
                                           quantidadeController:
                                               _quantidadeController,
-                                          logoPath: _logoPath,
-                                          onLogoChanged: (val) =>
-                                              setState(() => _logoPath = val),
+                                          images: _images,
+                                          onImageAdded: (val) =>
+                                              setState(() => _images.add(val)),
                                           textButtonOption: textButtonOption,
                                           onSave: _onSave,
                                         );

@@ -216,7 +216,11 @@ class _AddCarColectionState extends State<AddCarColection> {
                                     semanticsLabel: 'X',
                                   ),
                                   onTap: () {
-                                    context.pop();
+                                    if (context.canPop()) {
+                                      context.pop();
+                                    } else {
+                                      context.go('/home');
+                                    }
                                   },
                                 ),
                               ),

@@ -1,4 +1,4 @@
-import 'package:camera_platform_interface/src/types/camera_description.dart';
+//import 'package:camera_platform_interface/src/types/camera_description.dart';
 import 'package:catalago_colecionadores/src/core/global/global.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:device_preview/device_preview.dart';
@@ -10,9 +10,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'routes.dart';
 
 class ColecaoMainApp extends StatefulWidget {
-  final List<CameraDescription> cameras;
+  //final List<CameraDescription> cameras;
   
-  const ColecaoMainApp({super.key, required this.cameras});
+  const ColecaoMainApp({super.key}); //, required this.cameras});
 
   @override
   State<ColecaoMainApp> createState() => _ColecaoMainAppState();
@@ -36,10 +36,10 @@ class _ColecaoMainAppState extends State<ColecaoMainApp> {
       }
 
       // Request camera permission
-      var cameraStatus = await Permission.camera.status;
-      if (!cameraStatus.isGranted) {
-        await Permission.camera.request();
-      }
+     // var cameraStatus = await Permission.camera.status;
+     // if (!cameraStatus.isGranted) {
+     //   await Permission.camera.request();
+     // }
     }
   }
 

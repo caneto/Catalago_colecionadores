@@ -13,4 +13,6 @@ class MarcaCollection {
   String? logo;
 
   int? quantidade;
+
+  List<String>? images;
 }

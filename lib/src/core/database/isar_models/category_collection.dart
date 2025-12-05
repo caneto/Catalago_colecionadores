@@ -11,4 +11,6 @@ class CategoryCollection {
   String? description;
 
   String? imagePath;
+
+  List<String>? images;
 }

@@ -13,7 +13,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/database/isar_models/car_collection.dart';
 import '../../core/database/isar_service.dart';
-import 'helpers/collection_item_data_model.dart';
 import 'widgets/collection_grid.dart';
 import 'widgets/collection_list.dart';
 
@@ -34,6 +33,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   final IsarService _isarService = IsarService();
   List<CarCollection> _allItems = [];
   List<CarCollection> _displayedItems = [];
+  final List<FilterItemData> _filters = GlobalItens.filters;
   bool _isLoading = true;
 
   @override
@@ -84,6 +84,51 @@ class _MinhaColecaoState extends State<MinhaColecao> {
         _displayedItems = results;
       });
     }
+  }
+
+  Future<void> _showCategoryPopup() async {
+    // 1. Fetch categories from DB
+    final categories = await _isarService.getAllCategories();
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Selecione uma Categoria'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                final category = categories[index];
+                return ListTile(
+                  title: Text(category.name),
+                  onTap: () {
+                    context.pop(); // Close dialog
+                    _filterByCategory(category.name);
+                  },
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.pop();
+                // "Cancel" -> reset filter
+                setState(() {
+                  _displayedItems = _allItems;
+                  _selectedFilter = -1;
+                });
+              },
+              child: const Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _showMarcaPopup() async {
@@ -138,6 +183,75 @@ class _MinhaColecaoState extends State<MinhaColecao> {
     });
   }
 
+  void _filterByCategory(String categoryName) {
+    final filtered = _allItems
+        .where(
+          (item) => item.categoria.toLowerCase() == categoryName.toLowerCase(),
+        )
+        .toList();
+    setState(() {
+      _displayedItems = filtered;
+    });
+  }
+
+  void _filterByScale(String scale) {
+    final filtered = _allItems
+        .where((item) => item.escala.toLowerCase() == scale.toLowerCase())
+        .toList();
+    setState(() {
+      _displayedItems = filtered;
+    });
+  }
+
+  Future<void> _showScalePopup() async {
+    // Extract unique scales from all items
+    final scales = _allItems.map((e) => e.escala).toSet().toList();
+    // Sort them nicely
+    scales.sort(
+      (a, b) => a.compareTo(b),
+    ); // Simple string sort, can be improved for "1:18" vs "1:4" logic if needed
+
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Selecione uma Escala'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: scales.length,
+              itemBuilder: (context, index) {
+                final scale = scales[index];
+                return ListTile(
+                  title: Text(scale),
+                  onTap: () {
+                    context.pop();
+                    _filterByScale(scale);
+                  },
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.pop();
+                setState(() {
+                  _displayedItems = _allItems;
+                  _selectedFilter = -1;
+                });
+              },
+              child: const Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _handleFilterSelection(int index) {
     setState(() {
       _selectedFilter = index;
@@ -146,6 +260,10 @@ class _MinhaColecaoState extends State<MinhaColecao> {
     if (index >= 0 && index < _filters.length) {
       if (_filters[index].label == 'Marca') {
         _showMarcaPopup();
+      } else if (_filters[index].label == 'Categoria') {
+        _showCategoryPopup();
+      } else if (_filters[index].label == 'Escala') {
+        _showScalePopup();
       }
     } else {
       // Reset filter if deselected (index == -1)
@@ -154,32 +272,6 @@ class _MinhaColecaoState extends State<MinhaColecao> {
       });
     }
   }
-
-  // Filter options
-  static const List<FilterItemData> _filters = [
-    FilterItemData(
-      label: 'Marca',
-      iconUrl: 'seta_filter.svg',
-      hasDropdown: true,
-    ),
-    FilterItemData(
-      label: 'Modelo',
-      iconUrl: 'seta_filter.svg',
-      hasDropdown: true,
-    ),
-    FilterItemData(label: 'Ano', iconUrl: 'seta_filter.svg', hasDropdown: true),
-    FilterItemData(
-      label: 'Escala',
-      iconUrl: 'seta_filter.svg',
-      hasDropdown: true,
-    ),
-    FilterItemData(
-      label: 'Condição',
-      iconUrl: 'seta_filter.svg',
-      hasDropdown: true,
-    ),
-    FilterItemData(label: 'Categoria', hasDropdown: false),
-  ];
 
   final int _selectedNavIndex = 1;
 

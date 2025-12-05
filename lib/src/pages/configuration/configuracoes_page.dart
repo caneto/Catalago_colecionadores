@@ -129,7 +129,13 @@ class _HeaderSection extends StatelessWidget {
         const SizedBox(width: 8),
         InkWell(
           child: CircleIcon(url: 'seta_esquerda.svg', size: 28),
-          onTap: () => context.pop(),
+          onTap: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/home');
+            }
+          },
         ),
         SizedBox(width: 17),
         Text(

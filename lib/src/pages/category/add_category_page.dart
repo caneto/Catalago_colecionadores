@@ -24,7 +24,7 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  String? _imagePath;
+  final List<String> _images = [];
 
   String textAddOption = 'Adicionar Categoria';
   String textButtonOption = 'Salvar Categoria';
@@ -38,7 +38,11 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     if (widget.category != null) {
       _nameController.text = widget.category!.name;
       _descriptionController.text = widget.category!.description ?? '';
-      _imagePath = widget.category!.imagePath;
+      if (widget.category!.images != null) {
+        _images.addAll(widget.category!.images!);
+      } else if (widget.category!.imagePath != null) {
+        _images.add(widget.category!.imagePath!);
+      }
       textAddOption = "Editar Categoria";
       textButtonOption = "Editar Categoria";
     }
@@ -59,7 +63,8 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
     category
       ..name = _nameController.text
       ..description = _descriptionController.text
-      ..imagePath = _imagePath;
+      ..imagePath = _images.isNotEmpty ? _images.first : null
+      ..images = _images;
 
     _bloc.add(AddCategory(category));
   }
@@ -208,9 +213,9 @@ class _AddCategoryPageState extends State<AddCategoryPage> {
                                               nameController: _nameController,
                                               descriptionController:
                                                   _descriptionController,
-                                              imagePath: _imagePath,
-                                              onImageChanged: (val) => setState(
-                                                () => _imagePath = val,
+                                              images: _images,
+                                              onImageAdded: (val) => setState(
+                                                () => _images.add(val),
                                               ),
                                               textButtonOption:
                                                   textButtonOption,

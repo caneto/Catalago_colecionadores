@@ -1,4 +1,5 @@
-import 'package:camera/camera.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_models/marca_collection.dart';
 import 'package:catalago_colecionadores/src/pages/add_car/add_car_colection.dart';
 import 'package:catalago_colecionadores/src/pages/add_car/scan/add_scan_page.dart';
 import 'package:catalago_colecionadores/src/pages/auth/login/login_page.dart';
@@ -32,12 +33,17 @@ final router = GoRouter(
     GoRoute(path: '/home', builder: (context, state) => MiniaturasHome()),
     GoRoute(path: '/start', builder: (context, state) => StartScreen()),
     GoRoute(path: '/pos_start', builder: (context, state) => PosStartScreen()),
-    GoRoute(path: '/add_car', builder: (context, state) => AddCarColection()),
+    GoRoute(
+      path: '/add_car',
+      builder: (context, state) {
+        final id = state.extra as int?;
+        return AddCarColection(id: id);
+      },
+    ),
     GoRoute(
       path: '/add_car/scan',
       builder: (context, state) {
-        final cameras = state.extra as List<CameraDescription>;
-        return AddScanPage(cameras: cameras);
+        return AddScanPage();
       },
     ),
     GoRoute(
@@ -58,7 +64,10 @@ final router = GoRouter(
     ),
     GoRoute(
       path: '/add_category_page',
-      builder: (context, state) => AddCategoryPage(),
+      builder: (context, state) {
+        final category = state.extra as CategoryCollection?;
+        return AddCategoryPage(category: category);
+      },
     ),
     GoRoute(
       path: '/list_category',
@@ -75,7 +84,10 @@ final router = GoRouter(
     GoRoute(path: '/list_marca', builder: (context, state) => ListMarcaPage()),
     GoRoute(
       path: '/add_marca_page',
-      builder: (context, state) => AddMarcaPage(),
+      builder: (context, state) {
+        final marca = state.extra as MarcaCollection?;
+        return AddMarcaPage(marca: marca);
+      },
     ),
   ],
 );

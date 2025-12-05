@@ -14,14 +14,4 @@ class CollectionItemData {
   });
 }
 
-class FilterItemData {
-  final String label;
-  final String? iconUrl;
-  final bool hasDropdown;
 
-  const FilterItemData({
-    required this.label,
-    this.iconUrl,
-    this.hasDropdown = false,
-  });
-}

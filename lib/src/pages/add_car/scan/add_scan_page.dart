@@ -7,8 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class AddScanPage extends StatefulWidget {
-  final List<CameraDescription> cameras;
-  const AddScanPage({super.key, required this.cameras});
+  const AddScanPage({super.key});
 
   @override
   State<AddScanPage> createState() => _AddScanPageState();
@@ -41,10 +40,17 @@ class _AddScanPageState extends State<AddScanPage> {
     }
 
     try {
-      cameraController = CameraController(
-        widget.cameras[0],
-        ResolutionPreset.high,
-      );
+      final cameras = await availableCameras();
+      if (cameras.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Nenhuma câmera encontrada')),
+          );
+        }
+        return;
+      }
+
+      cameraController = CameraController(cameras[0], ResolutionPreset.high);
 
       await cameraController.initialize();
 

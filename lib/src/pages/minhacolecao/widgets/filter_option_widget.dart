@@ -1,7 +1,6 @@
+import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../helpers/collection_item_data_model.dart';
 
 class FilterOptionWidget extends StatelessWidget {
   final FilterItemData data;

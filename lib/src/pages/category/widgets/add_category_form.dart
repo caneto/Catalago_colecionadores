@@ -1,5 +1,6 @@
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
+import 'package:catalago_colecionadores/src/core/ui/widgets/image_gallery.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,8 +10,8 @@ class AddCategoryForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController nameController;
   final TextEditingController descriptionController;
-  final String? imagePath;
-  final ValueChanged<String?>? onImageChanged;
+  final List<String> images;
+  final ValueChanged<String>? onImageAdded;
   final VoidCallback onSave;
   final String textButtonOption;
 
@@ -19,8 +20,8 @@ class AddCategoryForm extends StatefulWidget {
     required this.formKey,
     required this.nameController,
     required this.descriptionController,
-    this.imagePath,
-    this.onImageChanged,
+    required this.images,
+    this.onImageAdded,
     required this.onSave,
     required this.textButtonOption,
   });
@@ -30,6 +31,26 @@ class AddCategoryForm extends StatefulWidget {
 }
 
 class _AddCategoryFormState extends State<AddCategoryForm> {
+  int? _selectedImageIndex;
+
+  void _deleteSelectedImage() {
+    if (_selectedImageIndex != null) {
+      if (widget.images.length <= 1) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('É necessário ter pelo menos uma imagem.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+      setState(() {
+        widget.images.removeAt(_selectedImageIndex!);
+        _selectedImageIndex = null;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -42,7 +63,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
               // Reusing the scan page from add_car flow
               final filePath = await context.push('/add_car/scan');
               if (filePath != null && filePath != '') {
-                widget.onImageChanged?.call(filePath as String);
+                widget.onImageAdded?.call(filePath as String);
               }
             },
             child: Container(
@@ -59,11 +80,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  widget.imagePath != null
-                      ? Image.asset(
-                          R.ASSETS_IMAGES_FOLDER_PNG,
-                        ) // Placeholder, ideally show the image
-                      : Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
+                  Image.asset(R.ASSETS_IMAGES_FOLDER_PNG),
                   SizedBox(height: 12),
                   Text(
                     "Adicionar Imagem da Categoria",
@@ -72,15 +89,47 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
                   ),
                   SizedBox(height: 6),
                   Text(
-                    widget.imagePath != null
-                        ? "Imagem selecionada"
-                        : "Selecione a imagem",
+                    "Adicione fotos da categoria",
                     style: TextStyle(fontSize: 14, color: Colors.black54),
                   ),
                 ],
               ),
             ),
           ),
+          SizedBox(height: 8),
+          Text(
+            "Quantidade de Imagens: ${widget.images.length}",
+            style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(
+              color: CatalagoColecionadorTheme.whiteColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 14,
+            ),
+          ),
+          SizedBox(height: 12),
+          ImageGallery(
+            images: widget.images,
+            selectedIndex: _selectedImageIndex,
+            onImageSelected: (index) {
+              setState(() {
+                _selectedImageIndex = index;
+              });
+            },
+          ),
+          if (_selectedImageIndex != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  onPressed: _deleteSelectedImage,
+                  icon: const Icon(Icons.delete, color: Colors.red),
+                  label: const Text(
+                    'Excluir Imagem',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+            ),
           SizedBox(height: 16),
           Text(
             "Detalhes da Categoria",
