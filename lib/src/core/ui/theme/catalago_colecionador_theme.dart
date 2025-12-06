@@ -6,7 +6,7 @@ final class CatalagoColecionadorTheme {
   static const blackGround = Color.fromARGB(255, 96, 123, 173);
   static const blackLightGround = Color.fromARGB(255, 131, 143, 165);
   static const headerBlackGround = Color.fromARGB(255, 24, 44, 29);
-  static const textDescriptColor = Color(0xFFFFEFE9);
+  static const textDescriptColor = Color.fromARGB(255, 175, 212, 226);
   static const blueColor = Color(0xFF0D40A6);
   static const whiteColor = Color(0xFFFFFFFF);
   static const textMain = Color.fromARGB(255, 32, 119, 68);
@@ -43,7 +43,7 @@ final class CatalagoColecionadorTheme {
       fillColor: textDescriptColor,
       labelStyle: const TextStyle(
         fontSize: 14,
-        color: orangeColor,
+        color: blackColor,
         fontWeight: FontWeight.w700,
       ),
       floatingLabelStyle: const TextStyle(

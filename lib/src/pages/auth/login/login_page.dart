@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                         width: sizeOf.width * .78,
                         height: 48,
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 10),
                       AppDefaultEspecialButton(
                         onPressed: () {
                           context.go('/home');
@@ -183,11 +183,13 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                                 const TextSpan(text: 'Esqueceu sua senha? '),
                                 TextSpan(
                                   text: 'Click aqui.',
-                                  style: const TextStyle(
-                                    color:
-                                        CatalagoColecionadorTheme.orangeColor,
-                                    decoration: TextDecoration.underline,
-                                  ),
+                                  style: CatalagoColecionadorTheme.titleStyle
+                                      .copyWith(
+                                        fontSize: 14,
+                                        color: CatalagoColecionadorTheme
+                                            .blackLightGround,
+                                        decoration: TextDecoration.underline,
+                                      ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       context.push('/password_recovery');
@@ -213,11 +215,13 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                                 const TextSpan(text: 'Criar sua Conta - '),
                                 TextSpan(
                                   text: 'Click aqui.',
-                                  style: const TextStyle(
-                                    color:
-                                        CatalagoColecionadorTheme.orangeColor,
-                                    decoration: TextDecoration.underline,
-                                  ),
+                                  style: CatalagoColecionadorTheme.titleStyle
+                                      .copyWith(
+                                        fontSize: 14,
+                                        color: CatalagoColecionadorTheme
+                                            .blackLightGround,
+                                        decoration: TextDecoration.underline,
+                                      ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       context.go('/registro');
