@@ -65,8 +65,19 @@ class _AddSerieFormState extends State<AddSerieForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          SizedBox(height: 8),
+          Text(
+            "Detalhes da Serie",
+            style: CatalagoColecionadorTheme.subTitleSmallStyle.copyWith(
+              color: CatalagoColecionadorTheme.whiteColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(height: 10),
           FormGroup(
             label: 'Nome',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: TextFormField(
               controller: widget.nomeController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -83,6 +94,7 @@ class _AddSerieFormState extends State<AddSerieForm> {
           const SizedBox(height: 12),
           FormGroup(
             label: 'Número',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: TextFormField(
               controller: widget.numeroController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -99,6 +111,7 @@ class _AddSerieFormState extends State<AddSerieForm> {
           const SizedBox(height: 12),
           FormGroup(
             label: 'Marca',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: DropdownButtonFormField<String>(
               initialValue: _selectedMarca,
               items: marcas.map((MarcaCollection marca) {
@@ -128,6 +141,7 @@ class _AddSerieFormState extends State<AddSerieForm> {
           const SizedBox(height: 12),
           FormGroup(
             label: 'Descrição',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: TextFormField(
               controller: widget.descricaoController,
               style: CatalagoColecionadorTheme.textBold.copyWith(

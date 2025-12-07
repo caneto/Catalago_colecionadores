@@ -43,6 +43,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
     final sizeOf = MediaQuery.sizeOf(context);
 
     return Scaffold(
+      backgroundColor: CatalagoColecionadorTheme.textRegisterColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(

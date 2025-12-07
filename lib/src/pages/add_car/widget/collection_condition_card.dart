@@ -24,7 +24,7 @@ class CollectionConditionCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? CatalagoColecionadorTheme.bgInputAccent
-                : CatalagoColecionadorTheme.bgInput,
+                : CatalagoColecionadorTheme.bgCard,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
               color: isSelected
@@ -37,7 +37,7 @@ class CollectionConditionCard extends StatelessWidget {
             child: Text(
               title,
               style: CatalagoColecionadorTheme.textBold.copyWith(
-                color: CatalagoColecionadorTheme.textDescriptColor,
+                color: CatalagoColecionadorTheme.labelColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),

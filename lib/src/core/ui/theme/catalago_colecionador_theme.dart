@@ -6,7 +6,8 @@ final class CatalagoColecionadorTheme {
   static const blackGround = Color.fromARGB(255, 96, 123, 173);
   static const blackLightGround = Color.fromARGB(255, 131, 143, 165);
   static const headerBlackGround = Color.fromARGB(255, 24, 44, 29);
-  static const textDescriptColor = Color.fromARGB(255, 227, 230, 56);
+  static const textDescriptColor = Color.fromARGB(255, 58, 72, 194);
+  static const textRegisterColor = Color.fromARGB(255, 65, 82, 60);
   static const blueColor = Color(0xFF0D40A6);
   static const whiteColor = Color(0xFFFFFFFF);
   static const textMain = Color.fromARGB(255, 32, 119, 68);
@@ -23,6 +24,7 @@ final class CatalagoColecionadorTheme {
   static const navBarBoxItemColor = Color.fromARGB(255, 55, 48, 151);
   static const navBarBoxContornoColor = Color.fromARGB(255, 235, 174, 118);
   static const navBarBoxColor = Color(0xFFDCE9F1);
+  static const labelColor = Color.fromARGB(255, 221, 227, 231);
   static const lineDividColor = Color.fromARGB(255, 161, 226, 85);
   static const cardCategyColor = Color.fromARGB(255, 84, 123, 209);
   static const cardItemAndImageColor = Color.fromARGB(255, 84, 123, 209);
@@ -35,12 +37,12 @@ final class CatalagoColecionadorTheme {
   static String get font => 'Montserrat';
 
   static final lightTheme = ThemeData(
-    colorScheme: ColorScheme.fromSeed(seedColor: textDescriptColor),
+    colorScheme: ColorScheme.fromSeed(seedColor: blackGround),
     fontFamily: font,
-    scaffoldBackgroundColor: textDescriptColor,
+    scaffoldBackgroundColor: textRegisterColor,
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: textDescriptColor,
+      fillColor: blackLightGround,
       labelStyle: const TextStyle(
         fontSize: 14,
         color: blackColor,
@@ -58,7 +60,7 @@ final class CatalagoColecionadorTheme {
       ),
       errorStyle: TextStyle(
         color:
-            yellowColor, // Garante que o TextStyle padrão use a cor do esquema
+            blueColor, // Garante que o TextStyle padrão use a cor do esquema
         fontWeight: FontWeight.bold,
       ),
     ),

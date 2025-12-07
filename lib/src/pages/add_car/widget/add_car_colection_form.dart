@@ -252,6 +252,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
             SizedBox(height: 10),
             FormGroup(
               label: 'Nome da Miniatura',
+              colorLabel: CatalagoColecionadorTheme.labelColor,
               child: TextFormField(
                 controller: widget.nomeMiniaturaController,
                 style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -273,6 +274,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 Expanded(
                   child: FormGroup(
                     label: 'Categoria',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: DropdownButtonFormField<String>(
                       initialValue: _selectedCategory,
                       items: categories.map((CategoryCollection category) {
@@ -305,6 +307,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 Expanded(
                   child: FormGroup(
                     label: 'Marca',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: DropdownButtonFormField<String>(
                       initialValue: _selectedMarca,
                       items: marcas.map((MarcaCollection marca) {
@@ -341,6 +344,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 Expanded(
                   child: FormGroup(
                     label: 'Serie',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: DropdownButtonFormField<String>(
                       initialValue: _selectedSerie,
                       items: series.map((SerieCollection serie) {
@@ -373,6 +377,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 Expanded(
                   child: FormGroup(
                     label: 'Numero na série',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: TextFormField(
                       controller: widget.numeroNaSerieController,
                       keyboardType: TextInputType.number,
@@ -401,6 +406,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 Expanded(
                   child: FormGroup(
                     label: 'Modelo',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: TextFormField(
                       controller: widget.modeloController,
                       style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -421,6 +427,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 Expanded(
                   child: FormGroup(
                     label: 'Ano de Fabricação',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: TextFormField(
                       controller: widget.anoFabricacaoController,
                       style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -445,6 +452,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
             // Escala
             FormGroup(
               label: 'Escala',
+              colorLabel: CatalagoColecionadorTheme.labelColor,
               child: TextFormField(
                 controller: widget.escalaController,
                 style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -518,6 +526,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 Expanded(
                   child: FormGroup(
                     label: 'Data da Aquisição',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: TextFormField(
                       controller: widget.dataAquizicaoController,
                       readOnly: true,
@@ -586,6 +595,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                 Expanded(
                   child: FormGroup(
                     label: 'Preço Pago',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: TextFormField(
                       controller: widget.precoPagoController,
                       style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -615,6 +625,7 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
             SizedBox(height: 20),
             FormGroup(
               label: 'Notes',
+              colorLabel: CatalagoColecionadorTheme.labelColor,
               child: TextFormField(
                 controller: widget.notesController,
                 minLines: 2,

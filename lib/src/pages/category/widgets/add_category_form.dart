@@ -142,6 +142,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
           SizedBox(height: 10),
           FormGroup(
             label: 'Nome da Categoria',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: TextFormField(
               controller: widget.nameController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -161,6 +162,7 @@ class _AddCategoryFormState extends State<AddCategoryForm> {
           SizedBox(height: 12),
           FormGroup(
             label: 'Descrição',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: TextFormField(
               controller: widget.descriptionController,
               minLines: 2,

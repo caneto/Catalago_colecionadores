@@ -8,9 +8,7 @@ import '../../core/global/global_itens.dart';
 import 'widgets/circle_icon.dart';
 import 'widgets/config_content_section.dart';
 
-// Color palette as per original CSS.
-
-final int _selectedNavIndex = 3;
+final int _selectedNavIndex = 4;
 
 class ConfiguracoesPage extends StatefulWidget {
   const ConfiguracoesPage({super.key});

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 
 class FormGroup extends StatelessWidget {
   final String label;
+  final Color colorLabel;
   final Widget child;
 
-  const FormGroup({super.key, required this.label, required this.child});
+  const FormGroup({super.key, required this.label, required this.child, required this.colorLabel});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class FormGroup extends StatelessWidget {
               child: Text(
                 label,
                 style: CatalagoColecionadorTheme.textBold.copyWith(
-                  color: CatalagoColecionadorTheme.textDescriptColor,
+                  color: colorLabel,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                   height: 1.2,

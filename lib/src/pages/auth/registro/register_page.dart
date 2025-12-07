@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
     final sizeOf = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+      backgroundColor: CatalagoColecionadorTheme.textRegisterColor,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(

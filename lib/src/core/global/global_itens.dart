@@ -14,6 +14,7 @@ final class GlobalItens {
     {'iconLogo': 'home.svg', 'label': 'Home'},
     {'iconLogo': 'minhacolecao.svg', 'label': 'Minha Coleção'},
     {'iconLogo': 'estrela.svg', 'label': 'Adicionar'},
+    {'iconLogo': 'lupa.svg', 'label': 'Buscar'},
     {'iconLogo': 'engrenagem.svg', 'label': 'Configuração'},
   ];
 

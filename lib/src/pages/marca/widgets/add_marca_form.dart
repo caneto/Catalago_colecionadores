@@ -144,6 +144,7 @@ class _AddMarcaFormState extends State<AddMarcaForm> {
           SizedBox(height: 10),
           FormGroup(
             label: 'Nome da Marca',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: TextFormField(
               controller: widget.nameController,
               style: CatalagoColecionadorTheme.textBold.copyWith(
@@ -162,6 +163,7 @@ class _AddMarcaFormState extends State<AddMarcaForm> {
           SizedBox(height: 12),
           FormGroup(
             label: 'Quantidade',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: TextFormField(
               controller: widget.quantidadeController,
               keyboardType: TextInputType.number,
@@ -179,6 +181,7 @@ class _AddMarcaFormState extends State<AddMarcaForm> {
           SizedBox(height: 12),
           FormGroup(
             label: 'Descrição',
+            colorLabel: CatalagoColecionadorTheme.labelColor,
             child: TextFormField(
               controller: widget.descriptionController,
               minLines: 2,
