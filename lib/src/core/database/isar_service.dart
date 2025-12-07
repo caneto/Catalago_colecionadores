@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'isar_models/car_collection.dart';
 import 'isar_models/category_collection.dart';
 import 'isar_models/marca_collection.dart';
+import 'isar_models/serie_collection.dart';
 import 'isar_models/user_collection.dart';
 
 class IsarService {
@@ -22,9 +23,11 @@ class IsarService {
           UserCollectionSchema,
           CategoryCollectionSchema,
           MarcaCollectionSchema,
+          SerieCollectionSchema,
         ],
         directory: dir.path,
         inspector: true,
+        compactOnLaunch: CompactCondition(minFileSize: 10 * 1056 * 1056),
       );
     }
     return Future.value(Isar.getInstance());
@@ -130,6 +133,23 @@ class IsarService {
     final isar = await db;
     await isar.writeTxn(() async {
       await isar.marcaCollections.delete(id);
+    });
+  }
+
+  Future<void> saveSerie(SerieCollection serie) async {
+    final isar = await db;
+    isar.writeTxnSync<int>(() => isar.serieCollections.putSync(serie));
+  }
+
+  Future<List<SerieCollection>> getAllSeries() async {
+    final isar = await db;
+    return await isar.serieCollections.where().findAll();
+  }
+
+  Future<void> deleteSerie(Id id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.serieCollections.delete(id);
     });
   }
 }

@@ -1,6 +1,7 @@
 // --- FORM WIDGET ---
 import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/marca_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_models/serie_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -25,6 +26,8 @@ class AddCarColectionForm extends StatefulWidget {
   final TextEditingController escalaController;
   final TextEditingController dataAquizicaoController;
   final TextEditingController precoPagoController;
+  final TextEditingController serieController;
+  final TextEditingController numeroNaSerieController;
   final String? condition;
   final ValueChanged<String?> onConditionChanged;
   final String? collectionCondition;
@@ -53,6 +56,8 @@ class AddCarColectionForm extends StatefulWidget {
     required this.images,
     required this.onSave,
     required this.onImageAdded,
+    required this.serieController,
+    required this.numeroNaSerieController,
   });
 
   @override
@@ -63,14 +68,16 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
   final IsarService service = IsarService();
   List<CategoryCollection> categories = [];
   List<MarcaCollection> marcas = [];
+  List<SerieCollection> series = [];
   String? _selectedCategory;
   String? _selectedMarca;
+  String? _selectedSerie;
   int? _selectedImageIndex;
 
   @override
   void initState() {
     super.initState();
-    _loadCategories();
+    _loadData();
   }
 
   void _deleteSelectedImage() {
@@ -99,14 +106,23 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
         });
       }
     }
+    if (widget.serieController.text != oldWidget.serieController.text) {
+      if (series.any((s) => s.nome == widget.serieController.text)) {
+        setState(() {
+          _selectedSerie = widget.serieController.text;
+        });
+      }
+    }
   }
 
-  Future<void> _loadCategories() async {
+  Future<void> _loadData() async {
     final cats = await service.getAllCategories();
     final brands = await service.getAllMarcas();
+    final sers = await service.getAllSeries();
     setState(() {
       categories = cats;
       marcas = brands;
+      series = sers;
       if (widget.categoriaController.text.isNotEmpty) {
         if (categories.any((c) => c.name == widget.categoriaController.text)) {
           _selectedCategory = widget.categoriaController.text;
@@ -115,6 +131,11 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
       if (widget.marcaController.text.isNotEmpty) {
         if (marcas.any((m) => m.nome == widget.marcaController.text)) {
           _selectedMarca = widget.marcaController.text;
+        }
+      }
+      if (widget.serieController.text.isNotEmpty) {
+        if (series.any((s) => s.nome == widget.serieController.text)) {
+          _selectedSerie = widget.serieController.text;
         }
       }
     });
@@ -309,6 +330,65 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                             colorSide: CatalagoColecionadorTheme.textMainAccent,
                           ),
                       validator: Validatorless.required('Marca exigida'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: FormGroup(
+                    label: 'Serie',
+                    child: DropdownButtonFormField<String>(
+                      initialValue: _selectedSerie,
+                      items: series.map((SerieCollection serie) {
+                        return DropdownMenuItem<String>(
+                          value: serie.nome,
+                          child: Text(serie.nome),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedSerie = newValue;
+                          widget.serieController.text = newValue ?? '';
+                        });
+                      },
+                      style: CatalagoColecionadorTheme.textBold.copyWith(
+                        color: CatalagoColecionadorTheme.blackClaroColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration:
+                          CatalagoColecionadorTheme.inputDecorationAddCard(
+                            hintText: 'Selecione',
+                            colorSide: CatalagoColecionadorTheme.textMainAccent,
+                          ),
+                      validator: Validatorless.required('Serie exigida'),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: FormGroup(
+                    label: 'Numero na série',
+                    child: TextFormField(
+                      controller: widget.numeroNaSerieController,
+                      keyboardType: TextInputType.number,
+                      style: CatalagoColecionadorTheme.textBold.copyWith(
+                        color: CatalagoColecionadorTheme.blackClaroColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration:
+                          CatalagoColecionadorTheme.inputDecorationAddCard(
+                            hintText: 'Exemplo 1/5',
+                            colorSide: CatalagoColecionadorTheme.textMainAccent,
+                          ),
+                      validator: Validatorless.required(
+                        'Numero na serie exigida',
+                      ),
                     ),
                   ),
                 ),

@@ -101,6 +101,18 @@ class ConfigContentSection extends StatelessWidget {
                 withIcon: true,
               ),
             ),
+            SizedBox(height: 4),
+            InkWell(
+              onTap: () {
+                context.push('/list_serie');
+              },
+              child: ConfigDetailCard(
+                iconUrl: 'series.svg',
+                title: 'Administrar Series',
+                subtitle: 'Administração das Series',
+                withIcon: true,
+              ),
+            ),
           ],
         ),
         SizedBox(height: 14),

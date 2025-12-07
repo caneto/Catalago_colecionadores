@@ -27,6 +27,9 @@ class _AddCarColectionState extends State<AddCarColection> {
   final TextEditingController _modeloController = TextEditingController();
   final TextEditingController _anoFabricacaoController =
       TextEditingController();
+  final TextEditingController _serieController = TextEditingController();
+  final TextEditingController _numeroNaSerieController =
+      TextEditingController();
   final TextEditingController _escalaController = TextEditingController();
   final TextEditingController _dataAquizicaoController =
       TextEditingController();
@@ -136,8 +139,6 @@ class _AddCarColectionState extends State<AddCarColection> {
     if (w <= 480) return const EdgeInsets.symmetric(horizontal: 10);
     return EdgeInsets.zero;
   }
-
-  // Gallery image list
 
   @override
   Widget build(BuildContext context) {
@@ -254,6 +255,9 @@ class _AddCarColectionState extends State<AddCarColection> {
                                   modeloController: _modeloController,
                                   marcaController: _marcaController,
                                   escalaController: _escalaController,
+                                  serieController: _serieController,
+                                  numeroNaSerieController:
+                                      _numeroNaSerieController,
                                   anoFabricacaoController:
                                       _anoFabricacaoController,
                                   dataAquizicaoController:

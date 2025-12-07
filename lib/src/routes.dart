@@ -1,5 +1,6 @@
 import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/marca_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_models/serie_collection.dart';
 import 'package:catalago_colecionadores/src/pages/add_car/add_car_colection.dart';
 import 'package:catalago_colecionadores/src/pages/add_car/scan/add_scan_page.dart';
 import 'package:catalago_colecionadores/src/pages/auth/login/login_page.dart';
@@ -12,10 +13,13 @@ import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_politics_screen.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_terms_screen.dart';
 import 'package:catalago_colecionadores/src/pages/marca/add_marca_page.dart';
-import 'package:catalago_colecionadores/src/pages/marca/list_marca_page.dart';
+import 'package:catalago_colecionadores/src/pages/marca/list_marca_page.dart'
+    show ListMarcaPage;
 import 'package:catalago_colecionadores/src/pages/minhacolecao/details/miniatura_details.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao.dart';
 import 'package:catalago_colecionadores/src/pages/pos_start/pos_start_screen.dart';
+import 'package:catalago_colecionadores/src/pages/serie/add_serie_page.dart';
+import 'package:catalago_colecionadores/src/pages/serie/list_serie_page.dart';
 import 'package:catalago_colecionadores/src/pages/splash/splash_screen.dart';
 import 'package:catalago_colecionadores/src/pages/start/start_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -87,6 +91,14 @@ final router = GoRouter(
       builder: (context, state) {
         final marca = state.extra as MarcaCollection?;
         return AddMarcaPage(marca: marca);
+      },
+    ),
+    GoRoute(path: '/list_serie', builder: (context, state) => ListSeriePage()),
+    GoRoute(
+      path: '/add_serie_page',
+      builder: (context, state) {
+        final serie = state.extra as SerieCollection?;
+        return AddSeriePage(serie: serie);
       },
     ),
   ],
