@@ -25,7 +25,7 @@ final class CatalagoColecionadorTheme {
   static const navBarBoxContornoColor = Color.fromARGB(255, 235, 174, 118);
   static const navBarBoxColor = Color(0xFFDCE9F1);
   static const labelColor = Color.fromARGB(255, 221, 227, 231);
-  static const lineDividColor = Color.fromARGB(255, 161, 226, 85);
+  static const lineDividColor = Color.fromARGB(255, 242, 243, 240);
   static const cardCategyColor = Color.fromARGB(255, 84, 123, 209);
   static const cardItemAndImageColor = Color.fromARGB(255, 84, 123, 209);
 

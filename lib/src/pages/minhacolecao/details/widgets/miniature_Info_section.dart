@@ -107,6 +107,57 @@ class MiniatureInfoSection extends StatelessWidget {
                 ],
               ),
             ),
+            if (car.serie != null && car.serie!.isNotEmpty)
+              Semantics(
+                label: "Serie:",
+                child: Row(
+                  children: [
+                    Text(
+                      "Serie: ",
+                      style: CatalagoColecionadorTheme.titleStyleNormal
+                          .copyWith(
+                            color: CatalagoColecionadorTheme.blackClaroColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17,
+                          ),
+                    ),
+                    Text(
+                      car.serie!,
+                      style: CatalagoColecionadorTheme.titleStyleNormal
+                          .copyWith(
+                            color: CatalagoColecionadorTheme.blackClaroColor,
+                            fontSize: 16,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            if (car.numeroNaSerie != null && car.numeroNaSerie!.isNotEmpty)
+              Semantics(
+                label: "Numero na serie:",
+                child: Row(
+                  children: [
+                    Text(
+                      " - Numero na serie: ",
+                      style: CatalagoColecionadorTheme.titleStyleNormal
+                          .copyWith(
+                            color: CatalagoColecionadorTheme.blackClaroColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 17,
+                          ),
+                    ),
+                    Text(
+                      car.numeroNaSerie!,
+                      style: CatalagoColecionadorTheme.titleStyleNormal
+                          .copyWith(
+                            color: CatalagoColecionadorTheme.blackClaroColor,
+                            fontSize: 16,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+
             if (car.anoFabricacao != null)
               Semantics(
                 label: "Ano: ",

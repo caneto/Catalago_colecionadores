@@ -19,4 +19,7 @@ class CarCollection {
   String? collectionCondition;
   String? imagePath;
   List<String>? images;
+  String? serie;
+  String? numeroNaSerie;
+  int? numeroCopias = 1;
 }

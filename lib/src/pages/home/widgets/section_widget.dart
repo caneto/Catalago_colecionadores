@@ -23,7 +23,7 @@ class SectionWidget extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: backGround,
-        border: Border(top: BorderSide(color: borderColor, width: 1.0)),
+        border: Border(top: BorderSide(color: borderColor, width: 0.8)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

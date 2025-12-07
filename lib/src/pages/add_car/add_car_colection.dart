@@ -35,6 +35,7 @@ class _AddCarColectionState extends State<AddCarColection> {
       TextEditingController();
   final TextEditingController _precoPagoController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
+  final TextEditingController _numeroCopiasController = TextEditingController();
   String? _condition;
   String? _collectionCondition;
   final List<String> _images = [];
@@ -58,6 +59,8 @@ class _AddCarColectionState extends State<AddCarColection> {
     if (car != null) {
       setState(() {
         _nomeMiniaturaController.text = car.nomeMiniatura;
+        _serieController.text = car.serie ?? '';
+        _numeroNaSerieController.text = car.numeroNaSerie ?? '';
         _categoriaController.text = car.categoria;
         _marcaController.text = car.marca;
         _modeloController.text = car.modelo;
@@ -76,6 +79,7 @@ class _AddCarColectionState extends State<AddCarColection> {
         } else if (car.imagePath != null) {
           _images.add(car.imagePath!);
         }
+        _numeroCopiasController.text = (car.numeroCopias ?? 1).toString();
       });
     }
   }
@@ -101,6 +105,8 @@ class _AddCarColectionState extends State<AddCarColection> {
       ..nomeMiniatura = _nomeMiniaturaController.text
       ..categoria = _categoriaController.text
       ..marca = _marcaController.text
+      ..serie = _serieController.text
+      ..numeroNaSerie = _numeroNaSerieController.text
       ..modelo = _modeloController.text
       ..anoFabricacao = int.tryParse(_anoFabricacaoController.text)
       ..escala = _escalaController.text
@@ -111,7 +117,8 @@ class _AddCarColectionState extends State<AddCarColection> {
       ..notes = _notesController.text
       ..condition = _condition
       ..collectionCondition = _collectionCondition
-      ..images = _images;
+      ..images = _images
+      ..numeroCopias = int.tryParse(_numeroCopiasController.text) ?? 1;
 
     if (_carId != null) {
       car.id = _carId!;
@@ -276,6 +283,8 @@ class _AddCarColectionState extends State<AddCarColection> {
                                   onImageAdded: (val) =>
                                       setState(() => _images.add(val)),
                                   onSave: _onSave,
+                                  numeroCopiasController:
+                                      _numeroCopiasController,
                                 ),
                               ),
                             ),

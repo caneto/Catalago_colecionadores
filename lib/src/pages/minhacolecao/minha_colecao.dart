@@ -252,6 +252,83 @@ class _MinhaColecaoState extends State<MinhaColecao> {
     );
   }
 
+  Future<void> _showSeriePopup() async {
+    final series = await _isarService.getAllSeries();
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Selecione uma Serie'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: series.length,
+              itemBuilder: (context, index) {
+                final serie = series[index];
+                return ListTile(
+                  title: Text(serie.nome),
+                  onTap: () {
+                    context.pop();
+                    _filterBySerie(serie.nome);
+                  },
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.pop();
+                setState(() {
+                  _displayedItems = _allItems;
+                  _selectedFilter = -1;
+                });
+              },
+              child: const Text('Cancelar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _filterBySerie(String serieName) {
+    final filtered = _allItems
+        .where((item) => item.serie?.toLowerCase() == serieName.toLowerCase())
+        .toList();
+
+    if (filtered.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Atenção'),
+          content: const Text('Sem itens cadastrados para esta Serie'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                context.pop();
+                // Reset filter check if needed, or just leave as is.
+                // User asked to "Cancel" to go back, but this is the "Empty" message.
+                // Usually we might want to reset the selected filter index visual if we didn't apply the filter.
+                setState(() {
+                  _selectedFilter = -1;
+                });
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      setState(() {
+        _displayedItems = filtered;
+      });
+    }
+  }
+
   void _handleFilterSelection(int index) {
     setState(() {
       _selectedFilter = index;
@@ -264,6 +341,8 @@ class _MinhaColecaoState extends State<MinhaColecao> {
         _showCategoryPopup();
       } else if (_filters[index].label == 'Escala') {
         _showScalePopup();
+      } else if (_filters[index].label == 'Serie') {
+        _showSeriePopup();
       }
     } else {
       // Reset filter if deselected (index == -1)
@@ -274,6 +353,11 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   }
 
   final int _selectedNavIndex = 1;
+
+  void _handleItemTap(CarCollection item) async {
+    await context.push('/miniatura_details', extra: item.id);
+    _loadData();
+  }
 
   // Responsive: grid columns
   int _calculateGridCount(double width) {
@@ -449,6 +533,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                             modelColor:
                                                 CatalagoColecionadorTheme
                                                     .navBarBackkgroundColor,
+                                            onItemTap: _handleItemTap,
                                           )
                                         : CollectionList(
                                             items: _displayedItems,
@@ -460,6 +545,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                             modelColor:
                                                 CatalagoColecionadorTheme
                                                     .navBarBackkgroundColor,
+                                            onItemTap: _handleItemTap,
                                           ),
                                     const SizedBox(height: 24),
                                   ],

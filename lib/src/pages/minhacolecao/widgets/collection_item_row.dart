@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:catalago_colecionadores/src/core/database/isar_models/car_collection.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class CollectionItemRow extends StatelessWidget {
   final CarCollection item;
   final Color surface;
   final Color brandColor;
   final Color modelColor;
+  final VoidCallback onTap;
 
   const CollectionItemRow({
     super.key,
@@ -17,6 +17,7 @@ class CollectionItemRow extends StatelessWidget {
     required this.surface,
     required this.brandColor,
     required this.modelColor,
+    required this.onTap,
   });
 
   @override
@@ -33,9 +34,7 @@ class CollectionItemRow extends StatelessWidget {
         // Actually GridItem uses InkWell inside Container.
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
-          onTap: () {
-            context.push('/miniatura_details', extra: item.id);
-          },
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
             child: Row(

@@ -9,12 +9,15 @@ class CollectionList extends StatelessWidget {
   final Color brandColor;
   final Color modelColor;
 
+  final ValueChanged<CarCollection> onItemTap;
+
   const CollectionList({
     super.key,
     required this.items,
     required this.surface,
     required this.brandColor,
     required this.modelColor,
+    required this.onItemTap,
   });
 
   @override
@@ -31,6 +34,7 @@ class CollectionList extends StatelessWidget {
           surface: surface,
           brandColor: brandColor,
           modelColor: modelColor,
+          onTap: () => onItemTap(item),
         );
       },
     );

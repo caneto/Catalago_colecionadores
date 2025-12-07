@@ -25,7 +25,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
   final _key = GlobalKey<ExpandableFabState>();
 
   final _searchController = TextEditingController();
-  String _searchValue = '';
+  final String _searchValue = '';
 
   int _selectedNavIndex = 0;
 
@@ -268,86 +268,86 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                   ),
                                 ),
                               ),
-                              // Search Bar
-                              Container(
-                                margin: searchBarMargin,
-                                constraints: BoxConstraints(
-                                  maxWidth: searchBarMaxWidth,
-                                  minWidth: searchBarMinWidth,
-                                ),
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 5,
-                                          right: 8,
-                                        ),
-                                        child: Icon(
-                                          Icons.search,
-                                          color: const Color.fromARGB(
-                                            255,
-                                            211,
-                                            220,
-                                            233,
-                                          ),
-                                          size: 20,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _searchController,
-                                          onChanged: (val) {
-                                            setState(() => _searchValue = val);
-                                          },
-                                          style: TextStyle(
-                                            color: const Color.fromARGB(
-                                              255,
-                                              27,
-                                              27,
-                                              27,
-                                            ),
-                                            fontSize: constraints.maxWidth < 600
-                                                ? 14
-                                                : 16,
-                                            fontWeight: FontWeight.w400,
-                                            letterSpacing: .1,
-                                          ),
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            isDense: true,
-                                            border: InputBorder.none,
-                                            hintText: 'Busca de Miniaturas',
-                                            hintStyle: CatalagoColecionadorTheme
-                                                .titleStyleNormal
-                                                .copyWith(
-                                                  color: Color.fromARGB(
-                                                    255,
-                                                    37,
-                                                    21,
-                                                    185,
-                                                  ).withAlpha(3),
-                                                ),
-                                            prefixIconConstraints:
-                                                BoxConstraints.tightFor(
-                                                  width: 0,
-                                                ),
-                                          ),
-                                          cursorColor: const Color.fromARGB(
-                                            255,
-                                            66,
-                                            126,
-                                            10,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // // Search Bar
+                              // Container(
+                              //   margin: searchBarMargin,
+                              //   constraints: BoxConstraints(
+                              //     maxWidth: searchBarMaxWidth,
+                              //     minWidth: searchBarMinWidth,
+                              //   ),
+                              //   child: DecoratedBox(
+                              //     decoration: BoxDecoration(
+                              //       borderRadius: BorderRadius.circular(8),
+                              //     ),
+                              //     child: Row(
+                              //       children: [
+                              //         Padding(
+                              //           padding: const EdgeInsets.only(
+                              //             left: 5,
+                              //             right: 8,
+                              //           ),
+                              //           child: Icon(
+                              //             Icons.search,
+                              //             color: const Color.fromARGB(
+                              //               255,
+                              //               211,
+                              //               220,
+                              //               233,
+                              //             ),
+                              //             size: 20,
+                              //           ),
+                              //         ),
+                              //         Expanded(
+                              //           child: TextField(
+                              //             controller: _searchController,
+                              //             onChanged: (val) {
+                              //               setState(() => _searchValue = val);
+                              //             },
+                              //             style: TextStyle(
+                              //               color: const Color.fromARGB(
+                              //                 255,
+                              //                 27,
+                              //                 27,
+                              //                 27,
+                              //               ),
+                              //               fontSize: constraints.maxWidth < 600
+                              //                   ? 14
+                              //                   : 16,
+                              //               fontWeight: FontWeight.w400,
+                              //               letterSpacing: .1,
+                              //             ),
+                              //             decoration: InputDecoration(
+                              //               contentPadding: EdgeInsets.zero,
+                              //               isDense: true,
+                              //               border: InputBorder.none,
+                              //               hintText: 'Busca de Miniaturas',
+                              //               hintStyle: CatalagoColecionadorTheme
+                              //                   .titleStyleNormal
+                              //                   .copyWith(
+                              //                     color: Color.fromARGB(
+                              //                       255,
+                              //                       37,
+                              //                       21,
+                              //                       185,
+                              //                     ).withAlpha(3),
+                              //                   ),
+                              //               prefixIconConstraints:
+                              //                   BoxConstraints.tightFor(
+                              //                     width: 0,
+                              //                   ),
+                              //             ),
+                              //             cursorColor: const Color.fromARGB(
+                              //               255,
+                              //               66,
+                              //               126,
+                              //               10,
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

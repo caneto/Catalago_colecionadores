@@ -1,4 +1,3 @@
-
 // -------------
 // CollectionGrid
 // -------------
@@ -14,12 +13,16 @@ class CollectionGrid extends StatelessWidget {
   final Color brandColor;
   final Color modelColor;
 
-  const CollectionGrid({super.key, 
+  final ValueChanged<CarCollection> onItemTap;
+
+  const CollectionGrid({
+    super.key,
     required this.items,
     required this.gridCount,
     required this.surface,
     required this.brandColor,
     required this.modelColor,
+    required this.onItemTap,
   });
 
   @override
@@ -41,14 +44,14 @@ class CollectionGrid extends StatelessWidget {
             : gridCount == 3
             ? 15
             : 18,
-        childAspectRatio:
-            4 / 4.4, // as per .item: image aspect-ratio 4/3 + details
+        childAspectRatio: 0.75, // Adjusted to fit new content (badges)
       ),
       itemBuilder: (ctx, i) => GridItem(
         item: items[i],
         surface: surface,
         brandColor: brandColor,
         modelColor: modelColor,
+        onTap: () => onItemTap(items[i]),
       ),
     );
   }

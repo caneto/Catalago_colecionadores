@@ -1,6 +1,4 @@
-
 final class GlobalItens {
-  
   static const categoriesItens = [
     'Carros',
     'Motos',
@@ -30,6 +28,7 @@ final class GlobalItens {
       iconUrl: 'seta_filter.svg',
       hasDropdown: true,
     ),
+    FilterItemData(label: 'Serie', iconUrl: 'seta_filter.svg', hasDropdown: true),
     FilterItemData(label: 'Ano', iconUrl: 'seta_filter.svg', hasDropdown: true),
     FilterItemData(
       label: 'Escala',

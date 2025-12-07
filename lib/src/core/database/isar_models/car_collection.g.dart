@@ -61,11 +61,22 @@ const CarCollectionSchema = CollectionSchema(
       type: IsarType.string,
     ),
     r'notes': PropertySchema(id: 11, name: r'notes', type: IsarType.string),
-    r'precoPago': PropertySchema(
+    r'numeroCopias': PropertySchema(
       id: 12,
+      name: r'numeroCopias',
+      type: IsarType.long,
+    ),
+    r'numeroNaSerie': PropertySchema(
+      id: 13,
+      name: r'numeroNaSerie',
+      type: IsarType.string,
+    ),
+    r'precoPago': PropertySchema(
+      id: 14,
       name: r'precoPago',
       type: IsarType.double,
     ),
+    r'serie': PropertySchema(id: 15, name: r'serie', type: IsarType.string),
   },
 
   estimateSize: _carCollectionEstimateSize,
@@ -130,6 +141,18 @@ int _carCollectionEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.numeroNaSerie;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.serie;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -151,7 +174,10 @@ void _carCollectionSerialize(
   writer.writeString(offsets[9], object.modelo);
   writer.writeString(offsets[10], object.nomeMiniatura);
   writer.writeString(offsets[11], object.notes);
-  writer.writeDouble(offsets[12], object.precoPago);
+  writer.writeLong(offsets[12], object.numeroCopias);
+  writer.writeString(offsets[13], object.numeroNaSerie);
+  writer.writeDouble(offsets[14], object.precoPago);
+  writer.writeString(offsets[15], object.serie);
 }
 
 CarCollection _carCollectionDeserialize(
@@ -174,7 +200,10 @@ CarCollection _carCollectionDeserialize(
   object.modelo = reader.readString(offsets[9]);
   object.nomeMiniatura = reader.readString(offsets[10]);
   object.notes = reader.readStringOrNull(offsets[11]);
-  object.precoPago = reader.readDoubleOrNull(offsets[12]);
+  object.numeroCopias = reader.readLongOrNull(offsets[12]);
+  object.numeroNaSerie = reader.readStringOrNull(offsets[13]);
+  object.precoPago = reader.readDoubleOrNull(offsets[14]);
+  object.serie = reader.readStringOrNull(offsets[15]);
   return object;
 }
 
@@ -210,7 +239,13 @@ P _carCollectionDeserializeProp<P>(
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
+      return (reader.readLongOrNull(offset)) as P;
+    case 13:
+      return (reader.readStringOrNull(offset)) as P;
+    case 14:
       return (reader.readDoubleOrNull(offset)) as P;
+    case 15:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -2078,6 +2113,238 @@ extension CarCollectionQueryFilter
   }
 
   QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroCopiasIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'numeroCopias'),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroCopiasIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'numeroCopias'),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroCopiasEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'numeroCopias', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroCopiasGreaterThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'numeroCopias',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroCopiasLessThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'numeroCopias',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroCopiasBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'numeroCopias',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'numeroNaSerie'),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'numeroNaSerie'),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'numeroNaSerie',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'numeroNaSerie',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'numeroNaSerie', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  numeroNaSerieIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'numeroNaSerie', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
   precoPagoIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -2166,6 +2433,165 @@ extension CarCollectionQueryFilter
 
           epsilon: epsilon,
         ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'serie'),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'serie'),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'serie',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'serie',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'serie', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
+  serieIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'serie', value: ''),
       );
     });
   }
@@ -2322,6 +2748,34 @@ extension CarCollectionQuerySortBy
     });
   }
 
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  sortByNumeroCopias() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroCopias', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  sortByNumeroCopiasDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroCopias', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  sortByNumeroNaSerie() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroNaSerie', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  sortByNumeroNaSerieDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroNaSerie', Sort.desc);
+    });
+  }
+
   QueryBuilder<CarCollection, CarCollection, QAfterSortBy> sortByPrecoPago() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'precoPago', Sort.asc);
@@ -2332,6 +2786,18 @@ extension CarCollectionQuerySortBy
   sortByPrecoPagoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'precoPago', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy> sortBySerie() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'serie', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy> sortBySerieDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'serie', Sort.desc);
     });
   }
 }
@@ -2493,6 +2959,34 @@ extension CarCollectionQuerySortThenBy
     });
   }
 
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  thenByNumeroCopias() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroCopias', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  thenByNumeroCopiasDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroCopias', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  thenByNumeroNaSerie() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroNaSerie', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
+  thenByNumeroNaSerieDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroNaSerie', Sort.desc);
+    });
+  }
+
   QueryBuilder<CarCollection, CarCollection, QAfterSortBy> thenByPrecoPago() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'precoPago', Sort.asc);
@@ -2503,6 +2997,18 @@ extension CarCollectionQuerySortThenBy
   thenByPrecoPagoDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'precoPago', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy> thenBySerie() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'serie', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QAfterSortBy> thenBySerieDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'serie', Sort.desc);
     });
   }
 }
@@ -2605,9 +3111,34 @@ extension CarCollectionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<CarCollection, CarCollection, QDistinct>
+  distinctByNumeroCopias() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'numeroCopias');
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QDistinct>
+  distinctByNumeroNaSerie({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(
+        r'numeroNaSerie',
+        caseSensitive: caseSensitive,
+      );
+    });
+  }
+
   QueryBuilder<CarCollection, CarCollection, QDistinct> distinctByPrecoPago() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'precoPago');
+    });
+  }
+
+  QueryBuilder<CarCollection, CarCollection, QDistinct> distinctBySerie({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'serie', caseSensitive: caseSensitive);
     });
   }
 }
@@ -2696,9 +3227,28 @@ extension CarCollectionQueryProperty
     });
   }
 
+  QueryBuilder<CarCollection, int?, QQueryOperations> numeroCopiasProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'numeroCopias');
+    });
+  }
+
+  QueryBuilder<CarCollection, String?, QQueryOperations>
+  numeroNaSerieProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'numeroNaSerie');
+    });
+  }
+
   QueryBuilder<CarCollection, double?, QQueryOperations> precoPagoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'precoPago');
+    });
+  }
+
+  QueryBuilder<CarCollection, String?, QQueryOperations> serieProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'serie');
     });
   }
 }
