@@ -35,7 +35,7 @@ class _AddCarColectionState extends State<AddCarColection> {
       TextEditingController();
   final TextEditingController _precoPagoController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _numeroCopiasController = TextEditingController();
+
   String? _condition;
   String? _collectionCondition;
   final List<String> _images = [];
@@ -47,10 +47,41 @@ class _AddCarColectionState extends State<AddCarColection> {
   @override
   void initState() {
     super.initState();
-    if (widget.id != null) {
-      _carId = widget.id;
-      _loadCarData(_carId!);
-    }
+    _processArguments();
+  }
+
+  void _processArguments() {
+    // Ideally we check if extra is int (edit) or Map (duplicate)
+    // But widget.id is typed as int?.
+    // The previous code used `extra: _car!.id` which means `widget.id` was receiving that int?
+    // Wait, `AddCarColection` constructor takes `this.id`.
+    // In `miniatura_details`, `context.push('/add_car', extra: ...)`
+    // The router definition likely maps `extra` to `id` if it's an int, but if I pass a map, I need to check how the router handles it.
+    // Assuming I need to modify the router or `AddCarColection` to accept the map.
+    // However, looking at the file `AddCarColection`, it takes `final int? id`.
+    // I should probably check how `go_router` is set up.
+    // But for now, let's assume I can get the extra object via `GoRouterState` or similar if I changed the route.
+    // OR, I can just modify `AddCarColection` to handle the logic.
+    // Let's rely on `ModalRoute.of(context)!.settings.arguments` if `widget.id` is null or isn't sufficient,
+    // BUT `widget.id` is passed from the router builder.
+    // Let's look at `initState`.
+
+    // Actually, I can't easily see the router config.
+    // If I change the push to pass a Map, the `id` param in `AddCarColection` might be null or invalid if the router expects an int.
+    // Let's assumes I can access the extra data.
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final extra = GoRouterState.of(context).extra;
+      if (extra is int) {
+        _carId = extra;
+        _loadCarData(_carId!);
+      } else if (extra is Map && extra['action'] == 'duplicate') {
+        _loadCarDataForDuplication(extra['id']);
+      } else if (widget.id != null) {
+        _carId = widget.id;
+        _loadCarData(_carId!);
+      }
+    });
   }
 
   Future<void> _loadCarData(int id) async {
@@ -79,7 +110,30 @@ class _AddCarColectionState extends State<AddCarColection> {
         } else if (car.imagePath != null) {
           _images.add(car.imagePath!);
         }
-        _numeroCopiasController.text = (car.numeroCopias ?? 1).toString();
+        // _numeroCopiasController.text removed
+      });
+    }
+  }
+
+  Future<void> _loadCarDataForDuplication(int originalId) async {
+    final isarService = IsarService();
+    final car = await isarService.getCarById(originalId);
+    if (car != null) {
+      setState(() {
+        _nomeMiniaturaController.text = car.nomeMiniatura;
+        _serieController.text = car.serie ?? '';
+        _numeroNaSerieController.text = car.numeroNaSerie ?? '';
+        _categoriaController.text = car.categoria;
+        _marcaController.text = car.marca;
+        _modeloController.text = car.modelo;
+        _anoFabricacaoController.text = car.anoFabricacao?.toString() ?? '';
+        _escalaController.text = car.escala;
+        // Fields to EXCLUDE/RESET:
+        // images, condition, collectionCondition, dataAquizicao, precoPago
+        _notesController.text = car.notes ?? '';
+
+        // Ensure it's treated as a new record
+        _carId = null;
       });
     }
   }
@@ -117,8 +171,8 @@ class _AddCarColectionState extends State<AddCarColection> {
       ..notes = _notesController.text
       ..condition = _condition
       ..collectionCondition = _collectionCondition
-      ..images = _images
-      ..numeroCopias = int.tryParse(_numeroCopiasController.text) ?? 1;
+      ..images = _images;
+    // ..numeroCopias removed
 
     if (_carId != null) {
       car.id = _carId!;
@@ -283,8 +337,6 @@ class _AddCarColectionState extends State<AddCarColection> {
                                   onImageAdded: (val) =>
                                       setState(() => _images.add(val)),
                                   onSave: _onSave,
-                                  numeroCopiasController:
-                                      _numeroCopiasController,
                                 ),
                               ),
                             ),

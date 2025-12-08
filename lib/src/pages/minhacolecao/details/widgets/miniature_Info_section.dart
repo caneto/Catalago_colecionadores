@@ -4,14 +4,25 @@ import 'package:flutter/material.dart';
 
 class MiniatureInfoSection extends StatelessWidget {
   final CarCollection car;
+  final List<CarCollection> siblings;
+  final ValueChanged<CarCollection> onSiblingSelected;
 
-  const MiniatureInfoSection({super.key, required this.car});
+  const MiniatureInfoSection({
+    super.key,
+    required this.car,
+    this.siblings = const [],
+    required this.onSiblingSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
     String nomeMiniatura = car.nomeMiniatura.length <= 32
         ? car.nomeMiniatura
         : '${car.nomeMiniatura.substring(0, 30)}...';
+
+    // Sort siblings by id or acquisition date to have a stable order
+    final sortedSiblings = List<CarCollection>.from(siblings);
+    sortedSiblings.sort((a, b) => a.id.compareTo(b.id));
 
     return Padding(
       padding: const EdgeInsets.all(12.0),
@@ -41,6 +52,71 @@ class MiniatureInfoSection extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
+            // Selector for Copies if multiple exist
+            if (sortedSiblings.length > 1)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: Row(
+                  children: [
+                    Text(
+                      "Selecionar Cópia: ",
+                      style: CatalagoColecionadorTheme.titleStyleNormal
+                          .copyWith(
+                            color: CatalagoColecionadorTheme.blackClaroColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 17,
+                          ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 0,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.grey.shade300),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<int>(
+                            value: sortedSiblings.indexWhere(
+                              (s) => s.id == car.id,
+                            ),
+                            icon: const Icon(Icons.arrow_drop_down),
+                            elevation: 16,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                            onChanged: (int? index) {
+                              if (index != null &&
+                                  index >= 0 &&
+                                  index < sortedSiblings.length) {
+                                onSiblingSelected(sortedSiblings[index]);
+                              }
+                            },
+                            items: sortedSiblings
+                                .asMap()
+                                .entries
+                                .map<DropdownMenuItem<int>>((entry) {
+                                  final index = entry.key;
+                                  // We could add more info here like "Cópia 1 (Condition: New)" if desired
+                                  return DropdownMenuItem<int>(
+                                    value: index,
+                                    child: Text('Cópia ${index + 1}'),
+                                  );
+                                })
+                                .toList(),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
             Semantics(
               label: "Categoria:",
               child: Row(
@@ -258,6 +334,7 @@ class MiniatureInfoSection extends StatelessWidget {
                   ],
                 ),
               ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

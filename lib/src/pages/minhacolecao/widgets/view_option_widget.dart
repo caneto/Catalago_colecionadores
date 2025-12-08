@@ -93,10 +93,13 @@ class _ViewOptionButton extends StatelessWidget {
           child: Row(
             children: [
               Image.asset(iconPath, width: 16, height: 16, color: Colors.white),
-              SizedBox(width: 12 ),
+              SizedBox(width: 12),
               Text(
                 text,
                 style: CatalagoColecionadorTheme.titleStyle.copyWith(
+                  color: CatalagoColecionadorTheme.yellowColor.withValues(
+                    alpha: 0.8,
+                  ),
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
                 ),

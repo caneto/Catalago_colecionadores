@@ -21,5 +21,4 @@ class CarCollection {
   List<String>? images;
   String? serie;
   String? numeroNaSerie;
-  int? numeroCopias = 1;
 }

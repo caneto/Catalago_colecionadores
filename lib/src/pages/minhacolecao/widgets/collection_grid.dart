@@ -8,6 +8,7 @@ import 'grid_item.dart';
 
 class CollectionGrid extends StatelessWidget {
   final List<CarCollection> items;
+  final Map<String, int> counts;
   final int gridCount;
   final Color surface;
   final Color brandColor;
@@ -18,6 +19,7 @@ class CollectionGrid extends StatelessWidget {
   const CollectionGrid({
     super.key,
     required this.items,
+    required this.counts,
     required this.gridCount,
     required this.surface,
     required this.brandColor,
@@ -46,13 +48,19 @@ class CollectionGrid extends StatelessWidget {
             : 18,
         childAspectRatio: 0.75, // Adjusted to fit new content (badges)
       ),
-      itemBuilder: (ctx, i) => GridItem(
-        item: items[i],
-        surface: surface,
-        brandColor: brandColor,
-        modelColor: modelColor,
-        onTap: () => onItemTap(items[i]),
-      ),
+      itemBuilder: (ctx, i) {
+        final item = items[i];
+        final count = counts[item.nomeMiniatura] ?? 1;
+
+        return GridItem(
+          item: item,
+          count: count,
+          surface: surface,
+          brandColor: brandColor,
+          modelColor: modelColor,
+          onTap: () => onItemTap(items[i]),
+        );
+      },
     );
   }
 }

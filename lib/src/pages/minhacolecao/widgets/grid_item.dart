@@ -8,6 +8,7 @@ import '../../../core/database/isar_models/car_collection.dart';
 
 class GridItem extends StatelessWidget {
   final CarCollection item;
+  final int count;
   final Color surface;
   final Color brandColor;
   final Color modelColor;
@@ -16,6 +17,7 @@ class GridItem extends StatelessWidget {
   const GridItem({
     super.key,
     required this.item,
+    required this.count,
     required this.surface,
     required this.brandColor,
     required this.modelColor,
@@ -114,7 +116,7 @@ class GridItem extends StatelessWidget {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              (item.numeroCopias ?? 1).toString(),
+                              count.toString(),
                               style: const TextStyle(
                                 color: CatalagoColecionadorTheme.whiteColor,
                                 fontSize: 14,
@@ -151,7 +153,8 @@ class GridItem extends StatelessWidget {
                                 horizontal: 8,
                               ),
                               decoration: BoxDecoration(
-                                color: CatalagoColecionadorTheme.bgInputAccent,
+                                color:
+                                    CatalagoColecionadorTheme.blackLightGround,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               alignment: Alignment.center,

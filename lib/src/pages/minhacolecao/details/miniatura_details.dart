@@ -41,13 +41,25 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     }
   }
 
+  List<CarCollection> _siblings = [];
+
   Future<void> _loadCar(Id id) async {
     final car = await _isarService.getCarById(id);
-    if (mounted) {
-      setState(() {
-        _car = car;
-        _isLoading = false;
-      });
+    if (car != null) {
+      final siblings = await _isarService.getCarsByExactName(car.nomeMiniatura);
+      if (mounted) {
+        setState(() {
+          _car = car;
+          _siblings = siblings;
+          _isLoading = false;
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -103,6 +115,40 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
     if (_car == null) return;
     await context.push('/add_car', extra: _car!.id);
     _loadCar(_car!.id);
+  }
+
+  Future<void> _deleteCar() async {
+    if (_car == null) return;
+
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Remover da coleção'),
+          content: const Text(
+            'Tem certeza que deseja remover este item da sua coleção?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(foregroundColor: Colors.red),
+              child: const Text('Remover'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm == true) {
+      await _isarService.deleteCar(_car!.id);
+      if (mounted) {
+        context.pop(); // Close details page
+      }
+    }
   }
 
   @override
@@ -230,7 +276,15 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                                     child: CircularProgressIndicator(),
                                   )
                                 : _car != null
-                                ? MiniatureInfoSection(car: _car!)
+                                ? MiniatureInfoSection(
+                                    car: _car!,
+                                    siblings: _siblings,
+                                    onSiblingSelected: (selectedCar) {
+                                      setState(() {
+                                        _car = selectedCar;
+                                      });
+                                    },
+                                  )
                                 : const Center(
                                     child: Text("Carro não encontrado"),
                                   ),
@@ -281,7 +335,38 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                         width: sizeOf.width * .94,
                         height: 48,
                         child: ElevatedButton(
-                          onPressed: () async {},
+                          onPressed: () async {
+                            if (_car == null) return;
+                            await context.push(
+                              '/add_car',
+                              extra: {'action': 'duplicate', 'id': _car!.id},
+                            );
+                            _loadCar(_car!.id);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor:
+                                CatalagoColecionadorTheme.whiteColor,
+                            backgroundColor:
+                                CatalagoColecionadorTheme.blueFaceBook,
+                            side: const BorderSide(color: Colors.blueGrey),
+                          ),
+                          child: Text(
+                            'Duplicar Miniatura',
+                            style: CatalagoColecionadorTheme.titleStyleNormal
+                                .copyWith(
+                                  color: CatalagoColecionadorTheme.whiteColor,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: sizeOf.width * .94,
+                        height: 48,
+                        child: ElevatedButton(
+                          onPressed: _deleteCar,
                           style: ElevatedButton.styleFrom(
                             foregroundColor:
                                 CatalagoColecionadorTheme.whiteColor,

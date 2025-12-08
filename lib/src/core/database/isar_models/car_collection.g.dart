@@ -61,22 +61,17 @@ const CarCollectionSchema = CollectionSchema(
       type: IsarType.string,
     ),
     r'notes': PropertySchema(id: 11, name: r'notes', type: IsarType.string),
-    r'numeroCopias': PropertySchema(
-      id: 12,
-      name: r'numeroCopias',
-      type: IsarType.long,
-    ),
     r'numeroNaSerie': PropertySchema(
-      id: 13,
+      id: 12,
       name: r'numeroNaSerie',
       type: IsarType.string,
     ),
     r'precoPago': PropertySchema(
-      id: 14,
+      id: 13,
       name: r'precoPago',
       type: IsarType.double,
     ),
-    r'serie': PropertySchema(id: 15, name: r'serie', type: IsarType.string),
+    r'serie': PropertySchema(id: 14, name: r'serie', type: IsarType.string),
   },
 
   estimateSize: _carCollectionEstimateSize,
@@ -174,10 +169,9 @@ void _carCollectionSerialize(
   writer.writeString(offsets[9], object.modelo);
   writer.writeString(offsets[10], object.nomeMiniatura);
   writer.writeString(offsets[11], object.notes);
-  writer.writeLong(offsets[12], object.numeroCopias);
-  writer.writeString(offsets[13], object.numeroNaSerie);
-  writer.writeDouble(offsets[14], object.precoPago);
-  writer.writeString(offsets[15], object.serie);
+  writer.writeString(offsets[12], object.numeroNaSerie);
+  writer.writeDouble(offsets[13], object.precoPago);
+  writer.writeString(offsets[14], object.serie);
 }
 
 CarCollection _carCollectionDeserialize(
@@ -200,10 +194,9 @@ CarCollection _carCollectionDeserialize(
   object.modelo = reader.readString(offsets[9]);
   object.nomeMiniatura = reader.readString(offsets[10]);
   object.notes = reader.readStringOrNull(offsets[11]);
-  object.numeroCopias = reader.readLongOrNull(offsets[12]);
-  object.numeroNaSerie = reader.readStringOrNull(offsets[13]);
-  object.precoPago = reader.readDoubleOrNull(offsets[14]);
-  object.serie = reader.readStringOrNull(offsets[15]);
+  object.numeroNaSerie = reader.readStringOrNull(offsets[12]);
+  object.precoPago = reader.readDoubleOrNull(offsets[13]);
+  object.serie = reader.readStringOrNull(offsets[14]);
   return object;
 }
 
@@ -239,12 +232,10 @@ P _carCollectionDeserializeProp<P>(
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
-      return (reader.readLongOrNull(offset)) as P;
-    case 13:
       return (reader.readStringOrNull(offset)) as P;
-    case 14:
+    case 13:
       return (reader.readDoubleOrNull(offset)) as P;
-    case 15:
+    case 14:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2113,79 +2104,6 @@ extension CarCollectionQueryFilter
   }
 
   QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
-  numeroCopiasIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'numeroCopias'),
-      );
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
-  numeroCopiasIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'numeroCopias'),
-      );
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
-  numeroCopiasEqualTo(int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'numeroCopias', value: value),
-      );
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
-  numeroCopiasGreaterThan(int? value, {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'numeroCopias',
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
-  numeroCopiasLessThan(int? value, {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'numeroCopias',
-          value: value,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
-  numeroCopiasBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'numeroCopias',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterFilterCondition>
   numeroNaSerieIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -2749,20 +2667,6 @@ extension CarCollectionQuerySortBy
   }
 
   QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
-  sortByNumeroCopias() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'numeroCopias', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
-  sortByNumeroCopiasDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'numeroCopias', Sort.desc);
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
   sortByNumeroNaSerie() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'numeroNaSerie', Sort.asc);
@@ -2960,20 +2864,6 @@ extension CarCollectionQuerySortThenBy
   }
 
   QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
-  thenByNumeroCopias() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'numeroCopias', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
-  thenByNumeroCopiasDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'numeroCopias', Sort.desc);
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QAfterSortBy>
   thenByNumeroNaSerie() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'numeroNaSerie', Sort.asc);
@@ -3112,13 +3002,6 @@ extension CarCollectionQueryWhereDistinct
   }
 
   QueryBuilder<CarCollection, CarCollection, QDistinct>
-  distinctByNumeroCopias() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'numeroCopias');
-    });
-  }
-
-  QueryBuilder<CarCollection, CarCollection, QDistinct>
   distinctByNumeroNaSerie({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(
@@ -3224,12 +3107,6 @@ extension CarCollectionQueryProperty
   QueryBuilder<CarCollection, String?, QQueryOperations> notesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notes');
-    });
-  }
-
-  QueryBuilder<CarCollection, int?, QQueryOperations> numeroCopiasProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'numeroCopias');
     });
   }
 

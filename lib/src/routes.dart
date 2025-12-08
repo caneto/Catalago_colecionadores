@@ -40,7 +40,10 @@ final router = GoRouter(
     GoRoute(
       path: '/add_car',
       builder: (context, state) {
-        final id = state.extra as int?;
+        int? id;
+        if (state.extra is int) {
+          id = state.extra as int;
+        }
         return AddCarColection(id: id);
       },
     ),

@@ -33,6 +33,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
   final IsarService _isarService = IsarService();
   List<CarCollection> _allItems = [];
   List<CarCollection> _displayedItems = [];
+  Map<String, int> _counts = {}; // Map to store duplicate counts
   final List<FilterItemData> _filters = GlobalItens.filters;
   bool _isLoading = true;
 
@@ -44,9 +45,27 @@ class _MinhaColecaoState extends State<MinhaColecao> {
 
   Future<void> _loadData() async {
     final cars = await _isarService.getAllCars();
+
+    // Group items and calculate counts
+    final Map<String, int> counts = {};
+    for (var car in cars) {
+      counts[car.nomeMiniatura] = (counts[car.nomeMiniatura] ?? 0) + 1;
+    }
+
+    // Filter unique items (first occurrence)
+    final uniqueItems = <CarCollection>[];
+    final seenNames = <String>{};
+    for (var car in cars) {
+      if (!seenNames.contains(car.nomeMiniatura)) {
+        seenNames.add(car.nomeMiniatura);
+        uniqueItems.add(car);
+      }
+    }
+
     setState(() {
-      _allItems = cars;
-      _displayedItems = cars;
+      _allItems = cars; // Keep all items for reference
+      _displayedItems = uniqueItems;
+      _counts = counts;
       _isLoading = false;
     });
   }
@@ -436,7 +455,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                               ),
                             ),
                             Semantics(
-                              label: 'Perfil',
+                              label: 'Adicionar Miniatura',
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: InkWell(
@@ -445,6 +464,10 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                     height: 32,
                                     width: 32,
                                     semanticsLabel: 'X',
+                                    colorFilter: ColorFilter.mode(
+                                      CatalagoColecionadorTheme.whiteColor,
+                                      BlendMode.srcIn,
+                                    ),
                                   ),
                                   onTap: () async {
                                     await context.push('/add_car');
@@ -524,6 +547,7 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                                         : _selectedView == ViewMode.grid
                                         ? CollectionGrid(
                                             items: _displayedItems,
+                                            counts: _counts,
                                             gridCount: gridCount,
                                             surface: CatalagoColecionadorTheme
                                                 .bgInput,

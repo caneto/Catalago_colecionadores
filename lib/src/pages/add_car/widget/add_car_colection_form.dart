@@ -28,7 +28,7 @@ class AddCarColectionForm extends StatefulWidget {
   final TextEditingController precoPagoController;
   final TextEditingController serieController;
   final TextEditingController numeroNaSerieController;
-  final TextEditingController numeroCopiasController;
+
   final String? condition;
   final ValueChanged<String?> onConditionChanged;
   final String? collectionCondition;
@@ -59,7 +59,6 @@ class AddCarColectionForm extends StatefulWidget {
     required this.onImageAdded,
     required this.serieController,
     required this.numeroNaSerieController,
-    required this.numeroCopiasController,
   });
 
   @override
@@ -480,25 +479,6 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
               ),
             ),
             SizedBox(height: 12),
-            // Numero de Copias
-            FormGroup(
-              label: 'Número de Cópias',
-              colorLabel: CatalagoColecionadorTheme.labelColor,
-              child: TextFormField(
-                controller: widget.numeroCopiasController,
-                style: CatalagoColecionadorTheme.textBold.copyWith(
-                  color: CatalagoColecionadorTheme.blackClaroColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
-                  hintText: 'Ex: 1',
-                  colorSide: CatalagoColecionadorTheme.textMainAccent,
-                ),
-              ),
-            ),
 
             //Detalhes da Coleção
             SizedBox(height: 14),
