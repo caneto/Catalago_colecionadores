@@ -1,6 +1,7 @@
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'isar_models/car_base_collection.dart';
 import 'isar_models/car_collection.dart';
 import 'isar_models/category_collection.dart';
 import 'isar_models/marca_collection.dart';
@@ -19,6 +20,7 @@ class IsarService {
       final dir = await getApplicationDocumentsDirectory();
       return await Isar.open(
         [
+          CarBaseCollectionSchema,
           CarCollectionSchema,
           UserCollectionSchema,
           CategoryCollectionSchema,
@@ -158,6 +160,23 @@ class IsarService {
     final isar = await db;
     await isar.writeTxn(() async {
       await isar.serieCollections.delete(id);
+    });
+  }
+
+  Future<void> saveCarBase(CarBaseCollection car) async {
+    final isar = await db;
+    isar.writeTxnSync<int>(() => isar.carBaseCollections.putSync(car));
+  }
+
+  Future<List<CarBaseCollection>> getAllCarsBase() async {
+    final isar = await db;
+    return await isar.carBaseCollections.where().findAll();
+  }
+
+  Future<void> deleteCarBase(Id id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.carBaseCollections.delete(id);
     });
   }
 }

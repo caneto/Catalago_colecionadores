@@ -115,7 +115,19 @@ class ConfigContentSection extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 14),
+        SizedBox(height: 4),
+        InkWell(
+          onTap: () {
+            context.push('/list_collection_base');
+          },
+          child: ConfigDetailCard(
+            iconUrl: 'car_base.svg',
+            title: 'Cadastro base de collecionaveis',
+            subtitle: 'Administração da base de colecionáveis',
+            withIcon: true,
+          ),
+        ),
+        SizedBox(height: 10),
         // Legal (no subtitle)
         ConfigSection(
           title: 'Legal',

@@ -1,3 +1,4 @@
+import 'package:catalago_colecionadores/src/core/database/isar_models/car_base_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/marca_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/serie_collection.dart';
@@ -8,6 +9,8 @@ import 'package:catalago_colecionadores/src/pages/auth/password_recovery/passwor
 import 'package:catalago_colecionadores/src/pages/auth/registro/register_page.dart';
 import 'package:catalago_colecionadores/src/pages/category/add_category_page.dart';
 import 'package:catalago_colecionadores/src/pages/category/list_category_page.dart';
+import 'package:catalago_colecionadores/src/pages/collection_base/add_collection_base_page.dart';
+import 'package:catalago_colecionadores/src/pages/collection_base/list_collection_base_page.dart';
 import 'package:catalago_colecionadores/src/pages/configuration/configuracoes_page.dart';
 import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_politics_screen.dart';
@@ -102,6 +105,17 @@ final router = GoRouter(
       builder: (context, state) {
         final serie = state.extra as SerieCollection?;
         return AddSeriePage(serie: serie);
+      },
+    ),
+    GoRoute(
+      path: '/list_collection_base',
+      builder: (context, state) => ListCollectionBasePage(),
+    ),
+    GoRoute(
+      path: '/add_collection_base',
+      builder: (context, state) {
+        final item = state.extra as CarBaseCollection?;
+        return AddCollectionBasePage(item: item);
       },
     ),
   ],
