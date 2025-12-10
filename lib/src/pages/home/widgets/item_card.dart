@@ -59,19 +59,6 @@ class ItemCard extends StatelessWidget {
                         size: 38,
                       ),
                     ),
-                    //loadingBuilder: (ctx, child, progress) => progress == null
-                    //    ? child
-                    //    : Container(
-                    //        height: imageHeight,
-                    //        color: const Color(0xFF332022),
-                    //        alignment: Alignment.center,
-                    //        child: CircularProgressIndicator(
-                    //          valueColor: AlwaysStoppedAnimation<Color>(
-                    //            Colors.white24,
-                    //          ),
-                    //          strokeWidth: 2.1,
-                    //        ),
-                    //      ),
                   ),
                 ),
               ),

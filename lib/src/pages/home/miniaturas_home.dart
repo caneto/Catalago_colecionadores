@@ -12,7 +12,8 @@ import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
 
 import 'widgets/category_item.dart';
-import 'widgets/horizontal_items_list.dart';
+import 'widgets/destaque_items_list.dart';
+import 'widgets/novidades_items_list.dart';
 
 class MiniaturasHome extends StatefulWidget {
   const MiniaturasHome({super.key});
@@ -33,24 +34,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
     {'image': 'assets/images/hotwheels.png', 'title': 'Hot Wheels'},
     {'image': 'assets/images/maisto.png', 'title': 'Maisto'},
     {'image': 'assets/images/matchbox.png', 'title': 'Matchbox'},
-  ];
-
-  static const _newArrivals = [
-    {
-      'image':
-          'https://app.codigma.io/api/uploads/assets/21c2e05e-ca38-48a2-9604-017590e8e8b7.png',
-      'title': 'Hot Wheels',
-    },
-    {
-      'image':
-          'https://app.codigma.io/api/uploads/assets/a6ef14bb-1ce2-4bd4-ab14-bc6f8cc7bdbc.png',
-      'title': 'Maisto',
-    },
-    {
-      'image':
-          'https://app.codigma.io/api/uploads/assets/5221c9e6-382b-43ae-b0ef-b7315b0bfdb5.png',
-      'title': 'Matchbox',
-    },
   ];
 
   @override
@@ -207,9 +190,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
             final itemCardWidth = _getItemCardWidth(constraints);
             final itemCardHeight = _getItemCardHeight(constraints);
             final itemImageHeight = _getItemImageHeight(constraints);
-            final searchBarMargin = _searchBarMargin(constraints);
-            final searchBarMaxWidth = _searchBarMaxWidth(constraints);
-            final searchBarMinWidth = _searchBarMinWidth(constraints);
 
             return Container(
               constraints: BoxConstraints(minHeight: sizeOf.height),
@@ -268,86 +248,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                   ),
                                 ),
                               ),
-                              // // Search Bar
-                              // Container(
-                              //   margin: searchBarMargin,
-                              //   constraints: BoxConstraints(
-                              //     maxWidth: searchBarMaxWidth,
-                              //     minWidth: searchBarMinWidth,
-                              //   ),
-                              //   child: DecoratedBox(
-                              //     decoration: BoxDecoration(
-                              //       borderRadius: BorderRadius.circular(8),
-                              //     ),
-                              //     child: Row(
-                              //       children: [
-                              //         Padding(
-                              //           padding: const EdgeInsets.only(
-                              //             left: 5,
-                              //             right: 8,
-                              //           ),
-                              //           child: Icon(
-                              //             Icons.search,
-                              //             color: const Color.fromARGB(
-                              //               255,
-                              //               211,
-                              //               220,
-                              //               233,
-                              //             ),
-                              //             size: 20,
-                              //           ),
-                              //         ),
-                              //         Expanded(
-                              //           child: TextField(
-                              //             controller: _searchController,
-                              //             onChanged: (val) {
-                              //               setState(() => _searchValue = val);
-                              //             },
-                              //             style: TextStyle(
-                              //               color: const Color.fromARGB(
-                              //                 255,
-                              //                 27,
-                              //                 27,
-                              //                 27,
-                              //               ),
-                              //               fontSize: constraints.maxWidth < 600
-                              //                   ? 14
-                              //                   : 16,
-                              //               fontWeight: FontWeight.w400,
-                              //               letterSpacing: .1,
-                              //             ),
-                              //             decoration: InputDecoration(
-                              //               contentPadding: EdgeInsets.zero,
-                              //               isDense: true,
-                              //               border: InputBorder.none,
-                              //               hintText: 'Busca de Miniaturas',
-                              //               hintStyle: CatalagoColecionadorTheme
-                              //                   .titleStyleNormal
-                              //                   .copyWith(
-                              //                     color: Color.fromARGB(
-                              //                       255,
-                              //                       37,
-                              //                       21,
-                              //                       185,
-                              //                     ).withAlpha(3),
-                              //                   ),
-                              //               prefixIconConstraints:
-                              //                   BoxConstraints.tightFor(
-                              //                     width: 0,
-                              //                   ),
-                              //             ),
-                              //             cursorColor: const Color.fromARGB(
-                              //               255,
-                              //               66,
-                              //               126,
-                              //               10,
-                              //             ),
-                              //           ),
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                         ),
@@ -396,7 +296,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                 bottom: constraints.maxWidth < 600 ? 11 : 16,
                               ),
                               child: Text(
-                                'Novidades cadastradas/adquiridas',
+                                'Novidades Cadastradas',
                                 style: CatalagoColecionadorTheme.textBold
                                     .copyWith(
                                       color: Colors.white,
@@ -406,11 +306,10 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                     ),
                               ),
                             ),
-                            HorizontalItemsList(
-                              items: _newArrivals,
-                              width: itemCardWidth,
-                              height: itemCardHeight,
-                              imgHeight: itemImageHeight,
+                            NovidadesItemsList(
+                              width: 180,
+                              height: 220,
+                              imgHeight: 120,
                               isScrollable: constraints.maxWidth < 600,
                             ),
                           ],
