@@ -6,10 +6,9 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textform
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
-
-import '../../../core/database/isar_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,7 +19,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> with MessageViewMixin {
   final _formKey = GlobalKey<FormState>();
-  final _emailEC = TextEditingController();
+  final _userNameEC = TextEditingController();
   final _passwordEC = TextEditingController();
 
   late bool _passwordVisible;
@@ -33,7 +32,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
 
   @override
   void dispose() {
-    _emailEC.dispose();
+    _userNameEC.dispose();
     _passwordEC.dispose();
     super.dispose();
   }
@@ -72,15 +71,12 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                       ),
                       const SizedBox(height: 32),
                       AppDefaultTextformfield(
-                        title: "Email",
-                        hintText: 'Digite um E-mail valido',
-                        controller: _emailEC,
+                        title: "Nome do Usuário",
+                        hintText: 'Digite o nome do usuario valido',
+                        controller: _userNameEC,
                         onFieldSubmitted: (_) => _enterButton(),
-                        validator: Validatorless.multiple([
-                          Validatorless.required('Email Obrigatório'),
-                          Validatorless.email('Email inválido'),
-                        ]),
-                        keyboardType: TextInputType.emailAddress,
+                        validator: Validatorless.required('Nome do usuário Obrigatório'),
+                        keyboardType: TextInputType.name,
                       ),
                       const SizedBox(height: 20),
                       Watch((_) {
@@ -245,20 +241,34 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
     );
   }
 
-  void _enterButton() {
+  Future<void> _enterButton() async {
     final formValid = _formKey.currentState?.validate() ?? false;
 
     if (formValid) {
       FocusScope.of(context).unfocus();
-      IsarService().loginUser(_emailEC.text, _passwordEC.text).then((user) {
-        if (mounted) {
-          if (user != null) {
-            context.go('/home');
-          } else {
-            Messages.showError('Email ou senha inválidos', context);
-          }
+      //IsarService().loginUser(_emailEC.text, _passwordEC.text).then((user) {
+      //  if (mounted) {
+      //    if (user != null) {
+      //      context.go('/home');
+      //    } else {
+      //      Messages.showError('Email ou senha inválidos', context);
+      //    }
+      //  }
+      //});
+
+      final user = ParseUser(
+        _userNameEC.text.trim(), 
+        _passwordEC.text.trim(),
+        null,//_emailEC.text.trim(),
+      );
+      var response = await user.login();
+      if (mounted) {
+        if (response.success) {
+          context.go('/home');
+        } else {
+          Messages.showError('Email ou senha inválidos', context);
         }
-      });
+      }
     }
   }
 }

@@ -1,15 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:catalago_colecionadores/src/core/ui/helpers/messages.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_especial_button.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textformfield.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:validatorless/validatorless.dart';
-
-import '../../../core/database/isar_models/user_collection.dart';
-import '../../../core/database/isar_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -21,14 +22,16 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
   final _formKey = GlobalKey<FormState>();
 
-  final _nameEC = TextEditingController();
+  final _fullnameEC = TextEditingController();
+  final _usernameEC = TextEditingController();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
   final _confirmPasswordEC = TextEditingController();
 
   @override
   void dispose() {
-    _nameEC.dispose();
+    _fullnameEC.dispose();
+    _usernameEC.dispose();
     _emailEC.dispose();
     _passwordEC.dispose();
     _confirmPasswordEC.dispose();
@@ -76,10 +79,23 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
                       ),
                       const SizedBox(height: 30),
                       AppDefaultTextformfield(
-                        hintText: "Digite seu nome",
-                        title: 'Nome',
-                        controller: _nameEC,
-                        validator: Validatorless.required('Nome Obrigatório'),
+                        hintText: "Digite seu nome completo",
+                        title: 'Nome completo',
+                        controller: _fullnameEC,
+                        validator: Validatorless.required(
+                          'Nome completo Obrigatório',
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      AppDefaultTextformfield(
+                        hintText: "Digite seu nome de usúario",
+                        title: 'Nome de Usúario',
+                        controller: _usernameEC,
+                        validator: Validatorless.multiple([
+                          Validatorless.required('Nome de usuario Obrigatório'),
+                          Validatorless.min(3, "Minimo de 3 caracteres"),
+                          Validatorless.max(12, "Maximo de 12 caracteres"),
+                        ]),
                       ),
                       const SizedBox(height: 20),
                       AppDefaultTextformfield(
@@ -170,30 +186,72 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
     );
   }
 
-  void _registerUser() {
+  Future<void> _registerUser() async {
     final formValid = _formKey.currentState?.validate() ?? false;
 
     if (formValid) {
       FocusScope.of(context).unfocus();
 
-      final user = UserCollection()
-        ..name = _nameEC.text
-        ..email = _emailEC.text
-        ..password = _passwordEC.text; // Storing plain text as requested
+      final ParseCloudFunction function = ParseCloudFunction('v1-sign-up');
 
-      IsarService()
-          .saveUser(user)
-          .then((_) {
-            if (mounted) {
-              Messages.showSuccess('Usuário cadastrado com sucesso!', context);
-              context.go('/home');
-            }
-          })
-          .catchError((e) {
-            if (mounted) {
-              Messages.showError('Erro ao cadastrar usuário: $e', context);
-            }
-          });
+      final Map<String, dynamic> params = <String, dynamic>{
+        'email': _emailEC.text.trim(),
+        'username': _usernameEC.text.trim(),
+        'password': _passwordEC.text.trim(),
+        'fullname': _fullnameEC.text,
+      };
+
+      final ParseResponse parseResponse = await function.execute(
+        parameters: params,
+      );
+
+      if (parseResponse.success) {
+        if (kDebugMode) {
+          print(parseResponse.result);
+        }
+        if (mounted) {
+          Messages.showSuccess('Usuário cadastrado com sucesso!', context);
+        }
+        context.go('/home');
+      } else {
+        //   // ignore: use_build_context_synchronously
+        Messages.showError('Erro ao cadastrar usuário!', context);
+      }
+
+      //final userBack4App = ParseUser.createUser(
+      //  _usernameEC.text,
+      //  _passwordEC.text,
+      //  _emailEC.text,
+      //);
+
+      //var response = await userBack4App.signUp();
+
+      //if (response.success) {
+      // ignore: use_build_context_synchronously
+      //  Messages.showSuccess('Usuário cadastrado com sucesso!', context);
+      // } else {
+      //   // ignore: use_build_context_synchronously
+      //   Messages.showError('Erro ao cadastrar usuário!', context);
+      // }
+
+      //final user = UserCollection()
+      //  ..name = _usernameEC.text
+      //  ..email = _emailEC.text
+      //  ..password = _passwordEC.text; // Storing plain text as requested
+
+      //IsarService()
+      //    .saveUser(user)
+      //    .then((_) {
+      //      if (mounted) {
+      //        Messages.showSuccess('Usuário cadastrado com sucesso!', context);
+      //        context.go('/home');
+      //      }
+      //    })
+      //    .catchError((e) {
+      //      if (mounted) {
+      //        Messages.showError('Erro ao cadastrar usuário: $e', context);
+      //      }
+      //    });
     }
   }
 }
