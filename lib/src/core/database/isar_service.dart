@@ -2,7 +2,9 @@ import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'isar_models/car_base_collection.dart';
+import 'isar_models/car_base_collection_gallery.dart';
 import 'isar_models/car_collection.dart';
+import 'isar_models/car_collection_gallery.dart';
 import 'isar_models/category_collection.dart';
 import 'isar_models/marca_collection.dart';
 import 'isar_models/serie_collection.dart';
@@ -26,6 +28,8 @@ class IsarService {
           CategoryCollectionSchema,
           MarcaCollectionSchema,
           SerieCollectionSchema,
+          CarBaseCollectionGallerySchema,
+          CarCollectionGallerySchema,
         ],
         directory: dir.path,
         inspector: true,
@@ -35,15 +39,34 @@ class IsarService {
     return Future.value(Isar.getInstance());
   }
 
-  Future<void> saveCar(CarCollection car) async {
+  Future<void> saveCar(CarCollection car, {List<String>? imagesBase64}) async {
     final isar = await db;
-    isar.writeTxnSync<int>(() => isar.carCollections.putSync(car));
+    await isar.writeTxn(() async {
+      await isar.carCollections.put(car);
+      if (imagesBase64 != null && imagesBase64.isNotEmpty) {
+        for (var base64 in imagesBase64) {
+          final galleryItem = CarCollectionGallery()..imageBase64 = base64;
+          galleryItem.car.value = car;
+          await isar.carCollectionGallerys.put(galleryItem);
+          await galleryItem.car.save();
+        }
+      }
+    });
   }
 
   Future<void> deleteCar(Id id) async {
     final isar = await db;
     await isar.writeTxn(() async {
-      await isar.carCollections.delete(id);
+      final car = await isar.carCollections.get(id);
+      if (car != null) {
+        // Load gallery items to be sure
+        await car.gallery.load();
+        // Delete all gallery items associated with this car
+        for (var item in car.gallery) {
+          await isar.carCollectionGallerys.delete(item.id);
+        }
+        await isar.carCollections.delete(id);
+      }
     });
   }
 
@@ -93,17 +116,19 @@ class IsarService {
     final isar = await db;
     return await isar.userCollections
         .filter()
-        .nameContains(query, caseSensitive: false)
+        .usernameContains(query, caseSensitive: false)
+        .or()
+        .fullnameContains(query, caseSensitive: false)
         .or()
         .emailContains(query, caseSensitive: false)
         .findAll();
   }
 
-  Future<UserCollection?> loginUser(String email, String password) async {
+  Future<UserCollection?> loginUser(String username, String password) async {
     final isar = await db;
     final user = await isar.userCollections
         .filter()
-        .emailEqualTo(email, caseSensitive: false)
+        .usernameEqualTo(username, caseSensitive: false)
         .findFirst();
 
     if (user != null && user.password == password) {
@@ -163,9 +188,22 @@ class IsarService {
     });
   }
 
-  Future<void> saveCarBase(CarBaseCollection car) async {
+  Future<void> saveCarBase(
+    CarBaseCollection car, {
+    List<String>? imagesBase64,
+  }) async {
     final isar = await db;
-    isar.writeTxnSync<int>(() => isar.carBaseCollections.putSync(car));
+    await isar.writeTxn(() async {
+      await isar.carBaseCollections.put(car);
+      if (imagesBase64 != null && imagesBase64.isNotEmpty) {
+        for (var base64 in imagesBase64) {
+          final galleryItem = CarBaseCollectionGallery()..imageBase64 = base64;
+          galleryItem.carBase.value = car;
+          await isar.carBaseCollectionGallerys.put(galleryItem);
+          await galleryItem.carBase.save();
+        }
+      }
+    });
   }
 
   Future<List<CarBaseCollection>> getAllCarsBase() async {
@@ -176,7 +214,14 @@ class IsarService {
   Future<void> deleteCarBase(Id id) async {
     final isar = await db;
     await isar.writeTxn(() async {
-      await isar.carBaseCollections.delete(id);
+      final car = await isar.carBaseCollections.get(id);
+      if (car != null) {
+        await car.gallery.load();
+        for (var item in car.gallery) {
+          await isar.carBaseCollectionGallerys.delete(item.id);
+        }
+        await isar.carBaseCollections.delete(id);
+      }
     });
   }
 }

@@ -1,5 +1,7 @@
 import 'package:isar_community/isar.dart';
 
+import 'car_base_collection_gallery.dart';
+
 part 'car_base_collection.g.dart';
 
 @collection
@@ -14,6 +16,6 @@ class CarBaseCollection {
   late String escala;
   String? notes;
 
-  String? imagePath;
-  List<String>? images;
+  @Backlink(to: 'carBase')
+  final gallery = IsarLinks<CarBaseCollectionGallery>();
 }

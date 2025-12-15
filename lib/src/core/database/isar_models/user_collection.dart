@@ -6,10 +6,12 @@ part 'user_collection.g.dart';
 class UserCollection {
   Id id = Isar.autoIncrement;
 
-  late String name;
-  
+  late String username;
+
+  late String fullname;
+
   @Index(unique: true, replace: true)
   late String email;
-  
+
   late String password;
 }

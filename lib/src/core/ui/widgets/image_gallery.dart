@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
@@ -61,37 +62,7 @@ class ImageGallery extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: images[i].startsWith('assets/')
-                            ? Image.asset(
-                                images[i],
-                                width: itemSize,
-                                height: itemSize,
-                                fit: BoxFit.cover,
-                                errorBuilder: (ctx, _, __) => Container(
-                                  color: const Color(0xFF332022),
-                                  alignment: Alignment.center,
-                                  child: Icon(
-                                    Icons.broken_image_outlined,
-                                    color: Colors.white24,
-                                    size: 38,
-                                  ),
-                                ),
-                              )
-                            : Image.file(
-                                File(images[i]),
-                                width: itemSize,
-                                height: itemSize,
-                                fit: BoxFit.cover,
-                                errorBuilder: (ctx, _, __) => Container(
-                                  color: const Color(0xFF332022),
-                                  alignment: Alignment.center,
-                                  child: Icon(
-                                    Icons.broken_image_outlined,
-                                    color: Colors.white24,
-                                    size: 38,
-                                  ),
-                                ),
-                              ),
+                        child: _buildImage(images[i], itemSize),
                       ),
                     ),
                   ),
@@ -102,6 +73,51 @@ class ImageGallery extends StatelessWidget {
         ),
         SizedBox(height: 4),
       ],
+    );
+  }
+
+  Widget _buildImage(String imageSource, double size) {
+    if (imageSource.startsWith('assets/')) {
+      return Image.asset(
+        imageSource,
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        errorBuilder: (ctx, _, __) => _buildErrorPlaceholder(),
+      );
+    } else if (imageSource.startsWith('/') ||
+        imageSource.startsWith('file://')) {
+      return Image.file(
+        File(imageSource),
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        errorBuilder: (ctx, _, __) => _buildErrorPlaceholder(),
+      );
+    } else {
+      try {
+        return Image.memory(
+          base64Decode(imageSource),
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+          errorBuilder: (ctx, _, __) => _buildErrorPlaceholder(),
+        );
+      } catch (e) {
+        return _buildErrorPlaceholder();
+      }
+    }
+  }
+
+  Widget _buildErrorPlaceholder() {
+    return Container(
+      color: const Color(0xFF332022),
+      alignment: Alignment.center,
+      child: const Icon(
+        Icons.broken_image_outlined,
+        color: Colors.white24,
+        size: 38,
+      ),
     );
   }
 }

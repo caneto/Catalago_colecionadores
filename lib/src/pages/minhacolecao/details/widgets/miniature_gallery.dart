@@ -1,12 +1,13 @@
-import 'dart:io';
+import 'dart:convert';
 
+import 'package:catalago_colecionadores/src/core/database/isar_models/car_collection_gallery.dart';
 import 'package:flutter/material.dart';
 
 // Image gallery with selectable image
 class MiniatureGallery extends StatelessWidget {
-  final List<String> images;
+  final List<CarCollectionGallery> galleryItems;
 
-  const MiniatureGallery({super.key, required this.images});
+  const MiniatureGallery({super.key, required this.galleryItems});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +24,10 @@ class MiniatureGallery extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
-              children: List.generate(images.length, (i) {
+              children: List.generate(galleryItems.length, (i) {
                 return Padding(
                   padding: EdgeInsets.only(
-                    right: i == images.length - 1 ? 0 : 12,
+                    right: i == galleryItems.length - 1 ? 0 : 12,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16),
@@ -49,37 +50,21 @@ class MiniatureGallery extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: images[i].startsWith('assets/')
-                          ? Image.asset(
-                              images[i],
-                              width: itemSize,
-                              height: itemSize,
-                              fit: BoxFit.cover,
-                              errorBuilder: (ctx, _, __) => Container(
-                                color: const Color(0xFF332022),
-                                alignment: Alignment.center,
-                                child: Icon(
-                                  Icons.broken_image_outlined,
-                                  color: Colors.white24,
-                                  size: 38,
-                                ),
-                              ),
-                            )
-                          : Image.file(
-                              File(images[i]),
-                              width: itemSize,
-                              height: itemSize,
-                              fit: BoxFit.cover,
-                              errorBuilder: (ctx, _, __) => Container(
-                                color: const Color(0xFF332022),
-                                alignment: Alignment.center,
-                                child: Icon(
-                                  Icons.broken_image_outlined,
-                                  color: Colors.white24,
-                                  size: 38,
-                                ),
-                              ),
-                            ),
+                      child: Image.memory(
+                        base64Decode(galleryItems[i].imageBase64),
+                        width: itemSize,
+                        height: itemSize,
+                        fit: BoxFit.cover,
+                        errorBuilder: (ctx, _, __) => Container(
+                          color: const Color(0xFF332022),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.broken_image_outlined,
+                            color: Colors.white24,
+                            size: 38,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 );

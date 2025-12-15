@@ -1,15 +1,15 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:catalago_colecionadores/src/core/database/isar_models/user_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/helpers/messages.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_especial_button.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textformfield.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -192,19 +192,16 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
     if (formValid) {
       FocusScope.of(context).unfocus();
 
-      final ParseCloudFunction function = ParseCloudFunction('v1-sign-up');
-
+      /*       final ParseCloudFunction function = ParseCloudFunction('v1-sign-up');
       final Map<String, dynamic> params = <String, dynamic>{
         'email': _emailEC.text.trim(),
         'username': _usernameEC.text.trim(),
         'password': _passwordEC.text.trim(),
         'fullname': _fullnameEC.text,
       };
-
       final ParseResponse parseResponse = await function.execute(
         parameters: params,
       );
-
       if (parseResponse.success) {
         if (kDebugMode) {
           print(parseResponse.result);
@@ -217,7 +214,7 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
         //   // ignore: use_build_context_synchronously
         Messages.showError('Erro ao cadastrar usuário!', context);
       }
-
+ */
       //final userBack4App = ParseUser.createUser(
       //  _usernameEC.text,
       //  _passwordEC.text,
@@ -234,24 +231,25 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
       //   Messages.showError('Erro ao cadastrar usuário!', context);
       // }
 
-      //final user = UserCollection()
-      //  ..name = _usernameEC.text
-      //  ..email = _emailEC.text
-      //  ..password = _passwordEC.text; // Storing plain text as requested
+      final user = UserCollection()
+        ..username = _usernameEC.text
+        ..fullname = _fullnameEC.text
+        ..email = _emailEC.text
+        ..password = _passwordEC.text; // Storing plain text as requested
 
-      //IsarService()
-      //    .saveUser(user)
-      //    .then((_) {
-      //      if (mounted) {
-      //        Messages.showSuccess('Usuário cadastrado com sucesso!', context);
-      //        context.go('/home');
-      //      }
-      //    })
-      //    .catchError((e) {
-      //      if (mounted) {
-      //        Messages.showError('Erro ao cadastrar usuário: $e', context);
-      //      }
-      //    });
+      IsarService()
+          .saveUser(user)
+          .then((_) {
+            if (mounted) {
+              Messages.showSuccess('Usuário cadastrado com sucesso!', context);
+              context.go('/home');
+            }
+          })
+          .catchError((e) {
+            if (mounted) {
+              Messages.showError('Erro ao cadastrar usuário: $e', context);
+            }
+          });
     }
   }
 }

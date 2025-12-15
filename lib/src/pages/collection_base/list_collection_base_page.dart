@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:catalago_colecionadores/src/core/database/isar_models/car_base_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
@@ -193,12 +193,16 @@ class _ListCollectionBasePageState extends State<ListCollectionBasePage> {
                                       vertical: 10,
                                     ),
                                     child: ListTile(
-                                      leading: item.imagePath != null
+                                      leading: item.gallery.isNotEmpty
                                           ? CircleAvatar(
-                                              backgroundImage:
-                                                  _getImageProvider(
-                                                    item.imagePath!,
-                                                  ),
+                                              backgroundImage: MemoryImage(
+                                                base64Decode(
+                                                  item
+                                                      .gallery
+                                                      .first
+                                                      .imageBase64,
+                                                ),
+                                              ),
                                             )
                                           : const CircleAvatar(
                                               child: Icon(Icons.directions_car),
@@ -249,12 +253,5 @@ class _ListCollectionBasePageState extends State<ListCollectionBasePage> {
         ),
       ),
     );
-  }
-
-  ImageProvider _getImageProvider(String imagePath) {
-    if (imagePath.startsWith('/') || imagePath.contains('/data/')) {
-      return FileImage(File(imagePath));
-    }
-    return AssetImage(imagePath);
   }
 }

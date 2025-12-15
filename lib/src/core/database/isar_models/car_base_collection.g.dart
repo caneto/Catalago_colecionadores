@@ -28,24 +28,14 @@ const CarBaseCollectionSchema = CollectionSchema(
       type: IsarType.string,
     ),
     r'escala': PropertySchema(id: 2, name: r'escala', type: IsarType.string),
-    r'imagePath': PropertySchema(
-      id: 3,
-      name: r'imagePath',
-      type: IsarType.string,
-    ),
-    r'images': PropertySchema(
-      id: 4,
-      name: r'images',
-      type: IsarType.stringList,
-    ),
-    r'marca': PropertySchema(id: 5, name: r'marca', type: IsarType.string),
-    r'modelo': PropertySchema(id: 6, name: r'modelo', type: IsarType.string),
+    r'marca': PropertySchema(id: 3, name: r'marca', type: IsarType.string),
+    r'modelo': PropertySchema(id: 4, name: r'modelo', type: IsarType.string),
     r'nomeMiniatura': PropertySchema(
-      id: 7,
+      id: 5,
       name: r'nomeMiniatura',
       type: IsarType.string,
     ),
-    r'notes': PropertySchema(id: 8, name: r'notes', type: IsarType.string),
+    r'notes': PropertySchema(id: 6, name: r'notes', type: IsarType.string),
   },
 
   estimateSize: _carBaseCollectionEstimateSize,
@@ -54,7 +44,15 @@ const CarBaseCollectionSchema = CollectionSchema(
   deserializeProp: _carBaseCollectionDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'gallery': LinkSchema(
+      id: 5649378184967487340,
+      name: r'gallery',
+      target: r'CarBaseCollectionGallery',
+      single: false,
+      linkName: r'carBase',
+    ),
+  },
   embeddedSchemas: {},
 
   getId: _carBaseCollectionGetId,
@@ -71,24 +69,6 @@ int _carBaseCollectionEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.categoria.length * 3;
   bytesCount += 3 + object.escala.length * 3;
-  {
-    final value = object.imagePath;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final list = object.images;
-    if (list != null) {
-      bytesCount += 3 + list.length * 3;
-      {
-        for (var i = 0; i < list.length; i++) {
-          final value = list[i];
-          bytesCount += value.length * 3;
-        }
-      }
-    }
-  }
   bytesCount += 3 + object.marca.length * 3;
   bytesCount += 3 + object.modelo.length * 3;
   bytesCount += 3 + object.nomeMiniatura.length * 3;
@@ -110,12 +90,10 @@ void _carBaseCollectionSerialize(
   writer.writeLong(offsets[0], object.anoFabricacao);
   writer.writeString(offsets[1], object.categoria);
   writer.writeString(offsets[2], object.escala);
-  writer.writeString(offsets[3], object.imagePath);
-  writer.writeStringList(offsets[4], object.images);
-  writer.writeString(offsets[5], object.marca);
-  writer.writeString(offsets[6], object.modelo);
-  writer.writeString(offsets[7], object.nomeMiniatura);
-  writer.writeString(offsets[8], object.notes);
+  writer.writeString(offsets[3], object.marca);
+  writer.writeString(offsets[4], object.modelo);
+  writer.writeString(offsets[5], object.nomeMiniatura);
+  writer.writeString(offsets[6], object.notes);
 }
 
 CarBaseCollection _carBaseCollectionDeserialize(
@@ -129,12 +107,10 @@ CarBaseCollection _carBaseCollectionDeserialize(
   object.categoria = reader.readString(offsets[1]);
   object.escala = reader.readString(offsets[2]);
   object.id = id;
-  object.imagePath = reader.readStringOrNull(offsets[3]);
-  object.images = reader.readStringList(offsets[4]);
-  object.marca = reader.readString(offsets[5]);
-  object.modelo = reader.readString(offsets[6]);
-  object.nomeMiniatura = reader.readString(offsets[7]);
-  object.notes = reader.readStringOrNull(offsets[8]);
+  object.marca = reader.readString(offsets[3]);
+  object.modelo = reader.readString(offsets[4]);
+  object.nomeMiniatura = reader.readString(offsets[5]);
+  object.notes = reader.readStringOrNull(offsets[6]);
   return object;
 }
 
@@ -152,16 +128,12 @@ P _carBaseCollectionDeserializeProp<P>(
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readStringList(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
-    case 7:
-      return (reader.readString(offset)) as P;
-    case 8:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -175,7 +147,7 @@ Id _carBaseCollectionGetId(CarBaseCollection object) {
 List<IsarLinkBase<dynamic>> _carBaseCollectionGetLinks(
   CarBaseCollection object,
 ) {
-  return [];
+  return [object.gallery];
 }
 
 void _carBaseCollectionAttach(
@@ -184,6 +156,12 @@ void _carBaseCollectionAttach(
   CarBaseCollection object,
 ) {
   object.id = id;
+  object.gallery.attach(
+    col,
+    col.isar.collection<CarBaseCollectionGallery>(),
+    r'gallery',
+    id,
+  );
 }
 
 extension CarBaseCollectionQueryWhereSort
@@ -673,377 +651,6 @@ extension CarBaseCollectionQueryFilter
           upper: upper,
           includeUpper: includeUpper,
         ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'imagePath'),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'imagePath'),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathEqualTo(String? value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'imagePath',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'imagePath',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'imagePath',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'imagePath',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathStartsWith(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.startsWith(
-          property: r'imagePath',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathEndsWith(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.endsWith(
-          property: r'imagePath',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.contains(
-          property: r'imagePath',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.matches(
-          property: r'imagePath',
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'imagePath', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagePathIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(property: r'imagePath', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNull(property: r'images'),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        const FilterCondition.isNotNull(property: r'images'),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementEqualTo(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(
-          property: r'images',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(
-          include: include,
-          property: r'images',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.lessThan(
-          include: include,
-          property: r'images',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.between(
-          property: r'images',
-          lower: lower,
-          includeLower: includeLower,
-          upper: upper,
-          includeUpper: includeUpper,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementStartsWith(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.startsWith(
-          property: r'images',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementEndsWith(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.endsWith(
-          property: r'images',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.contains(
-          property: r'images',
-          value: value,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.matches(
-          property: r'images',
-          wildcard: pattern,
-          caseSensitive: caseSensitive,
-        ),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.equalTo(property: r'images', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesElementIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(
-        FilterCondition.greaterThan(property: r'images', value: ''),
-      );
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesLengthEqualTo(int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(r'images', length, true, length, true);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(r'images', 0, true, 0, true);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(r'images', 0, false, 999999, true);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesLengthLessThan(int length, {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(r'images', 0, true, length, include);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesLengthGreaterThan(int length, {bool include = false}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(r'images', length, include, 999999, true);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
-  imagesLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'images',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
       );
     });
   }
@@ -1635,7 +1242,67 @@ extension CarBaseCollectionQueryObject
     on QueryBuilder<CarBaseCollection, CarBaseCollection, QFilterCondition> {}
 
 extension CarBaseCollectionQueryLinks
-    on QueryBuilder<CarBaseCollection, CarBaseCollection, QFilterCondition> {}
+    on QueryBuilder<CarBaseCollection, CarBaseCollection, QFilterCondition> {
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  gallery(FilterQuery<CarBaseCollectionGallery> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'gallery');
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  galleryLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gallery', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  galleryIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gallery', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  galleryIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gallery', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  galleryLengthLessThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gallery', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  galleryLengthGreaterThan(int length, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gallery', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  galleryLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+        r'gallery',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+}
 
 extension CarBaseCollectionQuerySortBy
     on QueryBuilder<CarBaseCollection, CarBaseCollection, QSortBy> {
@@ -1678,20 +1345,6 @@ extension CarBaseCollectionQuerySortBy
   sortByEscalaDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'escala', Sort.desc);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
-  sortByImagePath() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imagePath', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
-  sortByImagePathDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imagePath', Sort.desc);
     });
   }
 
@@ -1810,20 +1463,6 @@ extension CarBaseCollectionQuerySortThenBy
   }
 
   QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
-  thenByImagePath() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imagePath', Sort.asc);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
-  thenByImagePathDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'imagePath', Sort.desc);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
   thenByMarca() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marca', Sort.asc);
@@ -1904,20 +1543,6 @@ extension CarBaseCollectionQueryWhereDistinct
   }
 
   QueryBuilder<CarBaseCollection, CarBaseCollection, QDistinct>
-  distinctByImagePath({bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'imagePath', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QDistinct>
-  distinctByImages() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'images');
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, CarBaseCollection, QDistinct>
   distinctByMarca({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'marca', caseSensitive: caseSensitive);
@@ -1974,20 +1599,6 @@ extension CarBaseCollectionQueryProperty
   QueryBuilder<CarBaseCollection, String, QQueryOperations> escalaProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'escala');
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, String?, QQueryOperations>
-  imagePathProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'imagePath');
-    });
-  }
-
-  QueryBuilder<CarBaseCollection, List<String>?, QQueryOperations>
-  imagesProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'images');
     });
   }
 

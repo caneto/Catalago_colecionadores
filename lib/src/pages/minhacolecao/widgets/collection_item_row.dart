@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:catalago_colecionadores/src/core/database/isar_models/car_collection.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
@@ -49,16 +49,9 @@ class CollectionItemRow extends StatelessWidget {
                   child: SizedBox(
                     width: 120,
                     height: 120,
-                    child: item.images != null && item.images!.isNotEmpty
-                        ? Image.file(
-                            File(item.images!.first),
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stack) =>
-                                Container(color: Colors.grey.shade300),
-                          )
-                        : item.imagePath != null && item.imagePath!.isNotEmpty
-                        ? Image.file(
-                            File(item.imagePath!),
+                    child: item.gallery.isNotEmpty
+                        ? Image.memory(
+                            base64Decode(item.gallery.first.imageBase64),
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stack) =>
                                 Container(color: Colors.grey.shade300),

@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
@@ -48,17 +48,9 @@ class GridItem extends StatelessWidget {
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(10),
                   ),
-                  child: item.images != null && item.images!.isNotEmpty
-                      ? Image.file(
-                          File(item.images!.first),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          errorBuilder: (context, error, stack) =>
-                              Container(color: Colors.grey.shade300),
-                        )
-                      : item.imagePath != null && item.imagePath!.isNotEmpty
-                      ? Image.file(
-                          File(item.imagePath!),
+                  child: item.gallery.isNotEmpty
+                      ? Image.memory(
+                          base64Decode(item.gallery.first.imageBase64),
                           fit: BoxFit.cover,
                           width: double.infinity,
                           errorBuilder: (context, error, stack) =>

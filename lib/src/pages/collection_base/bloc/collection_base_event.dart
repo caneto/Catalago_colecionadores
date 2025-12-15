@@ -6,7 +6,8 @@ class LoadCollectionBase extends CollectionBaseEvent {}
 
 class AddCollectionBase extends CollectionBaseEvent {
   final CarBaseCollection collectionBase;
-  AddCollectionBase(this.collectionBase);
+  final List<String>? images;
+  AddCollectionBase(this.collectionBase, {this.images});
 }
 
 class DeleteCollectionBase extends CollectionBaseEvent {

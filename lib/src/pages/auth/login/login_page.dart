@@ -1,3 +1,4 @@
+import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/helpers/messages.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -6,7 +7,6 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textform
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -246,29 +246,29 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
 
     if (formValid) {
       FocusScope.of(context).unfocus();
-      //IsarService().loginUser(_emailEC.text, _passwordEC.text).then((user) {
-      //  if (mounted) {
-      //    if (user != null) {
-      //      context.go('/home');
-      //    } else {
-      //      Messages.showError('Email ou senha inválidos', context);
-      //    }
-      //  }
-      //});
-
-      final user = ParseUser(
-        _userNameEC.text.trim(), 
-        _passwordEC.text.trim(),
-        null,//_emailEC.text.trim(),
-      );
-      var response = await user.login();
-      if (mounted) {
-        if (response.success) {
-          context.go('/home');
-        } else {
-          Messages.showError('Email ou senha inválidos', context);
+      IsarService().loginUser(_userNameEC.text, _passwordEC.text).then((user) {
+        if (mounted) {
+          if (user != null) {
+            context.go('/home');
+          } else {
+            Messages.showError('Username ou senha inválidos', context);
+          }
         }
-      }
+      });
+
+      // final user = ParseUser(
+      //   _userNameEC.text.trim(), 
+      //   _passwordEC.text.trim(),
+      //   null,//_emailEC.text.trim(),
+      // );
+      // var response = await user.login();
+      // if (mounted) {
+      //   if (response.success) {
+      //     context.go('/home');
+      //   } else {
+      //     Messages.showError('Email ou senha inválidos', context);
+      //   }
+      // }
     }
   }
 }

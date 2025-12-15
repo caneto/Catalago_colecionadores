@@ -270,7 +270,9 @@ class _MiniatureDetailsState extends State<MiniatureDetails> {
                           padding: EdgeInsets.zero,
                           physics: const BouncingScrollPhysics(),
                           children: [
-                            MiniatureGallery(images: _car?.images ?? []),
+                            MiniatureGallery(
+                              galleryItems: _car?.gallery.toList() ?? [],
+                            ),
                             _isLoading
                                 ? const Center(
                                     child: CircularProgressIndicator(),

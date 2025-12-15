@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -105,10 +108,8 @@ class _AddCarColectionState extends State<AddCarColection> {
         _notesController.text = car.notes ?? '';
         _condition = car.condition;
         _collectionCondition = car.collectionCondition;
-        if (car.images != null) {
-          _images.addAll(car.images!);
-        } else if (car.imagePath != null) {
-          _images.add(car.imagePath!);
+        if (car.gallery.isNotEmpty) {
+          _images.addAll(car.gallery.map((e) => e.imageBase64));
         }
         // _numeroCopiasController.text removed
       });
@@ -170,16 +171,25 @@ class _AddCarColectionState extends State<AddCarColection> {
       )
       ..notes = _notesController.text
       ..condition = _condition
-      ..collectionCondition = _collectionCondition
-      ..images = _images;
+      ..collectionCondition = _collectionCondition;
     // ..numeroCopias removed
 
     if (_carId != null) {
       car.id = _carId!;
     }
 
+    List<String> finalImages = [];
+    for (var img in _images) {
+      if (img.startsWith('/') && File(img).existsSync()) {
+        final bytes = await File(img).readAsBytes();
+        finalImages.add(base64Encode(bytes));
+      } else {
+        finalImages.add(img);
+      }
+    }
+
     final isarService = IsarService();
-    await isarService.saveCar(car);
+    await isarService.saveCar(car, imagesBase64: finalImages);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

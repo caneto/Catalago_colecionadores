@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:catalago_colecionadores/src/core/database/isar_models/car_base_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
@@ -51,10 +54,8 @@ class _AddCollectionBasePageState extends State<AddCollectionBasePage> {
       _escalaController.text = widget.item!.escala;
       _notesController.text = widget.item!.notes ?? '';
 
-      if (widget.item!.images != null) {
-        _images.addAll(widget.item!.images!);
-      } else if (widget.item!.imagePath != null) {
-        _images.add(widget.item!.imagePath!);
+      if (widget.item!.gallery.isNotEmpty) {
+        _images.addAll(widget.item!.gallery.map((e) => e.imageBase64));
       }
       textAddOption = "Editar Item";
       textButtonOption = "Editar Item";
@@ -85,11 +86,19 @@ class _AddCollectionBasePageState extends State<AddCollectionBasePage> {
       ..modelo = _modeloController.text
       ..anoFabricacao = int.tryParse(_anoFabricacaoController.text)
       ..escala = _escalaController.text
-      ..notes = _notesController.text
-      ..imagePath = _images.isNotEmpty ? _images.first : null
-      ..images = _images;
+      ..notes = _notesController.text;
 
-    _bloc.add(AddCollectionBase(item));
+    List<String> finalImages = [];
+    for (var img in _images) {
+      if (img.startsWith('/') && File(img).existsSync()) {
+        final bytes = await File(img).readAsBytes();
+        finalImages.add(base64Encode(bytes));
+      } else {
+        finalImages.add(img);
+      }
+    }
+
+    _bloc.add(AddCollectionBase(item, images: finalImages));
   }
 
   EdgeInsets _mainHorizontalPadding(BuildContext context, BoxConstraints c) {

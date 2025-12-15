@@ -1,5 +1,7 @@
 import 'package:isar_community/isar.dart';
 
+import 'car_collection_gallery.dart';
+
 part 'car_collection.g.dart';
 
 @collection
@@ -17,8 +19,9 @@ class CarCollection {
   String? notes;
   String? condition;
   String? collectionCondition;
-  String? imagePath;
-  List<String>? images;
+
+  @Backlink(to: 'car')
+  final gallery = IsarLinks<CarCollectionGallery>();
   String? serie;
   String? numeroNaSerie;
 }
