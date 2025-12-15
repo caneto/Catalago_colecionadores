@@ -74,7 +74,7 @@ class _AddCollectionBasePageState extends State<AddCollectionBasePage> {
     super.dispose();
   }
 
-  void _onSave() {
+  Future<void> _onSave() async {
     if (_formKey.currentState?.validate() != true) return;
 
     final item = widget.item ?? CarBaseCollection();
