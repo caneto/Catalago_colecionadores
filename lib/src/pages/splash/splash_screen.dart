@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -19,9 +20,19 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     final seconds = 3 + Random().nextInt(6);
-    _timer = Timer(Duration(seconds: seconds), () {
+    _timer = Timer(Duration(seconds: seconds), () async {
       if (!mounted) return;
-      context.go('/start');
+
+      final prefs = await SharedPreferences.getInstance();
+      final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+
+      if (!mounted) return;
+
+      if (isLoggedIn) {
+        context.go('/home');
+      } else {
+        context.go('/start');
+      }
     });
   }
 

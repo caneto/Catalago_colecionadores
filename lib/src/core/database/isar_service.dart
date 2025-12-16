@@ -137,6 +137,16 @@ class IsarService {
     return null;
   }
 
+  Future<UserCollection?> getUserByEmailOrUsername(String identifier) async {
+    final isar = await db;
+    return await isar.userCollections
+        .filter()
+        .emailEqualTo(identifier, caseSensitive: false)
+        .or()
+        .usernameEqualTo(identifier, caseSensitive: false)
+        .findFirst();
+  }
+
   Future<void> saveCategory(CategoryCollection category) async {
     final isar = await db;
     isar.writeTxnSync<int>(() => isar.categoryCollections.putSync(category));

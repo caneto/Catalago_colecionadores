@@ -1,11 +1,11 @@
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
 
-class EmailInputFieldWidget extends StatelessWidget {
+class UsernameInputFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final String? errorText;
   final bool enabled;
-  const EmailInputFieldWidget({
+  const UsernameInputFieldWidget({
     super.key,
     required this.controller,
     required this.errorText,
@@ -19,7 +19,7 @@ class EmailInputFieldWidget extends StatelessWidget {
       children: [
         Semantics(
           textField: true,
-          label: 'Email',
+          label: 'Username',
           child: Container(
             decoration: BoxDecoration(
               color: CatalagoColecionadorTheme.blackGround,
@@ -30,7 +30,7 @@ class EmailInputFieldWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'E-mail',
+                  'Username',
                   style: CatalagoColecionadorTheme.textTextButtonLabel.copyWith(
                     color: CatalagoColecionadorTheme.whiteColor,
                     fontSize: 14,
@@ -43,7 +43,7 @@ class EmailInputFieldWidget extends StatelessWidget {
                   controller: controller,
                   enabled: enabled,
                   keyboardType: TextInputType.emailAddress,
-                  autofillHints: const [AutofillHints.email],
+                  autofillHints: const [AutofillHints.username],
                   cursorColor: CatalagoColecionadorTheme.whiteColor,
                   style: CatalagoColecionadorTheme.textTextButtonLabel.copyWith(
                     color: CatalagoColecionadorTheme.yellowColor,
@@ -54,7 +54,7 @@ class EmailInputFieldWidget extends StatelessWidget {
                     isDense: true,
                     contentPadding: const EdgeInsets.only(top: 0, bottom: 3),
                     border: InputBorder.none,
-                    hintText: 'E-mail',
+                    hintText: 'Username',
                     hintStyle: CatalagoColecionadorTheme.textTextButtonLabel
                         .copyWith(
                           color: CatalagoColecionadorTheme.yellowColor,

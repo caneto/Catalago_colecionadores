@@ -9,6 +9,7 @@ import 'package:catalago_colecionadores/src/pages/home/widgets/section_widget.da
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'widgets/category_item.dart';
@@ -210,47 +211,63 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // Header
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: constraints.maxWidth < 600 ? 0 : 8,
-                            left: constraints.maxWidth < 400
-                                ? 0
-                                : constraints.maxWidth < 600
-                                ? 0
-                                : 24,
-                            right: constraints.maxWidth < 400
-                                ? 0
-                                : constraints.maxWidth < 600
-                                ? 0
-                                : 0,
-                            bottom: constraints.maxWidth < 600 ? 8 : 16,
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              // Title
-                              Expanded(
-                                child: Container(
-                                  margin: EdgeInsets.only(
-                                    left: constraints.maxWidth < 600 ? 12 : 24,
-                                    top: constraints.maxWidth < 600 ? 10 : 12,
-                                  ),
-                                  child: Text(
-                                    'Miniaturas',
-                                    style: CatalagoColecionadorTheme
-                                        .titleStyleNormal
-                                        .copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18,
-                                          color: Colors.white,
-                                          letterSpacing: -0.5,
-                                        ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.fromLTRB(
+                          20,
+                          18,
+                          20,
+                          16,
+                        ), // as per CSS
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: CatalagoColecionadorTheme.blackClaroColor,
+                              width: 1,
+                            ),
                           ),
                         ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Semantics(
+                              header: true,
+                              child: Text(
+                                'Miniaturas',
+                                style: CatalagoColecionadorTheme.titleStyle
+                                    .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                      letterSpacing: -0.01,
+                                      color:
+                                          CatalagoColecionadorTheme.whiteColor,
+                                    ),
+                              ),
+                            ),
+                            Semantics(
+                              label: 'Fecha o app',
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: InkWell(
+                                  child: SvgPicture.asset(
+                                    'assets/images/turn-off.svg',
+                                    height: 32,
+                                    width: 32,
+                                    semanticsLabel: 'off',
+                                    colorFilter: ColorFilter.mode(
+                                      CatalagoColecionadorTheme.whiteColor,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                         // Destaques
                         SectionWidget(
                           borderColor: CatalagoColecionadorTheme.lineDividColor,

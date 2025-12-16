@@ -7,6 +7,7 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textform
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -75,7 +76,9 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                         hintText: 'Digite o nome do usuario valido',
                         controller: _userNameEC,
                         onFieldSubmitted: (_) => _enterButton(),
-                        validator: Validatorless.required('Nome do usuário Obrigatório'),
+                        validator: Validatorless.required(
+                          'Nome do usuário Obrigatório',
+                        ),
                         keyboardType: TextInputType.name,
                       ),
                       const SizedBox(height: 20),
@@ -97,7 +100,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                           },
                         );
                       }),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 20),
                       AppDefaultEspecialButton(
                         tipoBotao: true,
                         onPressed: _enterButton,
@@ -106,65 +109,65 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
                         height: 48,
                       ),
                       const SizedBox(height: 10),
-                      AppDefaultEspecialButton(
-                        onPressed: () {
-                          context.go('/home');
-                        },
-                        label: "",
-                        width: sizeOf.width * .84,
-                        height: 48,
-                        widget: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              R.ASSETS_IMAGES_GOOGLE_LOGO2_PNG,
-                              width: 38.0,
-                              height: 38.0,
-                            ),
-                            const SizedBox(width: 12),
-                            const Text('Entrar com Google'),
-                          ],
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor:
-                              CatalagoColecionadorTheme.blackClaroColor,
-                          side: const BorderSide(
-                            color: CatalagoColecionadorTheme.blackClaroColor,
-                          ), // contorno branco
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      AppDefaultEspecialButton(
-                        onPressed: () async {
-                          context.go('/login');
-                        },
-                        label: "",
-                        width: sizeOf.width * .84,
-                        height: 48,
-                        widget: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              R.ASSETS_IMAGES_FACEBOOK_LOGO_PNG,
-                              width: 38.0,
-                              height: 38.0,
-                            ),
-                            const SizedBox(width: 16),
-                            const Text('Entrar com Facebook'),
-                          ],
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor:
-                              CatalagoColecionadorTheme.blackClaroColor,
-                          side: const BorderSide(
-                            color: CatalagoColecionadorTheme.blackClaroColor,
-                          ), // contorno branco
-                        ),
-                      ),
+                      // AppDefaultEspecialButton(
+                      //   onPressed: () {
+                      //     context.go('/home');
+                      //   },
+                      //   label: "",
+                      //   width: sizeOf.width * .84,
+                      //   height: 48,
+                      //   widget: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       Image.asset(
+                      //         R.ASSETS_IMAGES_GOOGLE_LOGO2_PNG,
+                      //         width: 38.0,
+                      //         height: 38.0,
+                      //       ),
+                      //       const SizedBox(width: 12),
+                      //       const Text('Entrar com Google'),
+                      //     ],
+                      //   ),
+                      //   style: ElevatedButton.styleFrom(
+                      //     foregroundColor: Colors.white,
+                      //     backgroundColor:
+                      //         CatalagoColecionadorTheme.blackClaroColor,
+                      //     side: const BorderSide(
+                      //       color: CatalagoColecionadorTheme.blackClaroColor,
+                      //     ), // contorno branco
+                      //   ),
+                      // ),
+                      // const SizedBox(height: 8),
+                      // AppDefaultEspecialButton(
+                      //   onPressed: () async {
+                      //     context.go('/login');
+                      //   },
+                      //   label: "",
+                      //   width: sizeOf.width * .84,
+                      //   height: 48,
+                      //   widget: Row(
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       Image.asset(
+                      //         R.ASSETS_IMAGES_FACEBOOK_LOGO_PNG,
+                      //         width: 38.0,
+                      //         height: 38.0,
+                      //       ),
+                      //       const SizedBox(width: 16),
+                      //       const Text('Entrar com Facebook'),
+                      //     ],
+                      //   ),
+                      //   style: ElevatedButton.styleFrom(
+                      //     foregroundColor: Colors.white,
+                      //     backgroundColor:
+                      //         CatalagoColecionadorTheme.blackClaroColor,
+                      //     side: const BorderSide(
+                      //       color: CatalagoColecionadorTheme.blackClaroColor,
+                      //     ), // contorno branco
+                      //   ),
+                      // ),
                       SizedBox(
                         width: sizeOf.width * .84,
                         height: 44,
@@ -246,10 +249,16 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
 
     if (formValid) {
       FocusScope.of(context).unfocus();
-      IsarService().loginUser(_userNameEC.text, _passwordEC.text).then((user) {
+      IsarService().loginUser(_userNameEC.text, _passwordEC.text).then((
+        user,
+      ) async {
         if (mounted) {
           if (user != null) {
-            context.go('/home');
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setBool('is_logged_in', true);
+            if (mounted) {
+              context.go('/home');
+            }
           } else {
             Messages.showError('Username ou senha inválidos', context);
           }
@@ -257,7 +266,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
       });
 
       // final user = ParseUser(
-      //   _userNameEC.text.trim(), 
+      //   _userNameEC.text.trim(),
       //   _passwordEC.text.trim(),
       //   null,//_emailEC.text.trim(),
       // );

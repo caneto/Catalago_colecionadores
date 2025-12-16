@@ -23,7 +23,8 @@ class TitleAndInstructionsWidget extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          'Insira o e-mail associado à sua conta e enviaremos instruções para redefinir sua senha.',
+          'Insira o sei username ou seu e-mail associado à sua conta e será gerado uma nova senha provisória.',
+          //'Insira o e-mail associado à sua conta e enviaremos instruções para redefinir sua senha.',
           style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
             fontSize: 15,
             height: 1.6,
