@@ -130,6 +130,23 @@ class ConfigContentSection extends StatelessWidget {
         SizedBox(height: 10),
         // Legal (no subtitle)
         ConfigSection(
+          title: 'Configurações avançadas',
+          children: [
+            InkWell(
+              onTap: () {
+                context.push('/configuracao_avancada');
+              },
+              child: ConfigDetailCard(
+                iconUrl: 'engrenagem.svg',
+                title: 'Configurações avançadas',
+                withIcon: true,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 10),
+        // Legal (no subtitle)
+        ConfigSection(
           title: 'Legal',
           children: [
             InkWell(

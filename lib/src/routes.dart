@@ -11,6 +11,7 @@ import 'package:catalago_colecionadores/src/pages/category/add_category_page.dar
 import 'package:catalago_colecionadores/src/pages/category/list_category_page.dart';
 import 'package:catalago_colecionadores/src/pages/collection_base/add_collection_base_page.dart';
 import 'package:catalago_colecionadores/src/pages/collection_base/list_collection_base_page.dart';
+import 'package:catalago_colecionadores/src/pages/configuration/configuracao_avancada.dart';
 import 'package:catalago_colecionadores/src/pages/configuration/configuracoes_page.dart';
 import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_politics_screen.dart';
@@ -71,6 +72,10 @@ final router = GoRouter(
     GoRoute(
       path: '/configuracoes',
       builder: (context, state) => ConfiguracoesPage(),
+    ),
+    GoRoute(
+      path: '/configuracao_avancada',
+      builder: (context, state) => ConfiguracaoAvancada(),
     ),
     GoRoute(
       path: '/add_category_page',
