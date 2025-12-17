@@ -1,4 +1,5 @@
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
+import 'package:catalago_colecionadores/src/core/services/shared_preferences_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/helpers/messages.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -7,7 +8,6 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textform
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 import 'package:validatorless/validatorless.dart';
 
@@ -254,8 +254,7 @@ class _LoginPageState extends State<LoginPage> with MessageViewMixin {
       ) async {
         if (mounted) {
           if (user != null) {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setBool('is_logged_in', true);
+            await SharedPreferencesService.setBool('is_logged_in', true);
             if (mounted) {
               context.go('/home');
             }

@@ -2,6 +2,7 @@
 
 import 'package:catalago_colecionadores/src/core/database/isar_models/user_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
+import 'package:catalago_colecionadores/src/core/services/shared_preferences_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/helpers/messages.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
@@ -10,7 +11,6 @@ import 'package:catalago_colecionadores/src/core/ui/widgets/app_default_textform
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:validatorless/validatorless.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -242,8 +242,7 @@ class _RegisterPageState extends State<RegisterPage> with MessageViewMixin {
           .saveUser(user)
           .then((_) async {
             if (mounted) {
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.setBool('is_logged_in', true);
+              await SharedPreferencesService.setBool('is_logged_in', true);
               if (mounted) {
                 Messages.showSuccess(
                   'Usuário cadastrado com sucesso!',

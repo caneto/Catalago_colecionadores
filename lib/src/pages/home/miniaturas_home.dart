@@ -2,12 +2,14 @@ import 'package:catalago_colecionadores/src/core/database/isar_models/category_c
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/global/global.dart';
 import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
+import 'package:catalago_colecionadores/src/core/services/shared_preferences_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:catalago_colecionadores/src/pages/home/widgets/section_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
@@ -212,62 +214,64 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                       children: [
                         // Header
                         Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.fromLTRB(
-                          20,
-                          18,
-                          20,
-                          16,
-                        ), // as per CSS
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: CatalagoColecionadorTheme.blackClaroColor,
-                              width: 1,
+                          width: double.infinity,
+                          padding: const EdgeInsets.fromLTRB(
+                            20,
+                            18,
+                            20,
+                            16,
+                          ), // as per CSS
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color:
+                                    CatalagoColecionadorTheme.blackClaroColor,
+                                width: 1,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Semantics(
-                              header: true,
-                              child: Text(
-                                'Miniaturas',
-                                style: CatalagoColecionadorTheme.titleStyle
-                                    .copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      letterSpacing: -0.01,
-                                      color:
-                                          CatalagoColecionadorTheme.whiteColor,
-                                    ),
-                              ),
-                            ),
-                            Semantics(
-                              label: 'Fecha o app',
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: InkWell(
-                                  child: SvgPicture.asset(
-                                    'assets/images/turn-off.svg',
-                                    height: 32,
-                                    width: 32,
-                                    semanticsLabel: 'off',
-                                    colorFilter: ColorFilter.mode(
-                                      CatalagoColecionadorTheme.whiteColor,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    
-                                  },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Semantics(
+                                header: true,
+                                child: Text(
+                                  'Miniaturas',
+                                  style: CatalagoColecionadorTheme.titleStyle
+                                      .copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 18,
+                                        letterSpacing: -0.01,
+                                        color: CatalagoColecionadorTheme
+                                            .whiteColor,
+                                      ),
                                 ),
                               ),
-                            ),
-                          ],
+                              Semantics(
+                                label: 'Fecha o app',
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: InkWell(
+                                    child: SvgPicture.asset(
+                                      'assets/images/turn-off.svg',
+                                      height: 32,
+                                      width: 32,
+                                      semanticsLabel: 'off',
+                                      colorFilter: ColorFilter.mode(
+                                        CatalagoColecionadorTheme.whiteColor,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      await SharedPreferencesService.remove('is_logged_in');
+                                      SystemNavigator.pop();
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                         // Destaques
                         SectionWidget(
                           borderColor: CatalagoColecionadorTheme.lineDividColor,

@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:catalago_colecionadores/src/core/services/shared_preferences_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -23,8 +23,7 @@ class _SplashPageState extends State<SplashPage> {
     _timer = Timer(Duration(seconds: seconds), () async {
       if (!mounted) return;
 
-      final prefs = await SharedPreferences.getInstance();
-      final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+      final isLoggedIn = SharedPreferencesService.getBool('is_logged_in',defaultValue: false);
 
       if (!mounted) return;
 
