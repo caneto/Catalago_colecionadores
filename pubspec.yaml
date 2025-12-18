@@ -42,7 +42,7 @@ dependencies:
   flutter_expandable_fab: ^2.5.2
   camera: ^0.10.5+9
   logger: ^2.6.2
-  shared_preferences: ^2.5.3
+  shared_preferences: ^2.5.4
   isar_community: ^3.2.0
   isar_community_flutter_libs: ^3.2.0
   path_provider: ^2.1.2

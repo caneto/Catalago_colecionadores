@@ -108,7 +108,6 @@ class _ConfiguracaoAvancadaState extends State<ConfiguracaoAvancada> {
                           ),
                         ),
                       ),
-                    
                     ],
                   ),
 

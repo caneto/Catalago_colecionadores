@@ -13,7 +13,7 @@ final class GlobalItens {
     {'iconLogo': 'minhacolecao.svg', 'label': 'Minha Coleção'},
     {'iconLogo': 'estrela.svg', 'label': 'Adicionar'},
     {'iconLogo': 'lupa.svg', 'label': 'Buscar'},
-    {'iconLogo': 'engrenagem.svg', 'label': 'Configuração'},
+    {'iconLogo': 'engrenagem.svg', 'label': "Configs"},
   ];
 
   // Filter options

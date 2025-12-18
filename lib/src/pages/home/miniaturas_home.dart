@@ -441,7 +441,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                       items: GlobalItens.navItems,
                       selectedIndex: _selectedNavIndex,
                       navHeight: constraints.maxWidth < 600 ? 67 : 80,
-                      iconSize: constraints.maxWidth < 600 ? 22 : 27,
+                      iconSize: constraints.maxWidth < 600 ? 21 : 26,
                       labelFontSize: constraints.maxWidth < 600 ? 10.6 : 12.2,
                       navItemWidth: constraints.maxWidth < 600 ? 76 : 80,
                     ),

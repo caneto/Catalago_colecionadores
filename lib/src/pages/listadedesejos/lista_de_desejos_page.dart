@@ -1,11 +1,10 @@
-// File: WishlistPage.dart
 import 'package:flutter/material.dart';
 
-class WishlistPage extends StatefulWidget {
-  const WishlistPage({super.key});
+class ListaDeDesejosPage extends StatefulWidget {
+  const ListaDeDesejosPage({super.key});
 
   @override
-  State<WishlistPage> createState() => _WishlistPageState();
+  State<ListaDeDesejosPage> createState() => _ListaDeDesejosPageState();
 }
 
 class WishlistItemData {
@@ -22,7 +21,7 @@ class WishlistItemData {
   });
 }
 
-class _WishlistPageState extends State<WishlistPage> {
+class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
   final List<WishlistItemData> _wishlistItems = [
     WishlistItemData(
       imageUrl:
