@@ -22,6 +22,7 @@ import 'package:catalago_colecionadores/src/pages/marca/list_marca_page.dart'
 import 'package:catalago_colecionadores/src/pages/minhacolecao/details/miniatura_details.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/minha_colecao.dart';
 import 'package:catalago_colecionadores/src/pages/pos_start/pos_start_screen.dart';
+import 'package:catalago_colecionadores/src/pages/search/search_results_page.dart';
 import 'package:catalago_colecionadores/src/pages/serie/add_serie_page.dart';
 import 'package:catalago_colecionadores/src/pages/serie/list_serie_page.dart';
 import 'package:catalago_colecionadores/src/pages/splash/splash_screen.dart';
@@ -122,6 +123,11 @@ final router = GoRouter(
         final item = state.extra as CarBaseCollection?;
         return AddCollectionBasePage(item: item);
       },
+    ),
+    GoRoute(
+      path: '/search_results',
+      builder: (context, state) => SearchResultsPage(),
+      //builder: (context, state) => ReviewsPage(),
     ),
   ],
 );

@@ -40,7 +40,7 @@ class _MiniaturasNavBarState extends State<MiniaturasNavBar> {
             : idx == 2
             ? '/add_car'
             : idx == 3
-            ? '/buscar'
+            ? '/search_results'
             : '/configuracoes',
       );
     });
