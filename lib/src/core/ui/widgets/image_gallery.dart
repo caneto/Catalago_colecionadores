@@ -85,8 +85,10 @@ class ImageGallery extends StatelessWidget {
         fit: BoxFit.cover,
         errorBuilder: (ctx, _, __) => _buildErrorPlaceholder(),
       );
-    } else if (imageSource.startsWith('/') ||
-        imageSource.startsWith('file://')) {
+    } else if ((imageSource.startsWith('/') ||
+            imageSource.startsWith('file://')) &&
+        imageSource.length < 1024 &&
+        File(imageSource).existsSync()) {
       return Image.file(
         File(imageSource),
         width: size,

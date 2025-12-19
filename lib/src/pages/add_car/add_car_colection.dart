@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
+import 'package:catalago_colecionadores/src/core/ui/widgets/header_section_widget.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/database/isar_models/car_collection.dart';
@@ -253,53 +253,20 @@ class _AddCarColectionState extends State<AddCarColection> {
                             ),
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Semantics(
-                              header: true,
-                              child: Text(
-                                _carId != null
-                                    ? 'Editar Miniatura'
-                                    : 'Adicionar Miniatura',
-                                style: CatalagoColecionadorTheme.titleStyle
-                                    .copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      letterSpacing: -0.01,
-                                      color:
-                                          CatalagoColecionadorTheme.whiteColor,
-                                    ),
-                              ),
-                            ),
-                            Semantics(
-                              label: 'Perfil',
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-
-                                child: InkWell(
-                                  child: SvgPicture.asset(
-                                    'assets/images/x.svg', // Path to your SVG asset
-                                    height: 32,
-                                    width: 32,
-                                    colorFilter: ColorFilter.mode(
-                                      CatalagoColecionadorTheme
-                                          .navBarBackkgroundColor,
-                                      BlendMode.srcIn,
-                                    ),
-                                    semanticsLabel: 'X',
-                                  ),
-                                  onTap: () {
-                                    if (context.canPop()) {
-                                      context.pop();
-                                    } else {
-                                      context.go('/home');
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
+                        child: HeaderSectionWidget(
+                          textHeader: _carId != null
+                              ? 'Editar Miniatura'
+                              : 'Adicionar Miniatura',
+                          textIcon: 'Fechar Cadastro',
+                          iconVar: 'x.svg',
+                          funcStatus: true,
+                          onTap: () {
+                            if (context.canPop()) {
+                              context.pop();
+                            } else {
+                              context.go('/home');
+                            }
+                          },
                         ),
                       ),
                       // Header (não scrollável)

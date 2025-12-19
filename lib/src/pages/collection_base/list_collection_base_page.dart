@@ -193,20 +193,32 @@ class _ListCollectionBasePageState extends State<ListCollectionBasePage> {
                                       vertical: 10,
                                     ),
                                     child: ListTile(
-                                      leading: item.gallery.isNotEmpty
-                                          ? CircleAvatar(
-                                              backgroundImage: MemoryImage(
-                                                base64Decode(
-                                                  item
-                                                      .gallery
-                                                      .first
-                                                      .imageBase64,
+                                      leading: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          child: item.gallery.isNotEmpty
+                                              ? Image.memory(
+                                                  base64Decode(
+                                                    item
+                                                        .gallery
+                                                        .first
+                                                        .imageBase64,
+                                                  ),
+                                                  fit: BoxFit.cover,
+                                                )
+                                              : Container(
+                                                  color: Colors.grey[400],
+                                                  child: const Icon(
+                                                    Icons.directions_car,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                            )
-                                          : const CircleAvatar(
-                                              child: Icon(Icons.directions_car),
-                                            ),
+                                        ),
+                                      ),
                                       title: Text(
                                         item.nomeMiniatura,
                                         style: CatalagoColecionadorTheme

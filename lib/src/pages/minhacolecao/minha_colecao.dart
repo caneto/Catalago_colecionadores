@@ -2,13 +2,13 @@ import 'package:catalago_colecionadores/src/core/global/global_context.dart';
 import 'package:catalago_colecionadores/src/core/global/global_itens.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
+import 'package:catalago_colecionadores/src/core/ui/widgets/header_section_widget.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/filter_item_wiget.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/search_bar_widget.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/view_option_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/database/isar_models/car_collection.dart';
@@ -437,46 +437,15 @@ class _MinhaColecaoState extends State<MinhaColecao> {
                             ),
                           ),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Semantics(
-                              header: true,
-                              child: Text(
-                                'Minha Coleção',
-                                style: CatalagoColecionadorTheme.titleStyle
-                                    .copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                      letterSpacing: -0.01,
-                                      color:
-                                          CatalagoColecionadorTheme.whiteColor,
-                                    ),
-                              ),
-                            ),
-                            Semantics(
-                              label: 'Adicionar Miniatura',
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: InkWell(
-                                  child: SvgPicture.asset(
-                                    'assets/images/estrela.svg',
-                                    height: 32,
-                                    width: 32,
-                                    semanticsLabel: 'X',
-                                    colorFilter: ColorFilter.mode(
-                                      CatalagoColecionadorTheme.whiteColor,
-                                      BlendMode.srcIn,
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    await context.push('/add_car');
-                                    _loadData();
-                                  },
-                                ),
-                              ),
-                            ),
-                          ],
+                        child: HeaderSectionWidget(
+                          textHeader: 'Minha Coleção',
+                          textIcon: 'Adicionar Miniatura',
+                          iconVar: 'estrela.svg',
+                          funcStatus: true,
+                          onTap: () async {
+                            await context.push('/add_car');
+                            _loadData();
+                          },
                         ),
                       ),
                       // SEARCH SECTION
