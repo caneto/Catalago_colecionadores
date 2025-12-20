@@ -134,7 +134,7 @@ class ConfigContentSection extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                context.push('/configuracao_avancada');
+                context.push('/configuracoes_avancadas');
               },
               child: ConfigDetailCard(
                 iconUrl: 'engrenagem.svg',

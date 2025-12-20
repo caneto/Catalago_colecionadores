@@ -103,8 +103,6 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                       ),
                     ],
                   ),
-
-                  // Main content (list & header)
                 ],
               ),
             );

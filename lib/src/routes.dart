@@ -11,8 +11,9 @@ import 'package:catalago_colecionadores/src/pages/category/add_category_page.dar
 import 'package:catalago_colecionadores/src/pages/category/list_category_page.dart';
 import 'package:catalago_colecionadores/src/pages/collection_base/add_collection_base_page.dart';
 import 'package:catalago_colecionadores/src/pages/collection_base/list_collection_base_page.dart';
-import 'package:catalago_colecionadores/src/pages/configuration/configuracao_avancada.dart';
 import 'package:catalago_colecionadores/src/pages/configuration/configuracoes_page.dart';
+import 'package:catalago_colecionadores/src/pages/configuration/configuration_advanced/configuracoes_avancadas.dart';
+import 'package:catalago_colecionadores/src/pages/configuration/pdf/pdf_generation_page.dart';
 import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_politics_screen.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_terms_screen.dart';
@@ -75,8 +76,12 @@ final router = GoRouter(
       builder: (context, state) => ConfiguracoesPage(),
     ),
     GoRoute(
-      path: '/configuracao_avancada',
-      builder: (context, state) => ConfiguracaoAvancada(),
+      path: '/configuracoes_avancadas',
+      builder: (context, state) => ConfiguracoesAvancadas(),
+    ),
+    GoRoute(
+      path: '/pdf_exports',
+      builder: (context, state) => PdfGenerationPage(),
     ),
     GoRoute(
       path: '/add_category_page',
