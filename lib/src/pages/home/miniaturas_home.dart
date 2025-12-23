@@ -184,6 +184,18 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
               context.push('/category');
             },
           ),
+          FloatingActionButton.small(
+            heroTag: null,
+            child: const Icon(Icons.add_circle_outline_rounded),
+            onPressed: () {
+              const SnackBar snackBar = SnackBar(
+                content: Text("Lista de Desejos"),
+              );
+              scaffoldMessengerKey.currentState?.showSnackBar(snackBar);
+
+              context.push('/lista_de_desejos');
+            },
+          ),
         ],
       ),
       body: SafeArea(
@@ -263,7 +275,9 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                       ),
                                     ),
                                     onTap: () async {
-                                      await SharedPreferencesService.remove('is_logged_in');
+                                      await SharedPreferencesService.remove(
+                                        'is_logged_in',
+                                      );
                                       SystemNavigator.pop();
                                     },
                                   ),

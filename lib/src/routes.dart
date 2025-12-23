@@ -17,6 +17,7 @@ import 'package:catalago_colecionadores/src/pages/configuration/pdf/pdf_generati
 import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_politics_screen.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_terms_screen.dart';
+import 'package:catalago_colecionadores/src/pages/listadedesejos/lista_de_desejos_page.dart';
 import 'package:catalago_colecionadores/src/pages/marca/add_marca_page.dart';
 import 'package:catalago_colecionadores/src/pages/marca/list_marca_page.dart'
     show ListMarcaPage;
@@ -78,6 +79,10 @@ final router = GoRouter(
     GoRoute(
       path: '/configuracoes_avancadas',
       builder: (context, state) => ConfiguracoesAvancadas(),
+    ),
+    GoRoute(
+      path: '/lista_de_desejos',
+      builder: (context, state) => ListaDeDesejosPage(),
     ),
     GoRoute(
       path: '/pdf_exports',

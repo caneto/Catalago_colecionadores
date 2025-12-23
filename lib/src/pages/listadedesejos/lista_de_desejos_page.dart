@@ -1,4 +1,6 @@
+import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ListaDeDesejosPage extends StatefulWidget {
   const ListaDeDesejosPage({super.key});
@@ -10,317 +12,317 @@ class ListaDeDesejosPage extends StatefulWidget {
 class WishlistItemData {
   final String imageUrl;
   final String title;
-  final String year;
   final String brand;
 
   const WishlistItemData({
     required this.imageUrl,
     required this.title,
-    required this.year,
     required this.brand,
   });
 }
 
 class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
-  final List<WishlistItemData> _wishlistItems = [
+  // Mock data matching the design
+  final List<WishlistItemData> _items = [
     WishlistItemData(
       imageUrl:
-          'https://app.codigma.io/api/uploads/assets/02721239-0697-4f9b-8590-1703f5663e1b.png',
-      title: 'Ford Mustang',
-      year: '2023',
-      brand: 'Hot Wheels',
-    ),
-    WishlistItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/417db90e-ca52-4d69-9429-39eb2936e6bb.png',
-      title: 'Chevrolet Camaro',
-      year: '2023',
+          'https://app.codigma.io/api/uploads/assets/02721239-0697-4f9b-8590-1703f5663e1b.png', // Placeholder
+      title: 'Porsche 911 GT3 RS',
       brand: 'Maisto',
     ),
     WishlistItemData(
       imageUrl:
-          'https://app.codigma.io/api/uploads/assets/02a018f5-6746-45ff-9325-d0d23fcd521e.png',
+          'https://app.codigma.io/api/uploads/assets/417db90e-ca52-4d69-9429-39eb2936e6bb.png', // Placeholder
+      title: '\'65 Ford Mustang',
+      brand: 'Hot Wheels',
+    ),
+    WishlistItemData(
+      imageUrl:
+          'https://app.codigma.io/api/uploads/assets/02a018f5-6746-45ff-9325-d0d23fcd521e.png', // Placeholder
+      title: 'Nissan Skyline GTR',
+      brand: 'Hot Wheels',
+    ),
+    WishlistItemData(
+      imageUrl:
+          'https://app.codigma.io/api/uploads/assets/02721239-0697-4f9b-8590-1703f5663e1b.png', // Placeholder
       title: 'Volkswagen Beetle',
-      year: '2023',
-      brand: 'Matchbox',
+      brand: 'Maisto',
+    ),
+    WishlistItemData(
+      imageUrl:
+          'https://app.codigma.io/api/uploads/assets/417db90e-ca52-4d69-9429-39eb2936e6bb.png', // Placeholder
+      title: 'Lamborghini Sián',
+      brand: 'Maisto',
+    ),
+    WishlistItemData(
+      imageUrl:
+          'https://app.codigma.io/api/uploads/assets/02a018f5-6746-45ff-9325-d0d23fcd521e.png', // Placeholder
+      title: '\'69 Chevrolet Camaro',
+      brand: 'Hot Wheels',
     ),
   ];
 
-  void _onSearchTap() {
-    // No-op, show snack bar (demo)
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Search tapped!"),
+  @override
+  Widget build(BuildContext context) {
+    final sizeOf = MediaQuery.sizeOf(context);
+
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          constraints: BoxConstraints(minHeight: sizeOf.height),
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 16),
+              // Header
+              _buildHeader(context),
+              const SizedBox(height: 24),
+              // Search Bar
+              _buildSearchBar(),
+              const SizedBox(height: 16),
+              // Filters Row
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildFilterButton(
+                      icon: Icons.filter_list,
+                      label: 'Filtros',
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: _buildFilterButton(
+                      icon: Icons.sort,
+                      label: 'Ordenar',
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Grid Content
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 0.65, // Adjust based on card content
+                  ),
+                  itemCount: _items.length,
+                  itemBuilder: (context, index) {
+                    return _buildGridItem(_items[index]);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final media = MediaQuery.of(context);
-        return Scaffold(
-          backgroundColor: const Color(0xFF211212),
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              // Responsiveness based on width
-              double maxContainerWidth = 480;
-              double horizontalPadding = 16;
-              double wishlistItemImageSize = 104;
-              double detailsPadding = 18;
-              double headerMarginTop = 27;
-              double wishlistItemsMarginTop = 31;
-    
-              if (constraints.maxWidth <= 540) {
-                horizontalPadding = 0.04 * media.size.width;
-                maxContainerWidth = media.size.width;
-                wishlistItemImageSize = 92;
-                detailsPadding = 10;
-                headerMarginTop = 18;
-                wishlistItemsMarginTop = 24;
-              }
-    
-              return Center(
-                child: SingleChildScrollView(
-                  // Contains the whole wishlist container
-                  child: Container(
-                    width: double.infinity,
-                    constraints: BoxConstraints(
-                      maxWidth: maxContainerWidth,
-                    ),
-                    padding: EdgeInsets.fromLTRB(horizontalPadding, 0, horizontalPadding, 36),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(height: headerMarginTop),
-                        _WishlistHeader(
-                          onSearch: _onSearchTap,
-                        ),
-                        SizedBox(height: 24),
-                        _WishlistSearchBar(
-                          onSearchBarTap: _onSearchTap,
-                        ),
-                        SizedBox(height: wishlistItemsMarginTop),
-                        Text(
-                          'Itens na Lista de Desejos',
-                          //style: Theme.of(context).textTheme.headline5,
-                        ),
-                        SizedBox(height: 17),
-                        Column(
-                          children: List.generate(
-                            _wishlistItems.length,
-                            (index) => Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: index == _wishlistItems.length - 1 ? 0 : 17.0),
-                              child: WishlistItem(
-                                data: _wishlistItems[index],
-                                imageSize: wishlistItemImageSize,
-                                detailsPadding: detailsPadding,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            }
+          },
+        ),
+        const Text(
+          'Lista de Desejos',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-        );
-      },
+        ),
+        IconButton(
+          icon: const Icon(Icons.add, color: Colors.white),
+          onPressed: () {
+            // Action to add new item
+          },
+        ),
+      ],
     );
   }
-}
 
-// Header with title and search icon
-class _WishlistHeader extends StatelessWidget {
-  final VoidCallback onSearch;
+  Widget _buildSearchBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E2329), // Darker search background
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: const Color(0xFF2C323B)),
+      ),
+      child: TextField(
+        style: const TextStyle(color: Colors.white),
+        decoration: const InputDecoration(
+          hintText: 'Pesquisar na lista...',
+          hintStyle: TextStyle(color: Color(0xFF7A8391)),
+          prefixIcon: Icon(Icons.search, color: Color(0xFF7A8391)),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(vertical: 14),
+        ),
+      ),
+    );
+  }
 
-  const _WishlistHeader({required this.onSearch});
-
-  @override
-  Widget build(BuildContext context) {
-    // For accessibility, use Semantics and InkWell for the search icon.
-    return SizedBox(
-      height: 26,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Center(
-            child: Text(
-              'Lista de Desejos',
-              //style: Theme.of(context).textTheme.headline6,
-              textAlign: TextAlign.center,
-            ),
+  Widget _buildFilterButton({required IconData icon, required String label}) {
+    return Container(
+      height: 48,
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E2329),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(24),
+          onTap: () {},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: Colors.white70, size: 20),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
-          Positioned(
-            right: 0,
-            child: Semantics(
-              button: true,
-              label: 'Search',
-              child: InkWell(
-                borderRadius: BorderRadius.circular(18),
-                onTap: onSearch,
-                child: SizedBox(
-                  width: 36,
-                  height: 36,
-                  child: Center(
-                    child: Image.network(
-                      'https://app.codigma.io/api/uploads/assets/cd55e117-5700-4ca9-bf38-56d9cad43e01.svg',
-                      width: 23,
-                      height: 23,
-                      fit: BoxFit.contain,
-                      semanticLabel: "Search",
-                      errorBuilder: (context, error, stack) => Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridItem(WishlistItemData item) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(
+          0xFF111418,
+        ), // Card background matching main background or slightly different
+        // In the image, cards seem to have no distinct background color but visually separated?
+        // Actually, let's look closer. It seems like standard dark cards.
+        // Let's us a slightly lighter color for the card or keep it transparent if the image implies it.
+        // The image shows cards with a dark background, maybe #111418 or #0D1014.
+        // Let's stick with a distinct card background for clarity.
+        border: Border.all(color: const Color(0xFF222831)),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Image Section
+          Expanded(
+            flex: 3, // Give image more space
+            child: Container(
+              color: const Color(0xFF1A1D23), // Placeholder background
+              width: double.infinity,
+              child: Image.network(
+                item.imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => const Center(
+                  child: Icon(Icons.broken_image, color: Colors.white54),
                 ),
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-// Search bar (decorative, not functional)
-class _WishlistSearchBar extends StatelessWidget {
-  final VoidCallback onSearchBarTap;
-
-  const _WishlistSearchBar({required this.onSearchBarTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      textField: true,
-      label: "Pesquisar",
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: const Color(0xFF472426),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(8),
-          onTap: onSearchBarTap,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16, right: 0, top: 11, bottom: 11),
-            child: Row(
+          // Info Section
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(
-                  'https://app.codigma.io/api/uploads/assets/ae99f807-4a51-4749-aa32-7a18c3cd973b.svg',
-                  width: 18,
-                  height: 18,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stack) => Icon(Icons.search, color: Color(0xFFC99194)),
-                  semanticLabel: "Pesquisar",
-                ),
-                const SizedBox(width: 12),
                 Text(
-                  'Pesquisar',
-                  //style: Theme.of(context).textTheme.bodyText1,
+                  item.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  item.brand,
+                  style: const TextStyle(
+                    color: Color(0xFF9CA3AF),
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                // Actions
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(
+                            0xFF133663,
+                          ), // Dark blue btn
+                          foregroundColor: const Color(
+                            0xFF1976D2,
+                          ), // Lighter blue text? No, standard blue.
+                          // Image shows Blue background, White/Light Blue text "Mover"
+                          // Let's try to match the "Mover" button style
+                          // It looks like a dark blue container with blue text
+                          elevation: 0,
+                          padding: const EdgeInsets.symmetric(vertical: 0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          minimumSize: const Size(0, 36),
+                        ),
+                        child: const Text(
+                          'Mover',
+                          style: TextStyle(
+                            color: Color(0xFF42A5F5),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1E2329),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: const Color(0xFF333A45)),
+                      ),
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        icon: const Icon(
+                          Icons.delete_outline,
+                          color: Color(0xFF9CA3AF),
+                          size: 20,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-// Wishlist item widget
-class WishlistItem extends StatelessWidget {
-  final WishlistItemData data;
-  final double imageSize;
-  final double detailsPadding;
-
-  const WishlistItem({
-    super.key,
-    required this.data,
-    this.imageSize = 104,
-    this.detailsPadding = 18,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      container: true,
-      label: '${data.title}, year ${data.year}, brand ${data.brand}',
-      child: Container(
-        decoration: BoxDecoration(
-          color: const Color(0xFF2A1819),
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0x1A180C0E),
-              blurRadius: 10,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              color: const Color(0xFF3A2324),
-              width: imageSize,
-              height: imageSize + 1,
-              child: Image.network(
-                data.imageUrl,
-                width: imageSize,
-                height: imageSize + 1,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stack) => Icon(
-                  Icons.image_not_supported,
-                  size: imageSize * 0.67,
-                  color: const Color(0xFFC99194),
-                ),
-                semanticLabel: data.title,
-              ),
-            ),
-            Expanded(
-              child: Container(
-                color: const Color(0xFF472426),
-                padding: EdgeInsets.symmetric(horizontal: detailsPadding),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      data.title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                    const SizedBox(height: 7),
-                    Row(
-                      children: [
-                        Text(
-                          data.year,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        const SizedBox(width: 12),
-                        const Spacer(),
-                        Text(
-                          data.brand,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
