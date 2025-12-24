@@ -33,6 +33,8 @@ class _AddCollectionBasePageState extends State<AddCollectionBasePage> {
   final TextEditingController _escalaController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _linhaController = TextEditingController();
+  final TextEditingController _serieController = TextEditingController();
+  final TextEditingController _numeroSerieController = TextEditingController();
 
   final List<String> _images = [];
 
@@ -51,6 +53,8 @@ class _AddCollectionBasePageState extends State<AddCollectionBasePage> {
       _marcaController.text = widget.item!.marca;
       _modeloController.text = widget.item!.modelo;
       _linhaController.text = widget.item!.linha;
+      _serieController.text = widget.item!.serie ?? '';
+      _numeroSerieController.text = widget.item!.numeroNaSerie ?? '';
       _anoFabricacaoController.text =
           widget.item!.anoFabricacao?.toString() ?? '';
       _escalaController.text = widget.item!.escala;
@@ -75,6 +79,8 @@ class _AddCollectionBasePageState extends State<AddCollectionBasePage> {
     _escalaController.dispose();
     _notesController.dispose();
     _linhaController.dispose();
+    _serieController.dispose();
+    _numeroSerieController.dispose();
     super.dispose();
   }
 
@@ -88,6 +94,8 @@ class _AddCollectionBasePageState extends State<AddCollectionBasePage> {
       ..marca = _marcaController.text
       ..modelo = _modeloController.text
       ..linha = _linhaController.text
+      ..serie = _serieController.text
+      ..numeroNaSerie = _numeroSerieController.text
       ..anoFabricacao = int.tryParse(_anoFabricacaoController.text)
       ..escala = _escalaController.text
       ..notes = _notesController.text;
@@ -255,6 +263,9 @@ class _AddCollectionBasePageState extends State<AddCollectionBasePage> {
                                               modeloController:
                                                   _modeloController,
                                               linhaController: _linhaController,
+                                              serieController: _serieController,
+                                              numeroSerieController:
+                                                  _numeroSerieController,
                                               anoFabricacaoController:
                                                   _anoFabricacaoController,
                                               escalaController:

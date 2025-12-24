@@ -37,6 +37,12 @@ const CarBaseCollectionSchema = CollectionSchema(
       type: IsarType.string,
     ),
     r'notes': PropertySchema(id: 7, name: r'notes', type: IsarType.string),
+    r'numeroNaSerie': PropertySchema(
+      id: 8,
+      name: r'numeroNaSerie',
+      type: IsarType.string,
+    ),
+    r'serie': PropertySchema(id: 9, name: r'serie', type: IsarType.string),
   },
 
   estimateSize: _carBaseCollectionEstimateSize,
@@ -80,6 +86,18 @@ int _carBaseCollectionEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.numeroNaSerie;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.serie;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -97,6 +115,8 @@ void _carBaseCollectionSerialize(
   writer.writeString(offsets[5], object.modelo);
   writer.writeString(offsets[6], object.nomeMiniatura);
   writer.writeString(offsets[7], object.notes);
+  writer.writeString(offsets[8], object.numeroNaSerie);
+  writer.writeString(offsets[9], object.serie);
 }
 
 CarBaseCollection _carBaseCollectionDeserialize(
@@ -115,6 +135,8 @@ CarBaseCollection _carBaseCollectionDeserialize(
   object.modelo = reader.readString(offsets[5]);
   object.nomeMiniatura = reader.readString(offsets[6]);
   object.notes = reader.readStringOrNull(offsets[7]);
+  object.numeroNaSerie = reader.readStringOrNull(offsets[8]);
+  object.serie = reader.readStringOrNull(offsets[9]);
   return object;
 }
 
@@ -140,6 +162,10 @@ P _carBaseCollectionDeserializeProp<P>(
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
+      return (reader.readStringOrNull(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1383,6 +1409,324 @@ extension CarBaseCollectionQueryFilter
       );
     });
   }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'numeroNaSerie'),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'numeroNaSerie'),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'numeroNaSerie',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'numeroNaSerie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'numeroNaSerie',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'numeroNaSerie', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  numeroNaSerieIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'numeroNaSerie', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'serie'),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'serie'),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'serie',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'serie',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'serie',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'serie', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  serieIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'serie', value: ''),
+      );
+    });
+  }
 }
 
 extension CarBaseCollectionQueryObject
@@ -1564,6 +1908,34 @@ extension CarBaseCollectionQuerySortBy
       return query.addSortBy(r'notes', Sort.desc);
     });
   }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  sortByNumeroNaSerie() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroNaSerie', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  sortByNumeroNaSerieDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroNaSerie', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  sortBySerie() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'serie', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  sortBySerieDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'serie', Sort.desc);
+    });
+  }
 }
 
 extension CarBaseCollectionQuerySortThenBy
@@ -1692,6 +2064,34 @@ extension CarBaseCollectionQuerySortThenBy
       return query.addSortBy(r'notes', Sort.desc);
     });
   }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  thenByNumeroNaSerie() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroNaSerie', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  thenByNumeroNaSerieDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'numeroNaSerie', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  thenBySerie() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'serie', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  thenBySerieDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'serie', Sort.desc);
+    });
+  }
 }
 
 extension CarBaseCollectionQueryWhereDistinct
@@ -1754,6 +2154,23 @@ extension CarBaseCollectionQueryWhereDistinct
       return query.addDistinctBy(r'notes', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QDistinct>
+  distinctByNumeroNaSerie({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(
+        r'numeroNaSerie',
+        caseSensitive: caseSensitive,
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QDistinct>
+  distinctBySerie({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'serie', caseSensitive: caseSensitive);
+    });
+  }
 }
 
 extension CarBaseCollectionQueryProperty
@@ -1812,6 +2229,19 @@ extension CarBaseCollectionQueryProperty
   QueryBuilder<CarBaseCollection, String?, QQueryOperations> notesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'notes');
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, String?, QQueryOperations>
+  numeroNaSerieProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'numeroNaSerie');
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, String?, QQueryOperations> serieProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'serie');
     });
   }
 }

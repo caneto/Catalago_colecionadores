@@ -14,6 +14,16 @@ class GridItem extends StatelessWidget {
   final bool isFavorite;
   final VoidCallback? onFavoriteToggle;
 
+  int contarCaracteres(String text, TextStyle style, double maxWidth) {
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr, // Use TextDirection.rtl se aplicável
+      maxLines: null, // Define como null para contar todas as linhas
+    )..layout(maxWidth: maxWidth);
+
+    return textPainter.computeLineMetrics().length;
+  }
+
   const GridItem({
     super.key,
     required this.item,
@@ -30,6 +40,18 @@ class GridItem extends StatelessWidget {
     String nomeMiniatura = item.nomeMiniatura.length <= 32
         ? item.nomeMiniatura
         : '${item.nomeMiniatura.substring(0, 30)}...';
+
+   TextStyle textStyle = CatalagoColecionadorTheme.titleStyleNormal
+                            .copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          height: 1.13,
+                          letterSpacing: -0.01,
+                          color: modelColor,
+                        );        
+
+    int numCaracteres = contarCaracteres(nomeMiniatura, textStyle, 16);
+    print(numCaracteres);
 
     return InkWell(
       onTap: onTap,
@@ -88,7 +110,8 @@ class GridItem extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         nomeMiniatura,
-                        style: TextStyle(
+                        style: CatalagoColecionadorTheme.titleStyleNormal
+                            .copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           height: 1.13,
@@ -97,6 +120,8 @@ class GridItem extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 7),
+                      if(numCaracteres<10) SizedBox(height: 16),                 
+                      
                       Row(
                         children: [
                           // Star Icon

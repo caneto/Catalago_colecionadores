@@ -352,7 +352,7 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                             ),
                             NovidadesItemsList(
                               width: 180,
-                              height: 220,
+                              height: 240,
                               imgHeight: 120,
                               isScrollable: constraints.maxWidth < 600,
                             ),

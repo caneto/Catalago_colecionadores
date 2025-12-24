@@ -18,6 +18,8 @@ class AddCollectionBaseForm extends StatefulWidget {
   final TextEditingController marcaController;
   final TextEditingController modeloController;
   final TextEditingController linhaController;
+  final TextEditingController serieController;
+  final TextEditingController numeroSerieController;
   final TextEditingController anoFabricacaoController;
   final TextEditingController escalaController;
   final TextEditingController notesController;
@@ -34,6 +36,8 @@ class AddCollectionBaseForm extends StatefulWidget {
     required this.marcaController,
     required this.modeloController,
     required this.linhaController,
+    required this.serieController,
+    required this.numeroSerieController,
     required this.anoFabricacaoController,
     required this.escalaController,
     required this.notesController,
@@ -109,6 +113,46 @@ class _AddCollectionBaseFormState extends State<AddCollectionBaseForm> {
                   onTap: () {
                     setState(() {
                       widget.linhaController.text = lines[index].linha;
+                    });
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showSeriePopup() async {
+    final series = await service.getAllSeries();
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Selecione uma Série'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: series.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(series[index].nome),
+                  onTap: () {
+                    setState(() {
+                      widget.serieController.text = series[index].nome;
                     });
                     Navigator.of(context).pop();
                   },
@@ -335,6 +379,52 @@ class _AddCollectionBaseFormState extends State<AddCollectionBaseForm> {
                             colorSide: CatalagoColecionadorTheme.textMainAccent,
                           ),
                       validator: Validatorless.required('Marca exigida'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: FormGroup(
+                    label: 'Série',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
+                    child: TextFormField(
+                      controller: widget.serieController,
+                      readOnly: true,
+                      style: CatalagoColecionadorTheme.textBold.copyWith(
+                        color: CatalagoColecionadorTheme.blackClaroColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration:
+                          CatalagoColecionadorTheme.inputDecorationAddCard(
+                            hintText: 'Selecione',
+                            colorSide: CatalagoColecionadorTheme.textMainAccent,
+                          ),
+                      onTap: _showSeriePopup,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: FormGroup(
+                    label: 'N° na Série',
+                    colorLabel: CatalagoColecionadorTheme.labelColor,
+                    child: TextFormField(
+                      controller: widget.numeroSerieController,
+                      style: CatalagoColecionadorTheme.textBold.copyWith(
+                        color: CatalagoColecionadorTheme.blackClaroColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      decoration:
+                          CatalagoColecionadorTheme.inputDecorationAddCard(
+                            hintText: 'Ex: 5/10',
+                            colorSide: CatalagoColecionadorTheme.textMainAccent,
+                          ),
                     ),
                   ),
                 ),
