@@ -2,6 +2,7 @@ import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'isar_models/car_base_collection.dart';
+import 'isar_models/car_base_collection_favorite.dart';
 import 'isar_models/car_base_collection_gallery.dart';
 import 'isar_models/car_collection.dart';
 import 'isar_models/car_collection_gallery.dart';
@@ -30,6 +31,7 @@ class IsarService {
           SerieCollectionSchema,
           CarBaseCollectionGallerySchema,
           CarCollectionGallerySchema,
+          CarBaseCollectionFavoriteSchema,
         ],
         directory: dir.path,
         inspector: true,
@@ -233,5 +235,40 @@ class IsarService {
         await isar.carBaseCollections.delete(id);
       }
     });
+  }
+
+  Future<void> toggleFavorite(int carBaseId) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      final existing = await isar.carBaseCollectionFavorites
+          .filter()
+          .carBaseIdEqualTo(carBaseId)
+          .findFirst();
+
+      if (existing != null) {
+        // Toggle: if it exists, remove it (or set to false, but removing is cleaner for "isFavorite")
+        await isar.carBaseCollectionFavorites.delete(existing.id);
+      } else {
+        final newFavorite = CarBaseCollectionFavorite()
+          ..carBaseId = carBaseId
+          ..isFavorite = true;
+        await isar.carBaseCollectionFavorites.put(newFavorite);
+      }
+    });
+  }
+
+  Future<List<int>> getAllFavoriteIds() async {
+    final isar = await db;
+    final favorites = await isar.carBaseCollectionFavorites.where().findAll();
+    return favorites.map((e) => e.carBaseId).toList();
+  }
+
+  Future<bool> isFavorite(int carBaseId) async {
+    final isar = await db;
+    final count = await isar.carBaseCollectionFavorites
+        .filter()
+        .carBaseIdEqualTo(carBaseId)
+        .count();
+    return count > 0;
   }
 }

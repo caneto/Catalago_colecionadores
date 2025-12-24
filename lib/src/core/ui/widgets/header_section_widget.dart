@@ -9,6 +9,7 @@ class HeaderSectionWidget extends StatelessWidget {
   final String? textIcon;
   final String? iconVar;
   final bool funcStatus;
+  final bool funcReturn;
   final Function()? onTap;
 
   const HeaderSectionWidget({
@@ -16,6 +17,7 @@ class HeaderSectionWidget extends StatelessWidget {
     required this.textHeader,
     this.onTap,
     this.funcStatus = false,
+    this.funcReturn = false,
     this.textIcon,
     this.iconVar,
   });
@@ -26,18 +28,23 @@ class HeaderSectionWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        //const SizedBox(width: 8),
-        InkWell(
-          child: CircleIcon(url: 'seta_esquerda.svg', size: 28),
-          onTap: () {
-            if (context.canPop()) {
-              context.pop();
-            } else {
-              context.go('/home');
-            }
-          },
-        ),
-        SizedBox(width: 17),
+        if (funcReturn)
+          InkWell(
+            child: Row(
+              children: [
+                CircleIcon(url: 'seta_esquerda.svg', size: 28),
+                SizedBox(width: 17),
+              ],
+            ),
+            onTap: () {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go('/home');
+              }
+            },
+          ),
+
         Semantics(
           label: textHeader,
           child: Align(

@@ -11,6 +11,8 @@ class GridItem extends StatelessWidget {
   final Color brandColor;
   final Color modelColor;
   final VoidCallback onTap;
+  final bool isFavorite;
+  final VoidCallback? onFavoriteToggle;
 
   const GridItem({
     super.key,
@@ -19,6 +21,8 @@ class GridItem extends StatelessWidget {
     required this.brandColor,
     required this.modelColor,
     required this.onTap,
+    this.isFavorite = false,
+    this.onFavoriteToggle,
   });
 
   @override
@@ -96,21 +100,26 @@ class GridItem extends StatelessWidget {
                       Row(
                         children: [
                           // Star Icon
-                          Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: CatalagoColecionadorTheme.bgInputAccent,
-                              shape: BoxShape.circle,
-                            ),
-                            alignment: Alignment.center,
-                            child: SvgPicture.asset(
-                              'assets/images/full_star.svg',
-                              width: 19,
-                              height: 19,
-                              colorFilter: ColorFilter.mode(
-                                CatalagoColecionadorTheme.whiteColor,
-                                BlendMode.srcIn,
+                          GestureDetector(
+                            onTap: onFavoriteToggle,
+                            child: Container(
+                              width: 28,
+                              height: 28,
+                              decoration: BoxDecoration(
+                                color: isFavorite
+                                    ? CatalagoColecionadorTheme.bgInputAccent
+                                    : Colors.grey.shade300,
+                                shape: BoxShape.circle,
+                              ),
+                              alignment: Alignment.center,
+                              child: SvgPicture.asset(
+                                'assets/images/full_star.svg',
+                                width: 19,
+                                height: 19,
+                                colorFilter: ColorFilter.mode(
+                                  CatalagoColecionadorTheme.whiteColor,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ),
                           ),
@@ -130,11 +139,14 @@ class GridItem extends StatelessWidget {
                               alignment: Alignment.center,
                               child: Text(
                                 '${item.anoFabricacao}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: CatalagoColecionadorTheme
+                                    .titleStyleNormal
+                                    .copyWith(
+                                      color:
+                                          CatalagoColecionadorTheme.whiteColor,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                               ),
                             ),
                           ],

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'grid_item.dart';
 
-class NovidadesItemsList extends StatelessWidget {
+class NovidadesItemsList extends StatefulWidget {
   final double width;
   final double height;
   final double imgHeight;
@@ -20,70 +20,123 @@ class NovidadesItemsList extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<CarBaseCollection>>(
-      future: IsarService().getAllCarsBase(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+  State<NovidadesItemsList> createState() => _NovidadesItemsListState();
+}
 
-        if (snapshot.hasError) {
-          return const Center(child: Text('Erro ao carregar novidades'));
-        }
+class _NovidadesItemsListState extends State<NovidadesItemsList> {
+  final IsarService _isarService = IsarService();
+  List<CarBaseCollection>? _items;
+  Set<int> _favoriteIds = {};
+  bool _isLoading = true;
+  String? _errorMessage;
 
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const SizedBox.shrink(); // Or some placeholder
-        }
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
 
-        final items = snapshot.data!;
-        // Show only latest 5 or so? The user didn't specify limit, but usually "novidades" implies latest.
-        // Assuming getAllCarsBase returns all, we might want to reverse or sort.
-        // For now, let's just show them as is, maybe reversed to show newest added if auto-increment works that way.
-        // Actually, let's just show them.
+  Future<void> _loadData() async {
+    try {
+      final results = await Future.wait([
+        _isarService.getAllCarsBase(),
+        _isarService.getAllFavoriteIds(),
+      ]);
 
-        final gap = isScrollable ? 8.0 : 16.0;
+      if (mounted) {
+        setState(() {
+          _items = results[0] as List<CarBaseCollection>;
+          _favoriteIds = (results[1] as List<int>).toSet();
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Erro ao carregar novidades';
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
-        Widget list = SizedBox(
-          height: height,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: items.length,
-            separatorBuilder: (context, index) => SizedBox(width: gap),
-            itemBuilder: (context, index) {
-              final item = items[index];
-              return SizedBox(
-                width: width,
-                child: GridItem(
-                  item: item,
-                  surface: CatalagoColecionadorTheme.bgCard,
-                  brandColor: CatalagoColecionadorTheme.whiteColor,
-                  modelColor: CatalagoColecionadorTheme.navBarBackkgroundColor,
-                  onTap: () {
-                    // The user replaced 'novidades_item_list' with 'grid_item' and said "lendo os dados...".
-                    // User didn't specify what happens on tap.
-                    // But GridItem requires onTap.
-                    // I will leave it empty or maybe navigate to detail if applicable?
-                    // Current `novidades_items_list` used `ItemCard` which didn't seem to have onTap in the list usage, but `GridItem` does.
-                    // I'll add a print for now or maybe existing logic if any.
-                  },
-                ),
-              );
-            },
-          ),
+  Future<void> _toggleFavorite(int carBaseId) async {
+    // Optimistic update
+    setState(() {
+      if (_favoriteIds.contains(carBaseId)) {
+        _favoriteIds.remove(carBaseId);
+      } else {
+        _favoriteIds.add(carBaseId);
+      }
+    });
+
+    try {
+      await _isarService.toggleFavorite(carBaseId);
+    } catch (e) {
+      // Revert on error
+      if (mounted) {
+        setState(() {
+          if (_favoriteIds.contains(carBaseId)) {
+            _favoriteIds.remove(carBaseId);
+          } else {
+            _favoriteIds.add(carBaseId);
+          }
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erro ao atualizar favorito')),
         );
+      }
+    }
+  }
 
-        if (isScrollable) {
-          // Already using ListView which is scrollable.
-          return list;
-        }
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-        // If not scrollable (meaning grid?), the original code used Row.
-        // But here we are fetching potentially many items. Horizontal scroll makes sense for "Novidades".
-        // The original logic `if (isScrollable)` wrapped it in SingleChildScrollView.
-        // I will stick to horizontal ListView which is standard for such sections.
-        return list;
-      },
+    if (_errorMessage != null) {
+      return Center(child: Text(_errorMessage!));
+    }
+
+    if (_items == null || _items!.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final gap = widget.isScrollable ? 8.0 : 16.0;
+
+    Widget list = SizedBox(
+      height: widget.height,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: _items!.length,
+        separatorBuilder: (context, index) => SizedBox(width: gap),
+        itemBuilder: (context, index) {
+          final item = _items![index];
+          final isFavorite = _favoriteIds.contains(item.id);
+
+          return SizedBox(
+            width: widget.width,
+            child: GridItem(
+              item: item,
+              surface: CatalagoColecionadorTheme.bgCard,
+              brandColor: CatalagoColecionadorTheme.whiteColor,
+              modelColor: CatalagoColecionadorTheme.navBarBackkgroundColor,
+              onTap: () {
+                // Navigation or other action
+              },
+              isFavorite: isFavorite,
+              onFavoriteToggle: () => _toggleFavorite(item.id),
+            ),
+          );
+        },
+      ),
     );
+
+    if (widget.isScrollable) {
+      return list;
+    }
+
+    return list;
   }
 }
