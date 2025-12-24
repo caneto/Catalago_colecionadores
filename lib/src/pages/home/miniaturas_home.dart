@@ -324,7 +324,6 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
                                             fontSize: 16,
                                             fontWeight: FontWeight.w700,
                                             letterSpacing: -0.25,
-
                                             color: CatalagoColecionadorTheme
                                                 .yellowColor,
                                             shadows: [

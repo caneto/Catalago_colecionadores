@@ -17,6 +17,7 @@ class AddCollectionBaseForm extends StatefulWidget {
   final TextEditingController categoriaController;
   final TextEditingController marcaController;
   final TextEditingController modeloController;
+  final TextEditingController linhaController;
   final TextEditingController anoFabricacaoController;
   final TextEditingController escalaController;
   final TextEditingController notesController;
@@ -32,6 +33,7 @@ class AddCollectionBaseForm extends StatefulWidget {
     required this.categoriaController,
     required this.marcaController,
     required this.modeloController,
+    required this.linhaController,
     required this.anoFabricacaoController,
     required this.escalaController,
     required this.notesController,
@@ -85,6 +87,46 @@ class _AddCollectionBaseFormState extends State<AddCollectionBaseForm> {
         }
       }
     });
+  }
+
+  Future<void> _showLinePopup() async {
+    final lines = await service.getAllLines();
+    if (!mounted) return;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Selecione uma Linha'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: lines.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(lines[index].linha),
+                  onTap: () {
+                    setState(() {
+                      widget.linhaController.text = lines[index].linha;
+                    });
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -206,6 +248,26 @@ class _AddCollectionBaseFormState extends State<AddCollectionBaseForm> {
                   colorSide: CatalagoColecionadorTheme.textMainAccent,
                 ),
                 validator: Validatorless.required('Nome da Miniatura exigido'),
+              ),
+            ),
+            SizedBox(height: 12),
+            FormGroup(
+              label: 'Linha',
+              colorLabel: CatalagoColecionadorTheme.labelColor,
+              child: TextFormField(
+                controller: widget.linhaController,
+                readOnly: true,
+                style: CatalagoColecionadorTheme.textBold.copyWith(
+                  color: CatalagoColecionadorTheme.blackClaroColor,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+                decoration: CatalagoColecionadorTheme.inputDecorationAddCard(
+                  hintText: 'Selecione a Linha',
+                  colorSide: CatalagoColecionadorTheme.textMainAccent,
+                ),
+                onTap: _showLinePopup,
+                validator: Validatorless.required('Linha exigida'),
               ),
             ),
             SizedBox(height: 12),

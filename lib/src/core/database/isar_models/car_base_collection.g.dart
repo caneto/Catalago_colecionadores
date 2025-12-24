@@ -28,14 +28,15 @@ const CarBaseCollectionSchema = CollectionSchema(
       type: IsarType.string,
     ),
     r'escala': PropertySchema(id: 2, name: r'escala', type: IsarType.string),
-    r'marca': PropertySchema(id: 3, name: r'marca', type: IsarType.string),
-    r'modelo': PropertySchema(id: 4, name: r'modelo', type: IsarType.string),
+    r'linha': PropertySchema(id: 3, name: r'linha', type: IsarType.string),
+    r'marca': PropertySchema(id: 4, name: r'marca', type: IsarType.string),
+    r'modelo': PropertySchema(id: 5, name: r'modelo', type: IsarType.string),
     r'nomeMiniatura': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'nomeMiniatura',
       type: IsarType.string,
     ),
-    r'notes': PropertySchema(id: 6, name: r'notes', type: IsarType.string),
+    r'notes': PropertySchema(id: 7, name: r'notes', type: IsarType.string),
   },
 
   estimateSize: _carBaseCollectionEstimateSize,
@@ -69,6 +70,7 @@ int _carBaseCollectionEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.categoria.length * 3;
   bytesCount += 3 + object.escala.length * 3;
+  bytesCount += 3 + object.linha.length * 3;
   bytesCount += 3 + object.marca.length * 3;
   bytesCount += 3 + object.modelo.length * 3;
   bytesCount += 3 + object.nomeMiniatura.length * 3;
@@ -90,10 +92,11 @@ void _carBaseCollectionSerialize(
   writer.writeLong(offsets[0], object.anoFabricacao);
   writer.writeString(offsets[1], object.categoria);
   writer.writeString(offsets[2], object.escala);
-  writer.writeString(offsets[3], object.marca);
-  writer.writeString(offsets[4], object.modelo);
-  writer.writeString(offsets[5], object.nomeMiniatura);
-  writer.writeString(offsets[6], object.notes);
+  writer.writeString(offsets[3], object.linha);
+  writer.writeString(offsets[4], object.marca);
+  writer.writeString(offsets[5], object.modelo);
+  writer.writeString(offsets[6], object.nomeMiniatura);
+  writer.writeString(offsets[7], object.notes);
 }
 
 CarBaseCollection _carBaseCollectionDeserialize(
@@ -107,10 +110,11 @@ CarBaseCollection _carBaseCollectionDeserialize(
   object.categoria = reader.readString(offsets[1]);
   object.escala = reader.readString(offsets[2]);
   object.id = id;
-  object.marca = reader.readString(offsets[3]);
-  object.modelo = reader.readString(offsets[4]);
-  object.nomeMiniatura = reader.readString(offsets[5]);
-  object.notes = reader.readStringOrNull(offsets[6]);
+  object.linha = reader.readString(offsets[3]);
+  object.marca = reader.readString(offsets[4]);
+  object.modelo = reader.readString(offsets[5]);
+  object.nomeMiniatura = reader.readString(offsets[6]);
+  object.notes = reader.readStringOrNull(offsets[7]);
   return object;
 }
 
@@ -134,6 +138,8 @@ P _carBaseCollectionDeserializeProp<P>(
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -651,6 +657,147 @@ extension CarBaseCollectionQueryFilter
           upper: upper,
           includeUpper: includeUpper,
         ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaEqualTo(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'linha',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'linha',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'linha',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'linha',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'linha',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'linha',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'linha',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'linha',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'linha', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterFilterCondition>
+  linhaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'linha', value: ''),
       );
     });
   }
@@ -1349,6 +1496,20 @@ extension CarBaseCollectionQuerySortBy
   }
 
   QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  sortByLinha() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'linha', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  sortByLinhaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'linha', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
   sortByMarca() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marca', Sort.asc);
@@ -1463,6 +1624,20 @@ extension CarBaseCollectionQuerySortThenBy
   }
 
   QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  thenByLinha() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'linha', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
+  thenByLinhaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'linha', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QAfterSortBy>
   thenByMarca() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'marca', Sort.asc);
@@ -1543,6 +1718,13 @@ extension CarBaseCollectionQueryWhereDistinct
   }
 
   QueryBuilder<CarBaseCollection, CarBaseCollection, QDistinct>
+  distinctByLinha({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'linha', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, CarBaseCollection, QDistinct>
   distinctByMarca({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'marca', caseSensitive: caseSensitive);
@@ -1599,6 +1781,12 @@ extension CarBaseCollectionQueryProperty
   QueryBuilder<CarBaseCollection, String, QQueryOperations> escalaProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'escala');
+    });
+  }
+
+  QueryBuilder<CarBaseCollection, String, QQueryOperations> linhaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'linha');
     });
   }
 

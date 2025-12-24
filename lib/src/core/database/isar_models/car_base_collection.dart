@@ -12,6 +12,7 @@ class CarBaseCollection {
   late String categoria;
   late String marca;
   late String modelo;
+  late String linha;
   int? anoFabricacao;
   late String escala;
   String? notes;

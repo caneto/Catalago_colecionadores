@@ -7,6 +7,7 @@ import 'isar_models/car_base_collection_gallery.dart';
 import 'isar_models/car_collection.dart';
 import 'isar_models/car_collection_gallery.dart';
 import 'isar_models/category_collection.dart';
+import 'isar_models/line_collection.dart'; // Added import
 import 'isar_models/marca_collection.dart';
 import 'isar_models/serie_collection.dart';
 import 'isar_models/user_collection.dart';
@@ -29,6 +30,7 @@ class IsarService {
           CategoryCollectionSchema,
           MarcaCollectionSchema,
           SerieCollectionSchema,
+          LineCollectionSchema, // Added Schema
           CarBaseCollectionGallerySchema,
           CarCollectionGallerySchema,
           CarBaseCollectionFavoriteSchema,
@@ -270,5 +272,24 @@ class IsarService {
         .carBaseIdEqualTo(carBaseId)
         .count();
     return count > 0;
+  }
+
+  // --- Line Collection Methods ---
+
+  Future<void> saveLine(LineCollection line) async {
+    final isar = await db;
+    isar.writeTxnSync<int>(() => isar.lineCollections.putSync(line));
+  }
+
+  Future<List<LineCollection>> getAllLines() async {
+    final isar = await db;
+    return await isar.lineCollections.where().findAll();
+  }
+
+  Future<void> deleteLine(Id id) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.lineCollections.delete(id);
+    });
   }
 }

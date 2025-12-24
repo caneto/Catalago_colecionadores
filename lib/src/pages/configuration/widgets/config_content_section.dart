@@ -113,6 +113,19 @@ class ConfigContentSection extends StatelessWidget {
                 withIcon: true,
               ),
             ),
+            SizedBox(height: 4),
+            InkWell(
+              onTap: () {
+                context.push('/list_line');
+              },
+              child: ConfigDetailCard(
+                iconUrl: 'termos_legais.svg',
+                title:
+                    'Administrar Linhas',
+                subtitle: 'Administração das Linhas',
+                withIcon: true,
+              ),
+            ),
           ],
         ),
         SizedBox(height: 4),

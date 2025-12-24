@@ -1,5 +1,6 @@
 import 'package:catalago_colecionadores/src/core/database/isar_models/car_base_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/category_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_models/line_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/marca_collection.dart';
 import 'package:catalago_colecionadores/src/core/database/isar_models/serie_collection.dart';
 import 'package:catalago_colecionadores/src/pages/add_car/add_car_colection.dart';
@@ -17,6 +18,8 @@ import 'package:catalago_colecionadores/src/pages/configuration/pdf/pdf_generati
 import 'package:catalago_colecionadores/src/pages/home/miniaturas_home.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_politics_screen.dart';
 import 'package:catalago_colecionadores/src/pages/informacoes/check_terms_screen.dart';
+import 'package:catalago_colecionadores/src/pages/line/add_line_page.dart';
+import 'package:catalago_colecionadores/src/pages/line/list_line_page.dart';
 import 'package:catalago_colecionadores/src/pages/listadedesejos/lista_de_desejos_page.dart';
 import 'package:catalago_colecionadores/src/pages/marca/add_marca_page.dart';
 import 'package:catalago_colecionadores/src/pages/marca/list_marca_page.dart'
@@ -138,6 +141,14 @@ final router = GoRouter(
       path: '/search_results',
       builder: (context, state) => SearchResultsPage(),
       //builder: (context, state) => ReviewsPage(),
+    ),
+    GoRoute(path: '/list_line', builder: (context, state) => ListLinePage()),
+    GoRoute(
+      path: '/add_line_page',
+      builder: (context, state) {
+        final line = state.extra as LineCollection?;
+        return AddLinePage(line: line);
+      },
     ),
   ],
 );
