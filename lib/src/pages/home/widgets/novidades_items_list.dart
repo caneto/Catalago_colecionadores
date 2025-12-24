@@ -2,6 +2,7 @@ import 'package:catalago_colecionadores/src/core/database/isar_models/car_base_c
 import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'grid_item.dart';
 
@@ -123,7 +124,7 @@ class _NovidadesItemsListState extends State<NovidadesItemsList> {
               brandColor: CatalagoColecionadorTheme.whiteColor,
               modelColor: CatalagoColecionadorTheme.navBarBackkgroundColor,
               onTap: () {
-                // Navigation or other action
+                context.push('/add_collection_base', extra: item);
               },
               isFavorite: isFavorite,
               onFavoriteToggle: () => _toggleFavorite(item.id),

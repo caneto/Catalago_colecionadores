@@ -14,16 +14,6 @@ class GridItem extends StatelessWidget {
   final bool isFavorite;
   final VoidCallback? onFavoriteToggle;
 
-  int contarCaracteres(String text, TextStyle style, double maxWidth) {
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(text: text, style: style),
-      textDirection: TextDirection.ltr, // Use TextDirection.rtl se aplicável
-      maxLines: null, // Define como null para contar todas as linhas
-    )..layout(maxWidth: maxWidth);
-
-    return textPainter.computeLineMetrics().length;
-  }
-
   const GridItem({
     super.key,
     required this.item,
@@ -40,18 +30,6 @@ class GridItem extends StatelessWidget {
     String nomeMiniatura = item.nomeMiniatura.length <= 32
         ? item.nomeMiniatura
         : '${item.nomeMiniatura.substring(0, 30)}...';
-
-   TextStyle textStyle = CatalagoColecionadorTheme.titleStyleNormal
-                            .copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          height: 1.13,
-                          letterSpacing: -0.01,
-                          color: modelColor,
-                        );        
-
-    int numCaracteres = contarCaracteres(nomeMiniatura, textStyle, 16);
-    print(numCaracteres);
 
     return InkWell(
       onTap: onTap,
@@ -90,7 +68,7 @@ class GridItem extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 6, 12, 4),
+                  padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
@@ -112,16 +90,14 @@ class GridItem extends StatelessWidget {
                         nomeMiniatura,
                         style: CatalagoColecionadorTheme.titleStyleNormal
                             .copyWith(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          height: 1.13,
-                          letterSpacing: -0.01,
-                          color: modelColor,
-                        ),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              height: 1.13,
+                              letterSpacing: -0.01,
+                              color: modelColor,
+                            ),
                       ),
-                      const SizedBox(height: 7),
-                      if(numCaracteres<10) SizedBox(height: 16),                 
-                      
+                      const Spacer(),
                       Row(
                         children: [
                           // Star Icon
@@ -149,6 +125,32 @@ class GridItem extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
+                          if (item.linha.isNotEmpty) ...[
+                            Container(
+                              height: 28,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color:
+                                    CatalagoColecionadorTheme.blackLightGround,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                item.linha,
+                                style: CatalagoColecionadorTheme
+                                    .titleStyleNormal
+                                    .copyWith(
+                                      color:
+                                          CatalagoColecionadorTheme.whiteColor,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                          ],
                           // Date
                           if (item.anoFabricacao != null) ...[
                             Container(
