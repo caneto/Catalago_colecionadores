@@ -217,243 +217,237 @@ class _MiniaturasHomeState extends State<MiniaturasHome> {
               ),
               child: Stack(
                 children: [
-                  SingleChildScrollView(
-                    padding: EdgeInsets.only(
-                      bottom: constraints.maxWidth < 600 ? 80 : 80,
-                    ),
-                    // For nav bar space
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Header
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.fromLTRB(
-                            20,
-                            18,
-                            20,
-                            16,
-                          ), // as per CSS
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color:
-                                    CatalagoColecionadorTheme.blackClaroColor,
-                                width: 1,
-                              ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Header
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.fromLTRB(
+                          20,
+                          18,
+                          20,
+                          16,
+                        ), // as per CSS
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color:
+                                  CatalagoColecionadorTheme.blackClaroColor,
+                              width: 1,
                             ),
                           ),
-                          child: HeaderSectionWidget(
-                            textHeader: 'Miniaturas',
-                            textIcon: 'Desligar o App',
-                            iconVar: 'turn-off.svg',
-                            funcStatus: true,
-                            onTap: () async {
-                              await SharedPreferencesService.remove(
-                                'is_logged_in',
-                              );
-                              SystemNavigator.pop();
-                            },
+                        ),
+                        child: HeaderSectionWidget(
+                          textHeader: 'Miniaturas',
+                          textIcon: 'Desligar o App',
+                          iconVar: 'turn-off.svg',
+                          funcStatus: true,
+                          onTap: () async {
+                            await SharedPreferencesService.remove(
+                              'is_logged_in',
+                            );
+                            SystemNavigator.pop();
+                          },
+                        ),
+                      ),
+                      // Destaques
+                      SectionWidget(
+                        borderColor: CatalagoColecionadorTheme.lineDividColor,
+                        horizontalPadding: sectionHorizontalPadding,
+                        verticalPadding: constraints.maxWidth < 600
+                            ? const EdgeInsets.only(top: 14, bottom: 10)
+                            : const EdgeInsets.only(top: 24, bottom: 18),
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: constraints.maxWidth < 600 ? 11 : 16,
+                            ),
+                            child: Text(
+                              'Destaque na Coleção',
+                              style: CatalagoColecionadorTheme.textBold
+                                  .copyWith(
+                                    color:
+                                        CatalagoColecionadorTheme.whiteColor,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: -0.25,
+                                  ),
+                            ),
                           ),
-                        ),
-                        // Destaques
-                        SectionWidget(
-                          borderColor: CatalagoColecionadorTheme.lineDividColor,
-                          horizontalPadding: sectionHorizontalPadding,
-                          verticalPadding: constraints.maxWidth < 600
-                              ? const EdgeInsets.only(top: 14, bottom: 10)
-                              : const EdgeInsets.only(top: 24, bottom: 18),
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom: constraints.maxWidth < 600 ? 11 : 16,
-                              ),
-                              child: Text(
-                                'Destaque na Coleção',
-                                style: CatalagoColecionadorTheme.textBold
-                                    .copyWith(
-                                      color:
-                                          CatalagoColecionadorTheme.whiteColor,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: -0.25,
-                                    ),
-                              ),
+                          HorizontalItemsList(
+                            items: _highlightItems,
+                            width: itemCardWidth,
+                            height: itemCardHeight,
+                            imgHeight: itemImageHeight,
+                            isScrollable: constraints.maxWidth < 600,
+                          ),
+                        ],
+                      ),
+                      // Novidades
+                      SectionWidget(
+                        borderColor: CatalagoColecionadorTheme.lineDividColor,
+                        horizontalPadding: sectionHorizontalPadding,
+                        verticalPadding: constraints.maxWidth < 600
+                            ? const EdgeInsets.only(top: 14, bottom: 10)
+                            : const EdgeInsets.only(top: 24, bottom: 18),
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: constraints.maxWidth < 600 ? 11 : 16,
                             ),
-                            HorizontalItemsList(
-                              items: _highlightItems,
-                              width: itemCardWidth,
-                              height: itemCardHeight,
-                              imgHeight: itemImageHeight,
-                              isScrollable: constraints.maxWidth < 600,
-                            ),
-                          ],
-                        ),
-                        // Novidades
-                        SectionWidget(
-                          borderColor: CatalagoColecionadorTheme.lineDividColor,
-                          horizontalPadding: sectionHorizontalPadding,
-                          verticalPadding: constraints.maxWidth < 600
-                              ? const EdgeInsets.only(top: 14, bottom: 10)
-                              : const EdgeInsets.only(top: 24, bottom: 18),
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom: constraints.maxWidth < 600 ? 11 : 16,
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Novidades Cadastradas',
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Novidades Cadastradas',
+                                  style: CatalagoColecionadorTheme.textBold
+                                      .copyWith(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: -0.25,
+                                      ),
+                                ),
+                                const Spacer(),
+                                InkWell(
+                                  onTap: () =>
+                                      context.push('/lista_de_desejos'),
+                                  child: Text(
+                                    'Lista de Desejos',
                                     style: CatalagoColecionadorTheme.textBold
                                         .copyWith(
-                                          color: Colors.white,
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.w700,
                                           letterSpacing: -0.25,
+                                          color: CatalagoColecionadorTheme
+                                              .yellowColor,
+                                          shadows: [
+                                            // Shadow(
+                                            //   // Deslocamento da sombra: (x, y)
+                                            //   offset: Offset(4.0, 4.0),
+                                            //   // Raio do desfoque da sombra
+                                            //   blurRadius: 8.0,
+                                            //   // Cor da sombra
+                                            //   color: CatalagoColecionadorTheme
+                                            //       .orangeColor,
+                                            // ),
+                                            // Você pode adicionar múltiplas sombras se quiser
+                                            Shadow(
+                                              offset: Offset(3.5, 3.0),
+                                              blurRadius: 14.0,
+                                              color: CatalagoColecionadorTheme
+                                                  .whiteColor,
+                                            ),
+                                          ],
                                         ),
                                   ),
-                                  const Spacer(),
-                                  InkWell(
-                                    onTap: () =>
-                                        context.push('/lista_de_desejos'),
-                                    child: Text(
-                                      'Lista de Desejos',
-                                      style: CatalagoColecionadorTheme.textBold
-                                          .copyWith(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700,
-                                            letterSpacing: -0.25,
-                                            color: CatalagoColecionadorTheme
-                                                .yellowColor,
-                                            shadows: [
-                                              // Shadow(
-                                              //   // Deslocamento da sombra: (x, y)
-                                              //   offset: Offset(4.0, 4.0),
-                                              //   // Raio do desfoque da sombra
-                                              //   blurRadius: 8.0,
-                                              //   // Cor da sombra
-                                              //   color: CatalagoColecionadorTheme
-                                              //       .orangeColor,
-                                              // ),
-                                              // Você pode adicionar múltiplas sombras se quiser
-                                              Shadow(
-                                                offset: Offset(3.5, 3.0),
-                                                blurRadius: 14.0,
-                                                color: CatalagoColecionadorTheme
-                                                    .whiteColor,
-                                              ),
-                                            ],
-                                          ),
-                                    ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          NovidadesItemsList(
+                            width: 200,
+                            height: 250,
+                            imgHeight: 120,
+                            isScrollable: constraints.maxWidth < 600,
+                          ),
+                        ],
+                      ),
+                      // Categories
+                      SectionWidget(
+                        borderColor: CatalagoColecionadorTheme.lineDividColor,
+                        horizontalPadding: sectionHorizontalPadding,
+                        verticalPadding: constraints.maxWidth < 600
+                            ? const EdgeInsets.only(top: 14, bottom: 10)
+                            : const EdgeInsets.only(top: 24, bottom: 18),
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: constraints.maxWidth < 600 ? 11 : 16,
+                            ),
+                            child: Text(
+                              'Categorias',
+                              style: CatalagoColecionadorTheme.textBold
+                                  .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: -0.25,
                                   ),
-                                ],
-                              ),
                             ),
-                            NovidadesItemsList(
-                              width: 200,
-                              height: 250,
-                              imgHeight: 120,
-                              isScrollable: constraints.maxWidth < 600,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(
+                              top: constraints.maxWidth < 600 ? 2 : 6,
                             ),
-                          ],
-                        ),
-                        // Categories
-                        SectionWidget(
-                          borderColor: CatalagoColecionadorTheme.lineDividColor,
-                          horizontalPadding: sectionHorizontalPadding,
-                          verticalPadding: constraints.maxWidth < 600
-                              ? const EdgeInsets.only(top: 14, bottom: 10)
-                              : const EdgeInsets.only(top: 24, bottom: 18),
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                bottom: constraints.maxWidth < 600 ? 11 : 16,
-                              ),
-                              child: Text(
-                                'Categorias',
-                                style: CatalagoColecionadorTheme.textBold
-                                    .copyWith(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      letterSpacing: -0.25,
-                                    ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                top: constraints.maxWidth < 600 ? 2 : 6,
-                              ),
-                              child: FutureBuilder<List<CategoryCollection>>(
-                                future: IsarService().getAllCategories(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-
-                                  if (snapshot.hasError) {
-                                    return const Center(
-                                      child: Text(
-                                        'Erro ao carregar categorias',
-                                      ),
-                                    );
-                                  }
-
-                                  if (!snapshot.hasData ||
-                                      snapshot.data!.isEmpty) {
-                                    return const Center(
-                                      child: Text(
-                                        'Nenhuma categoria encontrada',
-                                      ),
-                                    );
-                                  }
-
-                                  final categories = snapshot.data!;
-
-                                  return Wrap(
-                                    spacing: constraints.maxWidth < 600
-                                        ? 10
-                                        : 16,
-                                    runSpacing: 8,
-                                    alignment: WrapAlignment.start,
-                                    children: categories
-                                        .map(
-                                          (cat) => CategoryItem(
-                                            label: cat.name,
-                                            fontSize: constraints.maxWidth < 600
-                                                ? 13
-                                                : 15,
-                                            padding: constraints.maxWidth < 600
-                                                ? const EdgeInsets.symmetric(
-                                                    horizontal: 14,
-                                                    vertical: 7,
-                                                  )
-                                                : const EdgeInsets.symmetric(
-                                                    horizontal: 24,
-                                                    vertical: 8,
-                                                  ),
-                                            minWidth: constraints.maxWidth < 600
-                                                ? 50
-                                                : 70,
-                                            onTap: onItemCardTap,
-                                          ),
-                                        )
-                                        .toList(),
+                            child: FutureBuilder<List<CategoryCollection>>(
+                              future: IsarService().getAllCategories(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
                                   );
-                                },
-                              ),
+                                }
+                  
+                                if (snapshot.hasError) {
+                                  return const Center(
+                                    child: Text(
+                                      'Erro ao carregar categorias',
+                                    ),
+                                  );
+                                }
+                  
+                                if (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty) {
+                                  return const Center(
+                                    child: Text(
+                                      'Nenhuma categoria encontrada',
+                                    ),
+                                  );
+                                }
+                  
+                                final categories = snapshot.data!;
+                  
+                                return Wrap(
+                                  spacing: constraints.maxWidth < 600
+                                      ? 10
+                                      : 16,
+                                  runSpacing: 8,
+                                  alignment: WrapAlignment.start,
+                                  children: categories
+                                      .map(
+                                        (cat) => CategoryItem(
+                                          label: cat.name,
+                                          fontSize: constraints.maxWidth < 600
+                                              ? 13
+                                              : 15,
+                                          padding: constraints.maxWidth < 600
+                                              ? const EdgeInsets.symmetric(
+                                                  horizontal: 14,
+                                                  vertical: 7,
+                                                )
+                                              : const EdgeInsets.symmetric(
+                                                  horizontal: 24,
+                                                  vertical: 8,
+                                                ),
+                                          minWidth: constraints.maxWidth < 600
+                                              ? 50
+                                              : 70,
+                                          onTap: onItemCardTap,
+                                        ),
+                                      )
+                                      .toList(),
+                                );
+                              },
                             ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: constraints.maxWidth < 600 ? 85 : 100,
-                        ), // So content isn't behind nav bar
-                      ],
-                    ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: constraints.maxWidth < 600 ? 85 : 100,
+                      ), // So content isn't behind nav bar
+                    ],
                   ),
                   // Bottom nav bar
                   Positioned(

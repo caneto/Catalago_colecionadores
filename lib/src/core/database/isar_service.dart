@@ -274,6 +274,21 @@ class IsarService {
     return count > 0;
   }
 
+  Future<List<CarBaseCollection?>> getFavoriteBaseCars() async {
+    final isar = await db;
+    final favoriteIds = await getAllFavoriteIds();
+    // Fetch all cars corresponding to the favorite IDs.
+    // getAll returns a list of nullable objects (List<CarBaseCollection?>)
+    // because some IDs might not exist anymore (though unlikely with proper constraints).
+    final cars = await isar.carBaseCollections.getAll(favoriteIds);
+    for (var car in cars) {
+      if (car != null) {
+        await car.gallery.load();
+      }
+    }
+    return cars;
+  }
+
   // --- Line Collection Methods ---
 
   Future<void> saveLine(LineCollection line) async {

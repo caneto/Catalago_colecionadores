@@ -1,6 +1,12 @@
+import 'package:catalago_colecionadores/src/core/database/isar_models/car_base_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
+import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
+import 'package:catalago_colecionadores/src/core/ui/widgets/header_section_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import 'widgets/grid_item.dart';
 
 class ListaDeDesejosPage extends StatefulWidget {
   const ListaDeDesejosPage({super.key});
@@ -9,58 +15,26 @@ class ListaDeDesejosPage extends StatefulWidget {
   State<ListaDeDesejosPage> createState() => _ListaDeDesejosPageState();
 }
 
-class WishlistItemData {
-  final String imageUrl;
-  final String title;
-  final String brand;
-
-  const WishlistItemData({
-    required this.imageUrl,
-    required this.title,
-    required this.brand,
-  });
-}
-
 class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
-  // Mock data matching the design
-  final List<WishlistItemData> _items = [
-    WishlistItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/02721239-0697-4f9b-8590-1703f5663e1b.png', // Placeholder
-      title: 'Porsche 911 GT3 RS',
-      brand: 'Maisto',
-    ),
-    WishlistItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/417db90e-ca52-4d69-9429-39eb2936e6bb.png', // Placeholder
-      title: '\'65 Ford Mustang',
-      brand: 'Hot Wheels',
-    ),
-    WishlistItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/02a018f5-6746-45ff-9325-d0d23fcd521e.png', // Placeholder
-      title: 'Nissan Skyline GTR',
-      brand: 'Hot Wheels',
-    ),
-    WishlistItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/02721239-0697-4f9b-8590-1703f5663e1b.png', // Placeholder
-      title: 'Volkswagen Beetle',
-      brand: 'Maisto',
-    ),
-    WishlistItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/417db90e-ca52-4d69-9429-39eb2936e6bb.png', // Placeholder
-      title: 'Lamborghini Sián',
-      brand: 'Maisto',
-    ),
-    WishlistItemData(
-      imageUrl:
-          'https://app.codigma.io/api/uploads/assets/02a018f5-6746-45ff-9325-d0d23fcd521e.png', // Placeholder
-      title: '\'69 Chevrolet Camaro',
-      brand: 'Hot Wheels',
-    ),
-  ];
+  final IsarService _isarService = IsarService();
+  List<CarBaseCollection> _items = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final cars = await _isarService.getFavoriteBaseCars();
+    if (mounted) {
+      setState(() {
+        _items = cars.whereType<CarBaseCollection>().toList();
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,92 +42,98 @@ class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          constraints: BoxConstraints(minHeight: sizeOf.height),
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 16),
-              // Header
-              _buildHeader(context),
-              const SizedBox(height: 24),
-              // Search Bar
-              _buildSearchBar(),
-              const SizedBox(height: 16),
-              // Filters Row
-              Row(
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return Container(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              constraints: BoxConstraints(minHeight: sizeOf.height),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(R.ASSETS_IMAGES_CAPA_START_PNG),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: _buildFilterButton(
-                      icon: Icons.filter_list,
-                      label: 'Filtros',
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _buildFilterButton(
-                      icon: Icons.sort,
-                      label: 'Ordenar',
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Header
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.fromLTRB(
+                          20,
+                          18,
+                          20,
+                          16,
+                        ), // as per CSS
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: CatalagoColecionadorTheme.blackClaroColor,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: HeaderSectionWidget(
+                          textHeader: 'Lista de Desejos',
+                          funcReturn: true,
+                          onTap: () async {
+                            if (context.canPop()) {
+                              context.pop();
+                            }
+                          },
+                        ),
+                      ),
+                      const Divider(color: CatalagoColecionadorTheme.whiteColor, thickness: 0.6),
+                      const SizedBox(height: 12),
+                      // Search Bar
+                      _buildSearchBar(),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Itens na Lista de Desejos',
+                        style: CatalagoColecionadorTheme.textBold.copyWith(
+                          color: CatalagoColecionadorTheme.whiteColor,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.25,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      // Filters Row
+                      Expanded(
+                        child: _isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : _items.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'Sua lista de desejos está vazia',
+                                  style: TextStyle(color: Colors.white70),
+                                ),
+                              )
+                            : GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 16,
+                                      crossAxisSpacing: 16,
+                                      childAspectRatio:
+                                          0.65, // Adjust based on card content
+                                    ),
+                                itemCount: _items.length,
+                                itemBuilder: (context, index) {
+                                  return GridItem(item: _items[index]);
+                                },
+                              ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
-              // Grid Content
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 16,
-                    crossAxisSpacing: 16,
-                    childAspectRatio: 0.65, // Adjust based on card content
-                  ),
-                  itemCount: _items.length,
-                  itemBuilder: (context, index) {
-                    return _buildGridItem(_items[index]);
-                  },
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
-    );
-  }
-
-  Widget _buildHeader(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            }
-          },
-        ),
-        const Text(
-          'Lista de Desejos',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.add, color: Colors.white),
-          onPressed: () {
-            // Action to add new item
-          },
-        ),
-      ],
     );
   }
 
@@ -204,125 +184,6 @@ class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildGridItem(WishlistItemData item) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(
-          0xFF111418,
-        ), // Card background matching main background or slightly different
-        // In the image, cards seem to have no distinct background color but visually separated?
-        // Actually, let's look closer. It seems like standard dark cards.
-        // Let's us a slightly lighter color for the card or keep it transparent if the image implies it.
-        // The image shows cards with a dark background, maybe #111418 or #0D1014.
-        // Let's stick with a distinct card background for clarity.
-        border: Border.all(color: const Color(0xFF222831)),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image Section
-          Expanded(
-            flex: 3, // Give image more space
-            child: Container(
-              color: const Color(0xFF1A1D23), // Placeholder background
-              width: double.infinity,
-              child: Image.network(
-                item.imageUrl,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => const Center(
-                  child: Icon(Icons.broken_image, color: Colors.white54),
-                ),
-              ),
-            ),
-          ),
-          // Info Section
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.title,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  item.brand,
-                  style: const TextStyle(
-                    color: Color(0xFF9CA3AF),
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                // Actions
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(
-                            0xFF133663,
-                          ), // Dark blue btn
-                          foregroundColor: const Color(
-                            0xFF1976D2,
-                          ), // Lighter blue text? No, standard blue.
-                          // Image shows Blue background, White/Light Blue text "Mover"
-                          // Let's try to match the "Mover" button style
-                          // It looks like a dark blue container with blue text
-                          elevation: 0,
-                          padding: const EdgeInsets.symmetric(vertical: 0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          minimumSize: const Size(0, 36),
-                        ),
-                        child: const Text(
-                          'Mover',
-                          style: TextStyle(
-                            color: Color(0xFF42A5F5),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1E2329),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFF333A45)),
-                      ),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        icon: const Icon(
-                          Icons.delete_outline,
-                          color: Color(0xFF9CA3AF),
-                          size: 20,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
