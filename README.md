@@ -27,29 +27,29 @@
 
 <h2>📖 Packages usafos no aplicativo.</h2>
 <p>
-- cupertino_icons: ^1.0.8
-- validatorless: ^1.2.5
-- top_snackbar_flutter: ^3.3.0
-- flutter_svg: ^2.0.7
-- flutter_expandable_fab: ^2.5.2
-- camera: ^0.10.5+9
-- logger: ^2.6.2
-- shared_preferences: ^2.5.4
-- isar_community: ^3.2.0
-- isar_community_flutter_libs: ^3.2.0
-- path_provider: ^2.1.2
-- dotted_border: ^3.1.0
-- permission_handler: ^12.0.1
-- flutter_slidable: ^4.0.3
-- flutter_html: ^3.0.0
-- loading_animation_widget: 
-- device_preview: ^1.3.1
-- flutter_launcher_icons: ^0.14.4
-- signals_flutter: ^3.0.0
-- flutter_bloc: ^9.1.1
-- equatable: ^2.0.7
-- go_router: ^17.0.0
-- archive: ^4.0.7
+- cupertino_icons: ^1.0.8</br>
+- validatorless: ^1.2.5</br>
+- top_snackbar_flutter: ^3.3.0</br>
+- flutter_svg: ^2.0.7</br>
+- flutter_expandable_fab: ^2.5.2</br>
+- camera: ^0.10.5+9</br>
+- logger: ^2.6.2</br>
+- shared_preferences: ^2.5.4</br>
+- isar_community: ^3.2.0</br>
+- isar_community_flutter_libs: ^3.2.0</br>
+- path_provider: ^2.1.2</br>
+- dotted_border: ^3.1.0</br>
+- permission_handler: ^12.0.1</br>
+- flutter_slidable: ^4.0.3</br>
+- flutter_html: ^3.0.0</br>
+- loading_animation_widget:</br> 
+- device_preview: ^1.3.1</br>
+- flutter_launcher_icons: ^0.14.4</br>
+- signals_flutter: ^3.0.0</br>
+- flutter_bloc: ^9.1.1</br>
+- equatable: ^2.0.7</br>
+- go_router: ^17.0.0</br>
+- archive: ^4.0.7</br>
 
 - flutter_lints: ^5.0.0
 - build_runner: ^2.7.1
