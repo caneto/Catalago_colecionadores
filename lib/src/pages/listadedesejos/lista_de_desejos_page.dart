@@ -3,7 +3,9 @@ import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/header_section_widget.dart';
+import 'package:catalago_colecionadores/src/core/ui/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import 'widgets/grid_item.dart';
@@ -18,6 +20,7 @@ class ListaDeDesejosPage extends StatefulWidget {
 class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
   final IsarService _isarService = IsarService();
   List<CarBaseCollection> _items = [];
+  List<CarBaseCollection> _allItems = [];
   bool _isLoading = true;
 
   @override
@@ -30,8 +33,43 @@ class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
     final cars = await _isarService.getFavoriteBaseCars();
     if (mounted) {
       setState(() {
-        _items = cars.whereType<CarBaseCollection>().toList();
+        _allItems = cars.whereType<CarBaseCollection>().toList();
+        _items = List.from(_allItems);
         _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _performSearch(String query) async {
+    if (query.length < 3) {
+      setState(() {
+        _items = List.from(_allItems);
+      });
+      return;
+    }
+
+    final results = await _isarService.searchFavoriteBaseCars(query);
+    if (results.isEmpty) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Atenção'),
+            content: const Text(
+              'Dados não encontrados, favor refazer a pesquisa',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => context.pop(),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } else {
+      setState(() {
+        _items = results;
       });
     }
   }
@@ -85,10 +123,27 @@ class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
                           },
                         ),
                       ),
-                      const Divider(color: CatalagoColecionadorTheme.whiteColor, thickness: 0.6),
+                      const Divider(
+                        color: CatalagoColecionadorTheme.whiteColor,
+                        thickness: 0.6,
+                      ),
                       const SizedBox(height: 12),
                       // Search Bar
-                      _buildSearchBar(),
+                      SearchBarWidget(
+                        backgroundColor: CatalagoColecionadorTheme.bgInput,
+                        iconColor:
+                            CatalagoColecionadorTheme.navBarBackkgroundColor,
+                        textColor: CatalagoColecionadorTheme.blackClaroColor,
+                        hint: "Pesquisar na lista...",
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'[a-zA-Z0-9]'),
+                          ),
+                        ],
+                        onChanged: (text) {
+                          _performSearch(text);
+                        },
+                      ),
                       const SizedBox(height: 8),
                       Text(
                         'Itens na Lista de Desejos',
@@ -137,27 +192,7 @@ class _ListaDeDesejosPageState extends State<ListaDeDesejosPage> {
     );
   }
 
-  Widget _buildSearchBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E2329), // Darker search background
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: const Color(0xFF2C323B)),
-      ),
-      child: TextField(
-        style: const TextStyle(color: Colors.white),
-        decoration: const InputDecoration(
-          hintText: 'Pesquisar na lista...',
-          hintStyle: TextStyle(color: Color(0xFF7A8391)),
-          prefixIcon: Icon(Icons.search, color: Color(0xFF7A8391)),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(vertical: 14),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFilterButton({required IconData icon, required String label}) {
+  Widget buildFilterButton({required IconData icon, required String label}) {
     return Container(
       height: 48,
       decoration: BoxDecoration(

@@ -4,8 +4,8 @@ import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/header_section_widget.dart';
 import 'package:catalago_colecionadores/src/core/ui/widgets/miniaturas_nav_bar.dart';
+import 'package:catalago_colecionadores/src/core/ui/widgets/search_bar_widget.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/filter_item_wiget.dart';
-import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/search_bar_widget.dart';
 import 'package:catalago_colecionadores/src/pages/minhacolecao/widgets/view_option_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

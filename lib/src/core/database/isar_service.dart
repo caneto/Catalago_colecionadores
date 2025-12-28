@@ -289,6 +289,35 @@ class IsarService {
     return cars;
   }
 
+  Future<List<CarBaseCollection>> searchFavoriteBaseCars(String query) async {
+    final isar = await db;
+    final favoriteIds = await getAllFavoriteIds();
+
+    if (favoriteIds.isEmpty) {
+      return [];
+    }
+
+    final cars = await isar.carBaseCollections
+        .filter()
+        .anyOf(favoriteIds, (q, id) => q.idEqualTo(id))
+        .and()
+        .group(
+          (q) => q
+              .nomeMiniaturaContains(query, caseSensitive: false)
+              .or()
+              .marcaContains(query, caseSensitive: false)
+              .or()
+              .modeloContains(query, caseSensitive: false),
+        )
+        .findAll();
+
+    for (var car in cars) {
+      await car.gallery.load();
+    }
+
+    return cars;
+  }
+
   // --- Line Collection Methods ---
 
   Future<void> saveLine(LineCollection line) async {

@@ -1,5 +1,4 @@
-// SearchBar
-// -------------
+import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,7 +23,6 @@ class SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Mulit-row text field not required here; single-line suffices
     return Container(
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -46,17 +44,17 @@ class SearchBarWidget extends StatelessWidget {
           Expanded(
             child: TextField(
               inputFormatters: inputFormatters,
-              style: const TextStyle(
+              style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
-                color: Color(0xFFC99194),
+                color: CatalagoColecionadorTheme.whiteColor,
                 letterSpacing: 0.01,
                 height: 1.3,
               ),
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hint,
-                hintStyle: TextStyle(
+                hintStyle: CatalagoColecionadorTheme.titleSmallStyle.copyWith(
                   color: textColor.withValues(alpha: 0.72),
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
