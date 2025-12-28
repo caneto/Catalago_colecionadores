@@ -50,7 +50,7 @@
 - equatable: ^2.0.7</br>
 - go_router: ^17.0.0</br>
 - archive: ^4.0.7</br>
-
+-----
 - flutter_lints: ^5.0.0
 - build_runner: ^2.7.1
 - isar_community_generator: ^3.2.0
