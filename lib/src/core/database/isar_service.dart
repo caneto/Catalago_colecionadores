@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -22,7 +23,7 @@ class IsarService {
   Future<Isar> openDB() async {
     if (Isar.instanceNames.isEmpty) {
       final dir = await getApplicationDocumentsDirectory();
-      return await Isar.open(
+      final isar = await Isar.open(
         [
           CarBaseCollectionSchema,
           CarCollectionSchema,
@@ -39,8 +40,68 @@ class IsarService {
         inspector: true,
         compactOnLaunch: CompactCondition(minFileSize: 10 * 1056 * 1056),
       );
+      await _seedInitialData(isar);
+      return isar;
     }
     return Future.value(Isar.getInstance());
+  }
+
+  Future<void> _seedInitialData(Isar isar) async {
+    final categoryCount = await isar.categoryCollections.count();
+    if (categoryCount == 0) {
+      final initialCategories = [
+        CategoryCollection()
+          ..name = 'Carros'
+          ..description = 'Carros de coleção',
+        CategoryCollection()
+          ..name = 'Carros Custom'
+          ..description = 'Carros customizados',
+        CategoryCollection()
+          ..name = 'Carros de Corrida'
+          ..description = 'Carros de corrida',
+        CategoryCollection()
+          ..name = 'Barcos'
+          ..description = 'Barcos de coleção',
+        CategoryCollection()
+          ..name = 'Aviões'
+          ..description = 'Aviões de coleção',
+        CategoryCollection()
+          ..name = 'Motos'
+          ..description = 'Motos de coleção',
+      ];
+
+      await isar.writeTxn(() async {
+        await isar.categoryCollections.putAll(initialCategories);
+      });
+      if (kDebugMode) {
+        print('Seeded CategoryCollection with multiple validation data');
+      }
+    }
+
+    final marcaCount = await isar.marcaCollections.count();
+    if (marcaCount == 0) {
+      final initialMarcas = [
+        MarcaCollection()
+          ..nome = 'Hot Wheels'
+          ..quantidade = 0
+          ..descricao = 'Hot Wheels é uma marca de miniaturas de carros',
+        MarcaCollection()
+          ..nome = 'Maisto'
+          ..quantidade = 0
+          ..descricao = 'Fabricante Maisto',
+        MarcaCollection()
+          ..nome = 'Matchbox'
+          ..quantidade = 0
+          ..descricao = 'Matchbox é uma marca de miniaturas de carros',
+      ];
+
+      await isar.writeTxn(() async {
+        await isar.marcaCollections.putAll(initialMarcas);
+      });
+      if (kDebugMode) {
+        print('Seeded MarcaCollection with multiple validation data');
+      }
+    }
   }
 
   Future<void> saveCar(CarCollection car, {List<String>? imagesBase64}) async {
