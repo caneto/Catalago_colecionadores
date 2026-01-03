@@ -102,6 +102,48 @@ class IsarService {
         print('Seeded MarcaCollection with multiple validation data');
       }
     }
+
+    final serieCount = await isar.serieCollections.count();
+    if (serieCount == 0) {
+      final initialSeries = [
+        SerieCollection()
+          ..nome = 'Mainline'
+          ..numero = '1'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série principal',
+        SerieCollection()
+          ..nome = 'Premium'
+          ..numero = '2'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série premium',
+      ];
+
+      await isar.writeTxn(() async {
+        await isar.serieCollections.putAll(initialSeries);
+      });
+      if (kDebugMode) {
+        print('Seeded SerieCollection with multiple validation data');
+      }
+    }
+
+    final lineCount = await isar.lineCollections.count();
+    if (lineCount == 0) {
+      final initialLines = [
+        LineCollection()
+          ..linha = '2024'
+          ..descricao = 'Linha de 2024',
+        LineCollection()
+          ..linha = '2025'
+          ..descricao = 'Linha de 2025',
+      ];
+
+      await isar.writeTxn(() async {
+        await isar.lineCollections.putAll(initialLines);
+      });
+      if (kDebugMode) {
+        print('Seeded LineCollection with multiple validation data');
+      }
+    }
   }
 
   Future<void> saveCar(CarCollection car, {List<String>? imagesBase64}) async {
