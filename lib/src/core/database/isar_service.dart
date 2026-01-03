@@ -112,10 +112,60 @@ class IsarService {
           ..marca = 'Hot Wheels'
           ..descricao = 'Série principal',
         SerieCollection()
-          ..nome = 'Premium'
+          ..nome = 'Elite 64'
           ..numero = '2'
           ..marca = 'Hot Wheels'
-          ..descricao = 'Série premium',
+          ..descricao = 'Série elite 64',
+        SerieCollection()
+          ..nome = '5-Pack'
+          ..numero = '3'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série 5-Pack',
+        SerieCollection()
+          ..nome = 'Mystery Models'
+          ..numero = '4'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série mystery models',  
+        SerieCollection()
+          ..nome = 'Formula 1'
+          ..numero = '5'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série formula 1',  
+        SerieCollection()
+          ..nome = 'RLC'
+          ..numero = '6'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série RLC',  
+        SerieCollection()
+          ..nome = 'Fast & Furious'
+          ..numero = '7'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série Fast & Furious',    
+        SerieCollection()
+          ..nome = 'Batman'
+          ..numero = '8'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série Batman',            
+        SerieCollection()
+          ..nome = 'Themed Mult-Packs'
+          ..numero = '9'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série Themed Mult-Packs',
+        SerieCollection()
+          ..nome = 'Vintage Racing Club'
+          ..numero = '10'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série Vintage Racing Club',        
+        SerieCollection()
+          ..nome = 'Car Culture'
+          ..numero = '11'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série Car Culture',      
+        SerieCollection()
+          ..nome = 'Themed Automotive'
+          ..numero = '12'
+          ..marca = 'Hot Wheels'
+          ..descricao = 'Série Themed Automotive',       
       ];
 
       await isar.writeTxn(() async {
