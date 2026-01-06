@@ -1,6 +1,13 @@
+import 'dart:typed_data';
+
+import 'package:catalago_colecionadores/src/core/database/isar_models/car_collection.dart';
+import 'package:catalago_colecionadores/src/core/database/isar_service.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/catalago_colecionador_theme.dart';
 import 'package:catalago_colecionadores/src/core/ui/theme/resource.dart';
 import 'package:flutter/material.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 
 import 'widgets/header_section.dart';
 
@@ -14,6 +21,91 @@ class PdfGenerationPage extends StatefulWidget {
 class _PdfGenerationPageState extends State<PdfGenerationPage> {
   int copies = 1;
   String tipoDados = 'Carro Catalago';
+  final IsarService _isarService = IsarService();
+  List<CarCollection> _cars = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    final cars = await _isarService.getAllCars();
+    setState(() {
+      _cars = cars;
+      _isLoading = false;
+    });
+  }
+
+  Future<Uint8List> _generatePdf(PdfPageFormat format) async {
+    final doc = pw.Document();
+
+    doc.addPage(
+      pw.MultiPage(
+        pageFormat: format,
+        build: (pw.Context context) {
+          return [
+            pw.Header(
+              level: 0,
+              child: pw.Row(
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                children: [
+                  pw.Text(
+                    'Relatório de Coleção',
+                    style: pw.TextStyle(
+                      fontSize: 24,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                  ),
+                  pw.Text('Data: ${DateTime.now().toString().split(' ')[0]}'),
+                ],
+              ),
+            ),
+            pw.SizedBox(height: 20),
+            pw.Table.fromTextArray(
+              context: context,
+              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              headerDecoration: const pw.BoxDecoration(
+                color: PdfColors.grey300,
+              ),
+              cellHeight: 30,
+              cellAlignments: {
+                0: pw.Alignment.centerLeft,
+                1: pw.Alignment.centerLeft,
+                2: pw.Alignment.center,
+                3: pw.Alignment.center,
+              },
+              headers: <String>[
+                'Nome Miniatura',
+                'Marca',
+                'Escala',
+                'Ano Fab.',
+              ],
+              data: _cars.map((car) {
+                return [
+                  car.nomeMiniatura,
+                  car.marca,
+                  car.escala,
+                  car.anoFabricacao?.toString() ?? '-',
+                ];
+              }).toList(),
+            ),
+            pw.Footer(
+              margin: const pw.EdgeInsets.only(top: 20),
+              title: pw.Text(
+                'Total de itens: ${_cars.length}',
+                style: const pw.TextStyle(fontSize: 12),
+              ),
+            ),
+          ];
+        },
+      ),
+    );
+
+    return doc.save();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +129,7 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
                     children: [
                       Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.fromLTRB(
-                          20,
-                          18,
-                          20,
-                          16,
-                        ), // as per CSS
+                        padding: const EdgeInsets.fromLTRB(20, 18, 20, 16),
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
@@ -89,140 +176,23 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
                       ),
 
                       Expanded(
-                        child: Stack(
-                          children: [
-                            // Floating Action Button (Top Right)
-                            Positioned(
-                              top: 10,
-                              right: 10,
-                              child: FloatingActionButton(
-                                mini: true,
-                                backgroundColor:
-                                    CatalagoColecionadorTheme.bgInputAccent,
-                                onPressed: () {},
-                                child: const Icon(
-                                  Icons.save_alt,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-
-                            // PDF Preview Mockup
-                            Center(
-                              child: InteractiveViewer(
-                                minScale: 0.5,
-                                maxScale: 3.0,
-                                child: Container(
-                                  width:
-                                      350, // Approx width relative to A4 aspect ratio
-                                  height: 500,
-                                  margin: const EdgeInsets.all(20),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.1),
-                                        blurRadius: 10,
-                                        spreadRadius: 2,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      // Document Header
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: [
-                                            Image.asset(
-                                              'assets/images/logo_carros_colecioandor.png',
-                                              height: 40,
-                                            ),
-                                            const SizedBox(height: 5),
-                                            const Text(
-                                              'Coleção',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      // Info Box
-                                      Container(
-                                        margin: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            const Expanded(
-                                              child: SizedBox(
-                                                height: 30, // Empty spacer cell
-                                              ),
-                                            ),
-                                            Container(
-                                              width: 1,
-                                              height: 30,
-                                              color: Colors.black,
-                                            ),
-                                            const Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  'Itens encontrados: 4',
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 5),
-
-                                      // Table Rows (Mocked)
-                                      _buildMockRow(
-                                        code: 'MGT00099',
-                                        title:
-                                            'Pandem Nissan GT-R (R35) Duck Tail ROCAF Malataw Fighter',
-                                        subtitle: 'Pandem',
-                                        imageColor: Colors.grey[200]!,
-                                      ),
-                                      _buildMockRow(
-                                        code: 'J3247',
-                                        title: 'Bone Shaker',
-                                        subtitle: '2006 First Editions 6/38',
-                                        imageColor: Colors.orange[100]!,
-                                      ),
-                                      _buildMockRow(
-                                        code: 'K7613S',
-                                        title: 'Nissan Skyline',
-                                        subtitle:
-                                            '2007 Super Treasure Hunt series 122/180',
-                                        imageColor: Colors.blue[100]!,
-                                      ),
-                                      _buildMockRow(
-                                        code: '97689',
-                                        title:
-                                            'Porsche 911 Turbo (New for USA)',
-                                        subtitle: 'Family Wheels 4/5',
-                                        imageColor: Colors.red[100]!,
-                                      ),
-                                    ],
+                        child: _isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: PdfPreview(
+                                  build: (format) => _generatePdf(format),
+                                  canDebug: false,
+                                  canChangeOrientation: false,
+                                  canChangePageFormat: false,
+                                  allowPrinting: true,
+                                  allowSharing: true,
+                                  pdfFileName: 'colecao_carros.pdf',
+                                  loadingWidget: const Center(
+                                    child: CircularProgressIndicator(),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
                       ),
 
                       // Bottom Bar
@@ -233,18 +203,19 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
                           horizontal: 20,
                         ),
                         child: Row(
-                          
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Spacer(),
                             Text(
-                              '1/1',
-                              style: CatalagoColecionadorTheme.titleStyleNormal.copyWith(
-                                color: CatalagoColecionadorTheme.whiteColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              '${_cars.length} itens',
+                              style: CatalagoColecionadorTheme.titleStyleNormal
+                                  .copyWith(
+                                    color: CatalagoColecionadorTheme.whiteColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                             const Spacer(),
+                            // Keeping the check icon as purely visual since PdfPreview handles actions
                             Container(
                               padding: const EdgeInsets.all(4),
                               decoration: const BoxDecoration(
@@ -266,66 +237,6 @@ class _PdfGenerationPageState extends State<PdfGenerationPage> {
             );
           },
         ),
-      ),
-    );
-  }
-
-  Widget _buildMockRow({
-    required String code,
-    required String title,
-    required String subtitle,
-    required Color imageColor,
-  }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-      height: 70,
-      decoration: BoxDecoration(
-        border: const Border(
-          bottom: BorderSide(color: Colors.black),
-          left: BorderSide(color: Colors.black),
-          right: BorderSide(color: Colors.black),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    code,
-                    style: const TextStyle(
-                      fontSize: 9,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(title, style: const TextStyle(fontSize: 8)),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(fontSize: 8, color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(width: 1, color: Colors.black),
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: const EdgeInsets.all(4),
-              color: imageColor,
-              child: const Icon(
-                Icons.directions_car,
-                size: 30,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

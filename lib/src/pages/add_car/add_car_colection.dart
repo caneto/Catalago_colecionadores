@@ -199,7 +199,11 @@ class _AddCarColectionState extends State<AddCarColection> {
           behavior: SnackBarBehavior.floating,
         ),
       );
-      context.pop();
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/home');
+      }
     }
   }
 

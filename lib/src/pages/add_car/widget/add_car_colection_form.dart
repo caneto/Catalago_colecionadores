@@ -277,11 +277,12 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                     label: 'Categoria',
                     colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: DropdownButtonFormField<String>(
+                      isExpanded: true,
                       initialValue: _selectedCategory,
-                      items: categories.map((CategoryCollection category) {
+                      items: categories.map((c) => c.name).toSet().map((name) {
                         return DropdownMenuItem<String>(
-                          value: category.name,
-                          child: Text(category.name),
+                          value: name,
+                          child: Text(name, overflow: TextOverflow.ellipsis),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -310,11 +311,12 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                     label: 'Marca',
                     colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: DropdownButtonFormField<String>(
+                      isExpanded: true,
                       initialValue: _selectedMarca,
-                      items: marcas.map((MarcaCollection marca) {
+                      items: marcas.map((m) => m.nome).toSet().map((name) {
                         return DropdownMenuItem<String>(
-                          value: marca.nome,
-                          child: Text(marca.nome),
+                          value: name,
+                          child: Text(name, overflow: TextOverflow.ellipsis),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
@@ -347,11 +349,12 @@ class _AddCarColectionFormState extends State<AddCarColectionForm> {
                     label: 'Serie',
                     colorLabel: CatalagoColecionadorTheme.labelColor,
                     child: DropdownButtonFormField<String>(
+                      isExpanded: true,
                       initialValue: _selectedSerie,
-                      items: series.map((SerieCollection serie) {
+                      items: series.map((s) => s.nome).toSet().map((name) {
                         return DropdownMenuItem<String>(
-                          value: serie.nome,
-                          child: Text(serie.nome),
+                          value: name,
+                          child: Text(name, overflow: TextOverflow.ellipsis),
                         );
                       }).toList(),
                       onChanged: (String? newValue) {
