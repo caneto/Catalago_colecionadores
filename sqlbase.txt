@@ -1,0 +1,56 @@
+CREATE TABLE marca_collection (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    logo TEXT,
+    quantidade INTEGER,
+    images TEXT[]
+);
+
+CREATE TABLE category_collection (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    image_path TEXT,
+    images TEXT[]
+);
+
+CREATE TABLE line_collection (
+    id SERIAL PRIMARY KEY,
+    linha VARCHAR(255) NOT NULL,
+    descricao TEXT
+);
+
+CREATE TABLE serie_collection (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    numero VARCHAR(255) NOT NULL,
+    marca VARCHAR(255) NOT NULL,
+    descricao TEXT
+);
+
+CREATE TABLE car_base_collection (
+    id SERIAL PRIMARY KEY,
+    nome_miniatura VARCHAR(255) NOT NULL,
+    categoria VARCHAR(255) NOT NULL,
+    marca VARCHAR(255) NOT NULL,
+    modelo VARCHAR(255) NOT NULL,
+    linha VARCHAR(255) NOT NULL,
+    serie VARCHAR(255),
+    numero_na_serie VARCHAR(255),
+    ano_fabricacao INTEGER,
+    escala VARCHAR(255) NOT NULL,
+    notes TEXT
+);
+
+CREATE TABLE car_base_collection_gallery (
+    id SERIAL PRIMARY KEY,
+    image_base64 TEXT NOT NULL,
+    car_base_id INTEGER REFERENCES car_base_collection(id)
+);
+
+CREATE TABLE car_base_collection_favorite (
+    id SERIAL PRIMARY KEY,
+    car_base_id INTEGER UNIQUE NOT NULL,
+    is_favorite BOOLEAN DEFAULT TRUE
+);
