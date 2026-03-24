@@ -23,7 +23,7 @@ void main() {
 
      await Supabase.initialize(
        url: Env.supaBaseUrl,
-       anonKey: Env.supaBaseAnnonkey,
+       anonKey: Env.supaBaseAnnonkey  ,
      );
 
       await SharedPreferencesService.init();
