@@ -62,62 +62,74 @@ class _CheckTermsScreenState extends State<CheckTermsScreen> {
       body: Column(
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: FutureBuilder<String>(
-                future: loadAssetHtml(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        'Erro ao carregar os termos: ${snapshot.error}',
-                      ),
-                    );
-                  } else if (snapshot.hasData) {
-                    return Html(
-                      anchorKey: staticAnchorKey,
-                      data: snapshot.data,
-                      style: {
-                        "table": Style(
-                          backgroundColor: const Color.fromARGB(
-                            0x50,
-                            0xee,
-                            0xee,
-                            0xee,
+            child: Container(
+              color: Colors.white,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: FutureBuilder<String>(
+                  future: loadAssetHtml(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text(
+                          'Erro ao carregar os termos: ${snapshot.error}',
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      );
+                    } else if (snapshot.hasData) {
+                      return Html(
+                        anchorKey: staticAnchorKey,
+                        data: snapshot.data,
+                        style: {
+                          "body": Style(
+                            backgroundColor: Colors.white,
+                            color: Colors.black,
+                            margin: Margins.zero,
+                            padding: HtmlPaddings.zero,
                           ),
-                        ),
-                        "th": Style(
-                          padding: HtmlPaddings.all(6),
-                          backgroundColor: Colors.grey,
-                        ),
-                        "td": Style(
-                          padding: HtmlPaddings.all(6),
-                          border: const Border(
-                            bottom: BorderSide(color: Colors.grey),
+                          "table": Style(
+                            backgroundColor: const Color.fromARGB(
+                              80,
+                              252,
+                              251,
+                              251,
+                            ),
                           ),
-                        ),
-                        'h5': Style(
-                          maxLines: 2,
-                          textOverflow: TextOverflow.ellipsis,
-                        ),
-                        'flutter': Style(
-                          display: Display.block,
-                          fontSize: FontSize(5, Unit.em),
-                        ),
-                        ".second-table": Style(
-                          backgroundColor: Colors.transparent,
-                        ),
-                        ".second-table tr td:first-child": Style(
-                          fontWeight: FontWeight.bold,
-                          textAlign: TextAlign.end,
-                        ),
-                      },
-                    );
-                  }
-                  return const SizedBox.shrink();
-                },
+                          "th": Style(
+                            padding: HtmlPaddings.all(6),
+                            backgroundColor: Colors.grey,
+                          ),
+                          "td": Style(
+                            padding: HtmlPaddings.all(6),
+                            border: const Border(
+                              bottom: BorderSide(
+                                color: Color.fromARGB(255, 209, 202, 202),
+                              ),
+                            ),
+                          ),
+                          'h5': Style(
+                            maxLines: 2,
+                            textOverflow: TextOverflow.ellipsis,
+                          ),
+                          'flutter': Style(
+                            display: Display.block,
+                            fontSize: FontSize(5, Unit.em),
+                          ),
+                          ".second-table": Style(
+                            backgroundColor: Colors.transparent,
+                          ),
+                          ".second-table tr td:first-child": Style(
+                            fontWeight: FontWeight.bold,
+                            textAlign: TextAlign.end,
+                          ),
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
+                ),
               ),
             ),
           ),
@@ -152,17 +164,23 @@ class _CheckTermsScreenState extends State<CheckTermsScreen> {
                 SizedBox(
                   width: double.infinity,
                   height: 48,
-                  child: ElevatedButton(
-                    onPressed: _isAccepted && !_isLoading
-                        ? _handleAccept
-                        : null,
-                    child: _isLoading
-                        ? const SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text('Confirmar e Continuar'),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: _isAccepted && !_isLoading
+                          ? _handleAccept
+                          : null,
+                      child: _isLoading
+                          ? const SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text(
+                              'Confirmar e Continuar',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                    ),
                   ),
                 ),
               ],
